@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">HostIn</string>
+    <string name="app_id">$app_id_here</string>
+    <string-array name="navigation_drawer_items_array">
+        <item>Connect</item>
+        <item>Fixtures</item>
+        <item>Table</item>
+    </string-array>
 </resources>
