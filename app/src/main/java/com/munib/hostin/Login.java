@@ -15,12 +15,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.facebook.FacebookSdk;
 
 public class Login extends AppCompatActivity {
 
     Button temp;
+    TextView signup;
+
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,14 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Login.this,MainActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        final TextView signup = (TextView) findViewById(R.id.textView6);
+        signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setContentView(R.layout.signup_activity);
             }
         });
 
