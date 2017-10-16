@@ -1,0 +1,18 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/signup_background"
+    tools:context="com.munib.hostin.Main_fragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="357dp"
+        android:layout_height="95dp"
+        android:layout_gravity="center"
+        android:text="     Explore Your Features Here!!!"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="24sp" />
+</FrameLayout>

@@ -41,7 +41,7 @@
                 </RelativeLayout>
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_password"
+                    android:id="@+id/input_layout_first_name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
@@ -60,14 +60,14 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_password"
+                    android:id="@+id/input_layout_last_name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
                     android:textColorHint="@android:color/darker_gray">
 
                     <EditText
-                        android:id="@+id/input_first_name"
+                        android:id="@+id/input_last_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/SecondryColor"
@@ -76,36 +76,36 @@
                         android:textColorHint="@color/SecondryColor"
                         android:textSize="20sp" />
 
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:textColorHint="@android:color/darker_gray">
-
-                    <EditText
-                        android:id="@+id/input_first_name"
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_layout_email"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/SecondryColor"
-                        android:hint="E-Mail"
-                        android:textColor="@android:color/darker_gray"
-                        android:textColorHint="@color/SecondryColor"
-                        android:textSize="20sp" />
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:textColorHint="@android:color/darker_gray">
+
+                        <EditText
+                            android:id="@+id/input_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/SecondryColor"
+                            android:hint="E-Mail"
+                            android:textColor="@android:color/darker_gray"
+                            android:textColorHint="@color/SecondryColor"
+                            android:textSize="20sp" />
+
+                    </android.support.design.widget.TextInputLayout>
 
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_password"
+                    android:id="@+id/input_layout_mobile"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
                     android:textColorHint="@android:color/darker_gray">
 
                     <EditText
-                        android:id="@+id/input_first_name"
+                        android:id="@+id/input_mobile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/SecondryColor"
@@ -124,7 +124,7 @@
                     android:textColorHint="@android:color/darker_gray">
 
                     <EditText
-                        android:id="@+id/input_first_name"
+                        android:id="@+id/input_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/SecondryColor"
@@ -136,14 +136,14 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_password"
+                    android:id="@+id/input_layout_confirm_password"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
                     android:textColorHint="@android:color/darker_gray">
 
                     <EditText
-                        android:id="@+id/input_first_name"
+                        android:id="@+id/confirm_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/SecondryColor"

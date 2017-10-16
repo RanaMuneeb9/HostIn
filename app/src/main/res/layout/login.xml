@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/signup_background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1">
 
     <TextView
         android:id="@+id/textView5"
@@ -90,7 +91,8 @@
         android:layout_below="@+id/linearLayout"
         android:layout_marginLeft="45dp"
         android:layout_marginRight="45dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="45dp"
+        android:layout_weight="0.18"
         android:paddingBottom="12dp"
         android:paddingTop="12dp" />
 
@@ -99,7 +101,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="42dp"
-        android:layout_marginRight="42dp" />
+        android:layout_marginRight="42dp"
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/textView6"
