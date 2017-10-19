@@ -9,15 +9,24 @@
     tools:context="com.munib.hostin.MainActivity"
     tools:showIn="@layout/app_bar_navigation">
 
-
-    <fragment
-        android:id="@+id/fragment"
-        android:name="com.munib.hostin.Main_fragment"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="503dp"
-        android:layout_gravity="bottom"
-        tools:layout="@layout/fragment_main_fragment"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+        <fragment
+            android:id="@+id/fragment"
+            android:name="com.munib.hostin.Main_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="550dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="bottom"
+            tools:layout="@layout/fragment_main_fragment"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp" />
+
+
+    </RelativeLayout>
 
 </LinearLayout>

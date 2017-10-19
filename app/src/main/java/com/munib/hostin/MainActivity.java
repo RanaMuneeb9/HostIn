@@ -24,7 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity
-        implements  Main_fragment.OnFragmentInteractionListener,NavigationView.OnNavigationItemSelectedListener{
+        implements  Main_fragment.OnFragmentInteractionListener,Filters.OnFragmentInteractionListener,NavigationView.OnNavigationItemSelectedListener{
 
     boolean mSlideState=false;
     @Override
@@ -36,14 +36,8 @@ public class MainActivity extends AppCompatActivity
         Main_fragment fragment = new Main_fragment();
         fm.beginTransaction().add(R.id.fragment,fragment).commit();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
+
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 
