@@ -77,10 +77,10 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:background="@drawable/my_btn"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
         android:text="Login"
-        android:textColor="@color/SecondryColor" />
+        android:textColor="#815097" />
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/loginButton"

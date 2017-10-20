@@ -28,7 +28,7 @@
                     android:layout_height="wrap_content"
                     android:text="SIGN UP"
                     android:textAlignment="center"
-                    android:textColor="@color/SecondryColor"
+                    android:textColor="#815097"
                     android:textSize="24sp" />
 
                 <RelativeLayout
@@ -164,7 +164,7 @@
                     android:paddingLeft="60dp"
                     android:paddingRight="60dp"
                     android:text="SignUp"
-                    android:textColor="@color/SecondryColor" />
+                    android:textColor="#815097" />
             </LinearLayout>
 
         </RelativeLayout>

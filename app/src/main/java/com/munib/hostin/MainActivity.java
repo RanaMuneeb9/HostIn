@@ -26,7 +26,8 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity
         implements  Main_fragment.OnFragmentInteractionListener,Filters.OnFragmentInteractionListener,NavigationView.OnNavigationItemSelectedListener{
 
-    boolean mSlideState=false;
+    public static boolean mSlideState=false;
+    public static DrawerLayout drawer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 
         drawer.setDrawerListener(new ActionBarDrawerToggle(this,
@@ -56,21 +57,6 @@ public class MainActivity extends AppCompatActivity
                 super.onDrawerOpened(drawerView);
                 mSlideState=true;//is Opened
             }});
-
-        Button drawe_bnt=(Button) findViewById(R.id.drawer_btn);
-        drawe_bnt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(mSlideState){
-                   drawer.closeDrawer(Gravity.START);
-                }else{
-                   drawer.openDrawer(Gravity.START);
-                }
-
-
-            }
-        });
 
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
