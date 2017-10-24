@@ -20,6 +20,37 @@
         <item>Facilities</item>
     </string-array>
 
+    <string-array name="film_names">
+        <item>"Paris Generator"</item>
+        <item>"St Christopher Inn Gare"</item>
+        <item>"Perfect Hostel"</item>
+        <item>"Las Piaules"</item>
+        <item>"FIAP Jean"</item>
+        <item>"Yooma Lodge"</item>
+        <item>"Vintage Hostel"</item>
+    </string-array>
+
+    <string-array name="director_names">
+        <item>"Paris,France"</item>
+        <item>"London,UK"</item>
+        <item>"Islamabad,Pakistan"</item>
+        <item>"Paris,France"</item>
+        <item>"Switzerlan,Switzerland"</item>
+        <item>"London,UK"</item>
+        <item>"Sydney,Australlia"</item>
+    </string-array>
+
+    <string-array name="price">
+        <item>"2000"</item>
+        <item>"3000"</item>
+        <item>"2500"</item>
+        <item>"3000"</item>
+        <item>"2000"</item>
+        <item>"1500"</item>
+        <item>"3000"</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_filter_frag">Filter_frag</string>
 </resources>

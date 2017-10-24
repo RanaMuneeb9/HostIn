@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
 /**
@@ -24,6 +25,8 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class Filters extends Fragment {
+
+    Button proceed;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -70,7 +73,17 @@ public class Filters extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_filters, container, false);
+        View v = inflater.inflate(R.layout.fragment_filters, container, false);
+
+        proceed = (Button)v.findViewById(R.id.proceed_filter);
+        proceed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().popBackStack();
+            }
+        });
+
+        return  v;
 
     }
 

@@ -9,11 +9,15 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import java.util.ArrayList;
 
 
 /**
@@ -35,6 +39,14 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    RecyclerView recyclerView;
+    RecyclerView.Adapter adapter;
+    RecyclerView.LayoutManager layoutManager;
+    String[] f_name,d_name,price;
+    int[] img_res = {R.drawable.pic1,R.drawable.pic2,R.drawable.pic3,R.drawable.pic4,R.drawable.pic5,
+            R.drawable.pic6,R.drawable.pic7};
+    ArrayList<Dataprovider> arrayList = new ArrayList<Dataprovider>();
 
     public Main_fragment() {
         // Required empty public constructor
@@ -90,6 +102,28 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
             }
         });
 
+        arrayList.clear();
+        recyclerView = (RecyclerView)v.findViewById(R.id.recycler_view);
+        f_name = getResources().getStringArray(R.array.film_names);
+        d_name = getResources().getStringArray(R.array.director_names);
+        price = getResources().getStringArray(R.array.price);
+        int i = 0;
+
+        for (String name: f_name)
+        {
+            Dataprovider dataprovider= new Dataprovider(img_res[i],name,d_name[i],price[i]);
+            arrayList.add(dataprovider);
+            i++;
+        }
+
+        adapter = new RecyclerAdapter(arrayList);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this.getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+
+
+
         if(savedInstanceState == null){
             final FloatingActionButton fab = (FloatingActionButton)v.findViewById(R.id.fab);
             fab.setOnClickListener(new View.OnClickListener(){
@@ -105,6 +139,8 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
                 }
             });
         }
+
+
 
         return  v;
     }
