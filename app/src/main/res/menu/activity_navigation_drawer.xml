@@ -3,33 +3,39 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/explore"
             android:icon="@android:drawable/ic_menu_search"
             android:title="Explore" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/my_hostel"
             android:icon="@drawable/ic_menu_gallery"
             android:title="My Hostel" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/payments"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="My Payments" />
+            android:title="Payments" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/saved"
             android:icon="@drawable/ic_menu_manage"
-            android:title=""/>
+            android:title="Saved"/>
+        <item
+            android:id="@+id/notif"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Notifications"/>
+
+
     </group>
 
-    <item android:title="Communicate">
+    <item>
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:id="@+id/my_profile"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="My Profile"/>
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="Settings" />
         </menu>
     </item>
 

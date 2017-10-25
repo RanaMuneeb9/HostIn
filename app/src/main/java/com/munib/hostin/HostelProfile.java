@@ -18,17 +18,23 @@ import com.munib.hostin.Adapters.MainAdapter;
 import com.munib.hostin.DataModel.HostelsData;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import ss.com.bannerslider.banners.Banner;
+import ss.com.bannerslider.banners.DrawableBanner;
+import ss.com.bannerslider.banners.RemoteBanner;
+import ss.com.bannerslider.views.BannerSlider;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Main_fragment.OnFragmentInteractionListener} interface
+ * {@link HostelProfile.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Main_fragment#newInstance} factory method to
+ * Use the {@link HostelProfile#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Main_fragment extends Fragment implements Filters.OnFragmentInteractionListener {
+public class HostelProfile extends Fragment implements Filters.OnFragmentInteractionListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -40,16 +46,7 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
 
     private OnFragmentInteractionListener mListener;
 
-    RecyclerView recyclerView;
-    RecyclerView.Adapter adapter;
-    RecyclerView.LayoutManager layoutManager;
-    String[] f_name,d_name,price;
-    int[] img_res = {R.drawable.pic1,R.drawable.pic2,R.drawable.pic3,R.drawable.pic4,R.drawable.pic5,
-            R.drawable.pic6,R.drawable.pic7,R.drawable.pic7,R.drawable.pic7,R.drawable.pic7,R.drawable.pic7};
-
-    ArrayList<HostelsData> arrayList = new ArrayList<HostelsData>();
-
-    public Main_fragment() {
+    public HostelProfile() {
         // Required empty public constructor
     }
 
@@ -59,11 +56,11 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Main_fragment.
+     * @return A new instance of fragment HostelProfile.
      */
     // TODO: Rename and change types and number of parameters
-    public static Main_fragment newInstance(String param1, String param2) {
-        Main_fragment fragment = new Main_fragment();
+    public static HostelProfile newInstance(String param1, String param2) {
+        HostelProfile fragment = new HostelProfile();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -86,7 +83,7 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.main_fragment, container, false);
+        View v = inflater.inflate(R.layout.hostel_profile_fragment, container, false);
 
         Button drawe_bnt=(Button) v.findViewById(R.id.drawer_btn);
         drawe_bnt.setOnClickListener(new View.OnClickListener() {
@@ -98,49 +95,19 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
                 }else{
                     MainActivity.drawer.openDrawer(Gravity.START);
                 }
-
-
             }
         });
 
-        arrayList.clear();
-        recyclerView = (RecyclerView)v.findViewById(R.id.recycler_view);
-        f_name = getResources().getStringArray(R.array.film_names);
-        d_name = getResources().getStringArray(R.array.director_names);
-        price = getResources().getStringArray(R.array.price);
-        int i = 0;
-
-        for (String name: f_name)
-        {
-            HostelsData hostelsData = new HostelsData(img_res[i],name,d_name[i],price[i]);
-            arrayList.add(hostelsData);
-            i++;
-        }
-
-        adapter = new MainAdapter(getActivity(),arrayList);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this.getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
-
-
-
-        if(savedInstanceState == null){
-            final FloatingActionButton fab = (FloatingActionButton)v.findViewById(R.id.fab);
-            fab.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view){
-                    fab.setVisibility(View.INVISIBLE);
-                    Fragment filter=new Filters();
-                    FragmentTransaction transaction=getFragmentManager().beginTransaction();
-                    transaction.setCustomAnimations(R.anim.slide_in_up, R.anim.slide_up_out);
-                    transaction.replace(R.id.fragment,filter).addToBackStack(null).commit();
-
-
-                }
-            });
-        }
-
+        BannerSlider bannerSlider = (BannerSlider) v.findViewById(R.id.banner_slider1);
+        List<Banner> banners=new ArrayList<>();
+        //add banner using image url
+        //add banner using resource drawable
+        banners.add(new DrawableBanner(R.drawable.pic1));
+        banners.add(new DrawableBanner(R.drawable.pic2));
+        banners.add(new DrawableBanner(R.drawable.pic3));
+        banners.add(new DrawableBanner(R.drawable.pic4));
+        banners.add(new DrawableBanner(R.drawable.pic5));
+        bannerSlider.setBanners(banners);
 
 
         return  v;

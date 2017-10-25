@@ -24,7 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity
-        implements  Main_fragment.OnFragmentInteractionListener,Filters.OnFragmentInteractionListener,NavigationView.OnNavigationItemSelectedListener{
+        implements  Main_fragment.OnFragmentInteractionListener,Filters.OnFragmentInteractionListener,HostelProfile.OnFragmentInteractionListener,NavigationView.OnNavigationItemSelectedListener{
 
     public static boolean mSlideState=false;
     public static DrawerLayout drawer;
@@ -36,8 +36,6 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fm = getSupportFragmentManager();
         Main_fragment fragment = new Main_fragment();
         fm.beginTransaction().add(R.id.fragment,fragment).commit();
-
-
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -107,25 +105,26 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.explore) {
 
             FragmentManager fm = getSupportFragmentManager();
             Main_fragment fragment = new Main_fragment();
-            fm.beginTransaction().add(R.id.fragment,fragment).commit();
+            fm.beginTransaction().replace(R.id.fragment,fragment).commit();
 
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.my_hostel) {
 
             finish();
             Intent intent = new Intent(this,Login.class);
             startActivity(intent);
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.payments) {
 
-        } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.saved) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.my_profile) {
+
+        } else if (id == R.id.notif) {
 
         }
 

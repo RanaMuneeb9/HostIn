@@ -28,6 +28,10 @@
         <item>"FIAP Jean"</item>
         <item>"Yooma Lodge"</item>
         <item>"Vintage Hostel"</item>
+        <item>"Yooma Lodge"</item>
+        <item>"Vintage Hostel"</item>
+        <item>"Yooma Lodge"</item>
+        <item>"Vintage Hostel"</item>
     </string-array>
 
     <string-array name="director_names">
@@ -38,6 +42,10 @@
         <item>"Switzerlan,Switzerland"</item>
         <item>"London,UK"</item>
         <item>"Sydney,Australlia"</item>
+        <item>"Yooma Lodge"</item>
+        <item>"Vintage Hostel"</item>
+        <item>"Yooma Lodge"</item>
+        <item>"Vintage Hostel"</item>
     </string-array>
 
     <string-array name="price">
@@ -48,6 +56,10 @@
         <item>"2000"</item>
         <item>"1500"</item>
         <item>"3000"</item>
+        <item>"Yooma Lodge"</item>
+        <item>"Vintage Hostel"</item>
+        <item>"Yooma Lodge"</item>
+        <item>"Vintage Hostel"</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->

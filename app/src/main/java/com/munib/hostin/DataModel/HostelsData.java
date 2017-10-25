@@ -1,15 +1,15 @@
-package com.munib.hostin;
+package com.munib.hostin.DataModel;
 
 /**
  * Created by MuhammadMusa on 10/24/2017.
  */
 
-public class Dataprovider {
+public class HostelsData {
 
     private int img_res;
     private String f_name,d_name,price;
 
-    public Dataprovider(int img_res,String f_name,String d_name,String price)
+    public HostelsData(int img_res, String f_name, String d_name, String price)
     {
         this.setImg_res(img_res);
         this.setF_name(f_name);

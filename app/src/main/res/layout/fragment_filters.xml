@@ -1,16 +1,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:rsb="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frag_filter"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:rsb="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/frag_filter"
+    android:background="@color/colorBackground"
     android:orientation="vertical"
     tools:context="com.munib.hostin.Filters">
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/textView4"
@@ -57,11 +58,27 @@
             android:textColor="@color/colorAccent"
             android:textSize="18sp" />
 
+        <Button
+            android:id="@+id/proceed_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_toStartOf="@+id/textView7"
+            android:background="@color/colorPrimary"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="Button"
+            android:textColor="@color/SecondryColor" />
+
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/textView7"
-            android:scrollbars="vertical">
+            android:layout_below="@+id/textView4"
+            android:scrollbars="vertical"
+            android:layout_above="@+id/proceed_filter">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -74,7 +91,7 @@
                     android:id="@+id/linearLayout3"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal"
                     android:weightSum="1">
 
@@ -394,7 +411,6 @@
                     android:id="@+id/linearLayout03"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
-                    android:layout_marginTop="30dp"
                     android:orientation="horizontal"
                     android:weightSum="1">
 
@@ -717,17 +733,9 @@
                         android:paddingRight="2dp" />
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/proceed_filter"
-                    android:layout_width="250dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="70dp"
-                    android:text="Button" />
-
             </LinearLayout>
 
         </ScrollView>
-
     </RelativeLayout>
 
 

@@ -44,33 +44,28 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/linearLayout2">
+        android:layout_below="@+id/linearLayout2"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp" />
 
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/recycler_view"
-            android:layout_below="@+id/linearLayout2"></android.support.v7.widget.RecyclerView>
-
-
-    </LinearLayout>
     <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            app:backgroundTint="@color/colorPrimary"
-            app:rippleColor="@color/SecondryColor"
-            app:srcCompat="@drawable/filter_icon"
-            android:layout_marginRight="36dp"
-            android:layout_marginBottom="29dp"
-            android:layout_marginEnd="36dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="29dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginRight="36dp"
+        app:backgroundTint="@color/SecondryColor"
+        app:rippleColor="@color/SecondryColor"
+        app:srcCompat="@drawable/filter_icon" />
 
 
 </RelativeLayout>
