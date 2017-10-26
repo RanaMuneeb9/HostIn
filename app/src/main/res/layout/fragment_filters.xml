@@ -69,8 +69,9 @@
             android:background="@color/colorPrimary"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:text="Button"
-            android:textColor="@color/SecondryColor" />
+            android:text="Apply"
+            android:textColor="@color/SecondryColor"
+            android:textSize="20sp" />
 
 
         <ScrollView

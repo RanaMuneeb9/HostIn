@@ -45,7 +45,7 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
     RecyclerView.LayoutManager layoutManager;
     String[] f_name,d_name,price;
     int[] img_res = {R.drawable.pic1,R.drawable.pic2,R.drawable.pic3,R.drawable.pic4,R.drawable.pic5,
-            R.drawable.pic6,R.drawable.pic7,R.drawable.pic7,R.drawable.pic7,R.drawable.pic7,R.drawable.pic7};
+            R.drawable.pic6,R.drawable.pic7,R.drawable.pic3,R.drawable.pic2,R.drawable.pic1,R.drawable.pic4};
 
     ArrayList<HostelsData> arrayList = new ArrayList<HostelsData>();
 
@@ -112,7 +112,7 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
 
         for (String name: f_name)
         {
-            HostelsData hostelsData = new HostelsData(img_res[i],name,d_name[i],price[i]);
+            HostelsData hostelsData = new HostelsData(img_res[i],d_name[i],f_name[i],price[i]);
             arrayList.add(hostelsData);
             i++;
         }

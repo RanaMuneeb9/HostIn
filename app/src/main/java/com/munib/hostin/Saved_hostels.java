@@ -15,7 +15,7 @@ import android.widget.Button;
 import com.munib.hostin.Adapters.MainAdapter;
 import com.munib.hostin.Adapters.SavedHostelAdapter;
 import com.munib.hostin.DataModel.HostelsData;
-import com.munib.hostin.DataModel.SavedHostelData;
+import com.munib.hostin.DataModel.HostelsData;
 
 import java.util.ArrayList;
 
@@ -47,7 +47,7 @@ public class Saved_hostels extends Fragment {
     int[] img_res1 = {R.drawable.pic1,R.drawable.pic2,R.drawable.pic3,R.drawable.pic4,R.drawable.pic5,
             R.drawable.pic6,R.drawable.pic7,R.drawable.pic7,R.drawable.pic7,R.drawable.pic7,R.drawable.pic7};
 
-    ArrayList<SavedHostelData> arrayList = new ArrayList<SavedHostelData>();
+    ArrayList<HostelsData> arrayList = new ArrayList<HostelsData>();
 
     public Saved_hostels() {
         // Required empty public constructor
@@ -108,9 +108,9 @@ public class Saved_hostels extends Fragment {
         pay = getResources().getStringArray(R.array.price);
         int i = 0;
 
-        for (String name: h_name)
+        while (i<4)
         {
-            SavedHostelData savedHostelData  = new SavedHostelData(img_res1[i],name,h_name[i],pay[i]);
+            HostelsData savedHostelData  = new HostelsData(img_res1[i],p_name[i],h_name[i],pay[i]);
             arrayList.add(savedHostelData);
             i++;
         }

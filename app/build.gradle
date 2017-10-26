@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '26.0.1'
     defaultConfig {
         applicationId "com.munib.hostin"
         minSdkVersion 15
@@ -28,6 +28,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     compile 'com.google.android.gms:play-services-auth:9.8.0'
+    compile 'com.balysv:material-ripple:1.0.2'
     compile 'com.ss.bannerslider:bannerslider:1.8.0'
     compile 'de.hdodenhof:circleimageview:2.2.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'

@@ -7,10 +7,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.munib.hostin.DataModel.SavedHostelData;
-import com.munib.hostin.DataModel.SavedHostelData;
+import com.munib.hostin.DataModel.HostelsData;
+import com.munib.hostin.DataModel.HostelsData;
 import com.munib.hostin.HostelProfile;
 import com.munib.hostin.MainActivity;
 import com.munib.hostin.R;
@@ -25,23 +26,25 @@ public class SavedHostelAdapter extends RecyclerView
         .Adapter<SavedHostelAdapter
         .DataObjectHolder> {
     private static String LOG_TAG = "AdminQeueOrderViewAdapter";
-    public static ArrayList<SavedHostelData> mDataset;
+    public static ArrayList<HostelsData> mDataset;
     public static Context ctx;
     private static SavedHostelAdapter.MyClickListener myClickListener;
-    static SavedHostelData current_item;
+    static HostelsData current_item;
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder {
 
 
         TextView title, due_date, status;
+        ImageView imageView;
 
 
         public DataObjectHolder(View itemView) {
             super(itemView);
 
-            title = (TextView) itemView.findViewById(R.id.placename);
-            due_date = (TextView) itemView.findViewById(R.id.payment);
-            status = (TextView) itemView.findViewById(R.id.hostname);
+            title=(TextView) itemView.findViewById(R.id.dname);
+            due_date=(TextView) itemView.findViewById(R.id.price);
+            status=(TextView)  itemView.findViewById(R.id.fname);
+            imageView=(ImageView) itemView.findViewById(R.id.img);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -61,7 +64,7 @@ public class SavedHostelAdapter extends RecyclerView
         SavedHostelAdapter.myClickListener = myClickListener;
     }
 
-    public SavedHostelAdapter(Context ctx, ArrayList<SavedHostelData> myDataset) {
+    public SavedHostelAdapter(Context ctx, ArrayList<HostelsData> myDataset) {
         SavedHostelAdapter.ctx = ctx;
         mDataset = myDataset;
     }
@@ -82,12 +85,13 @@ public class SavedHostelAdapter extends RecyclerView
 
         current_item = mDataset.get(position);
         Log.d("mubi", "here inside 2");
-        holder.title.setText(mDataset.get(position).getP_name());
-        holder.due_date.setText(mDataset.get(position).getH_name());
+        holder.title.setText(mDataset.get(position).getPrice());
+        holder.due_date.setText(mDataset.get(position).getD_name());
+        holder.imageView.setImageResource(mDataset.get(position).getImg_res());
 
     }
 
-    public void addItem(SavedHostelData dataObj, int index) {
+    public void addItem(HostelsData dataObj, int index) {
         mDataset.add(index, dataObj);
         notifyItemInserted(index);
     }

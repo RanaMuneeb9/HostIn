@@ -2,6 +2,7 @@ package com.munib.hostin.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -9,9 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.munib.hostin.DataModel.HostelsData;
 import com.munib.hostin.HostelProfile;
 import com.munib.hostin.MainActivity;
@@ -38,6 +41,9 @@ public class MainAdapter extends RecyclerView
 
 
         TextView title,due_date,status;
+        ImageView imageView;
+        LinearLayout main;
+        MaterialRippleLayout materialRippleLayout;
 
 
         public DataObjectHolder(View itemView) {
@@ -46,15 +52,17 @@ public class MainAdapter extends RecyclerView
             title=(TextView) itemView.findViewById(R.id.dname);
             due_date=(TextView) itemView.findViewById(R.id.price);
             status=(TextView)  itemView.findViewById(R.id.fname);
+            imageView=(ImageView) itemView.findViewById(R.id.img);
+            materialRippleLayout=(MaterialRippleLayout) itemView.findViewById(R.id.ripple);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FragmentManager fm = ((MainActivity) ctx).getSupportFragmentManager();
-                    HostelProfile fragment = new HostelProfile();
-                    fm.beginTransaction().addToBackStack("frag").replace(R.id.fragment,fragment).commit();
-                }
-            });
+//            itemView.findViewById(R.id.ripple).setOnClickListener(new View.OnClickListener() {
+//                @Override public void onClick(View v) {
+//
+//
+//                    // handle me
+//                }
+//            });
+
 
 
         }
@@ -85,8 +93,17 @@ public class MainAdapter extends RecyclerView
 
         current_item= mDataset.get(position);
         Log.d("mubi","here inside 2");
-        holder.title.setText(mDataset.get(position).getD_name());
-        holder.due_date.setText(mDataset.get(position).getF_name());
+        holder.title.setText(mDataset.get(position).getPrice());
+        holder.due_date.setText(mDataset.get(position).getD_name());
+        holder.imageView.setImageResource(mDataset.get(position).getImg_res());
+        holder.materialRippleLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = ((MainActivity) ctx).getSupportFragmentManager();
+                HostelProfile fragment = new HostelProfile();
+                fm.beginTransaction().addToBackStack("frag").replace(R.id.fragment, fragment).commit();
+            }
+        });
 
     }
 

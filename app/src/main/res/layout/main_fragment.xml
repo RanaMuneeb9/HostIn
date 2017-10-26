@@ -48,9 +48,7 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/linearLayout2"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp" />
+        android:layout_below="@+id/linearLayout2" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -63,7 +61,7 @@
         android:layout_marginBottom="29dp"
         android:layout_marginEnd="36dp"
         android:layout_marginRight="36dp"
-        app:backgroundTint="@color/SecondryColor"
+        app:backgroundTint="@color/colorPrimary"
         app:rippleColor="@color/SecondryColor"
         app:srcCompat="@drawable/filter_icon" />
 
