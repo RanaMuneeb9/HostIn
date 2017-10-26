@@ -24,7 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity
-        implements  Main_fragment.OnFragmentInteractionListener,Filters.OnFragmentInteractionListener,HostelProfile.OnFragmentInteractionListener,NavigationView.OnNavigationItemSelectedListener{
+        implements  Main_fragment.OnFragmentInteractionListener,Saved_hostels.OnFragmentInteractionListener,Filters.OnFragmentInteractionListener,HostelProfile.OnFragmentInteractionListener,NavigationView.OnNavigationItemSelectedListener{
 
     public static boolean mSlideState=false;
     public static DrawerLayout drawer;
@@ -80,6 +80,8 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -121,6 +123,10 @@ public class MainActivity extends AppCompatActivity
 
 
         } else if (id == R.id.saved) {
+
+            FragmentManager fm = getSupportFragmentManager();
+            Saved_hostels fragment = new Saved_hostels();
+            fm.beginTransaction().replace(R.id.fragment,fragment).commit();
 
         } else if (id == R.id.my_profile) {
 
