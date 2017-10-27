@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.munib.hostin.DataModel.HostelsData;
-import com.munib.hostin.DataModel.HostelsData;
 import com.munib.hostin.HostelProfile;
 import com.munib.hostin.MainActivity;
 import com.munib.hostin.R;
@@ -34,16 +33,16 @@ public class SavedHostelAdapter extends RecyclerView
     public static class DataObjectHolder extends RecyclerView.ViewHolder {
 
 
-        TextView title, due_date, status;
+        TextView prices, places, hostel_name;
         ImageView imageView;
 
 
         public DataObjectHolder(View itemView) {
             super(itemView);
 
-            title=(TextView) itemView.findViewById(R.id.dname);
-            due_date=(TextView) itemView.findViewById(R.id.price);
-            status=(TextView)  itemView.findViewById(R.id.fname);
+            prices=(TextView) itemView.findViewById(R.id.prices);
+            places=(TextView) itemView.findViewById(R.id.places);
+            hostel_name=(TextView)  itemView.findViewById(R.id.hostel_name);
             imageView=(ImageView) itemView.findViewById(R.id.img);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -85,8 +84,8 @@ public class SavedHostelAdapter extends RecyclerView
 
         current_item = mDataset.get(position);
         Log.d("mubi", "here inside 2");
-        holder.title.setText(mDataset.get(position).getPrice());
-        holder.due_date.setText(mDataset.get(position).getD_name());
+        holder.prices.setText(mDataset.get(position).getPrices());
+        holder.places.setText(mDataset.get(position).getPlaces());
         holder.imageView.setImageResource(mDataset.get(position).getImg_res());
 
     }

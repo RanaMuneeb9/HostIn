@@ -43,7 +43,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/fname"
+                android:id="@+id/hostel_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="0dp"
@@ -68,14 +68,14 @@
                     android:backgroundTint="@color/SecondryColor" />
 
                 <TextView
-                    android:id="@+id/price"
+                    android:id="@+id/places"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/dname"
-                    android:layout_alignEnd="@+id/fname"
-                    android:layout_alignRight="@+id/fname"
-                    android:layout_below="@+id/fname"
-                    android:layout_toEndOf="@+id/dname"
+                    android:layout_alignBottom="@+id/prices"
+                    android:layout_alignEnd="@+id/hostel_name"
+                    android:layout_alignRight="@+id/hostel_name"
+                    android:layout_below="@+id/hostel_name"
+                    android:layout_toEndOf="@+id/prices"
                     android:layout_weight="1"
                     android:text="Multan"
                     android:textSize="14sp" />
@@ -98,14 +98,14 @@
                     android:backgroundTint="@color/SecondryColor" />
 
                 <TextView
-                    android:id="@+id/dname"
+                    android:id="@+id/prices"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/dname"
-                    android:layout_alignEnd="@+id/fname"
-                    android:layout_alignRight="@+id/fname"
-                    android:layout_below="@+id/fname"
-                    android:layout_toEndOf="@+id/dname"
+                    android:layout_alignBottom="@+id/prices"
+                    android:layout_alignEnd="@+id/hostel_name"
+                    android:layout_alignRight="@+id/hostel_name"
+                    android:layout_below="@+id/hostel_name"
+                    android:layout_toEndOf="@+id/prices"
                     android:layout_weight="1"
                     android:text="10,000"
                     android:textSize="14sp" />

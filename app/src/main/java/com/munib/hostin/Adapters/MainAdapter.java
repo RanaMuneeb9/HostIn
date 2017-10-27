@@ -1,8 +1,6 @@
 package com.munib.hostin.Adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,13 +16,9 @@ import com.balysv.materialripple.MaterialRippleLayout;
 import com.munib.hostin.DataModel.HostelsData;
 import com.munib.hostin.HostelProfile;
 import com.munib.hostin.MainActivity;
-import com.munib.hostin.Main_fragment;
 import com.munib.hostin.R;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 
 public class MainAdapter extends RecyclerView
@@ -40,7 +34,7 @@ public class MainAdapter extends RecyclerView
     {
 
 
-        TextView title,due_date,status;
+        TextView prices,places,hostel_name;
         ImageView imageView;
         LinearLayout main;
         MaterialRippleLayout materialRippleLayout;
@@ -49,9 +43,9 @@ public class MainAdapter extends RecyclerView
         public DataObjectHolder(View itemView) {
             super(itemView);
 
-            title=(TextView) itemView.findViewById(R.id.dname);
-            due_date=(TextView) itemView.findViewById(R.id.price);
-            status=(TextView)  itemView.findViewById(R.id.fname);
+            prices=(TextView) itemView.findViewById(R.id.prices);
+            places=(TextView) itemView.findViewById(R.id.places);
+            hostel_name=(TextView)  itemView.findViewById(R.id.hostel_name);
             imageView=(ImageView) itemView.findViewById(R.id.img);
             materialRippleLayout=(MaterialRippleLayout) itemView.findViewById(R.id.ripple);
 
@@ -93,8 +87,8 @@ public class MainAdapter extends RecyclerView
 
         current_item= mDataset.get(position);
         Log.d("mubi","here inside 2");
-        holder.title.setText(mDataset.get(position).getPrice());
-        holder.due_date.setText(mDataset.get(position).getD_name());
+        holder.prices.setText(mDataset.get(position).getPrices());
+        holder.places.setText(mDataset.get(position).getPlaces());
         holder.imageView.setImageResource(mDataset.get(position).getImg_res());
         holder.materialRippleLayout.setOnClickListener(new View.OnClickListener() {
             @Override

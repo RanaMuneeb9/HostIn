@@ -7,14 +7,15 @@ package com.munib.hostin.DataModel;
 public class HostelsData {
 
     private int img_res;
-    private String f_name,d_name,price;
+    private String hostel_name,prices,places;
 
-    public HostelsData(int img_res, String f_name, String d_name, String price)
+    public HostelsData(int img_res, String hostel_name, String places, String prices)
     {
         this.setImg_res(img_res);
-        this.setF_name(f_name);
-        this.setD_name(d_name);
-        this.setPrice(price);
+        this.setHostel_name(hostel_name);
+        this.setPlaces(places);
+        this.setPrices(prices);
+
 
     }
 
@@ -26,27 +27,27 @@ public class HostelsData {
         this.img_res = img_res;
     }
 
-    public String getF_name() {
-        return f_name;
+    public String getHostel_name() {
+        return hostel_name;
     }
 
-    public void setF_name(String f_name) {
-        this.f_name = f_name;
+    public void setHostel_name(String hostel_name) {
+        this.hostel_name = hostel_name;
     }
 
-    public String getD_name() {
-        return d_name;
+    public String getPrices() {
+        return prices;
     }
 
-    public void setD_name(String d_name) {
-        this.d_name = d_name;
+    public void setPrices(String prices) {
+        this.prices = prices;
     }
 
-    public String getPrice() {
-        return price;
+    public String getPlaces() {
+        return places;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setPlaces(String places) {
+        this.places = places;
     }
 }
