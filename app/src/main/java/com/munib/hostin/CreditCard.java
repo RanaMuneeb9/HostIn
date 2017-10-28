@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,18 +14,18 @@ import android.widget.Button;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link payment.OnFragmentInteractionListener} interface
+ * {@link CreditCard.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link payment#newInstance} factory method to
+ * Use the {@link CreditCard#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class payment extends Fragment {
+public class CreditCard extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    Button proceed,add_card;
+    Button add_creditcard;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -34,7 +33,7 @@ public class payment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public payment() {
+    public CreditCard() {
         // Required empty public constructor
     }
 
@@ -44,11 +43,11 @@ public class payment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment payment.
+     * @return A new instance of fragment CreditCard.
      */
     // TODO: Rename and change types and number of parameters
-    public static payment newInstance(String param1, String param2) {
-        payment fragment = new payment();
+    public static CreditCard newInstance(String param1, String param2) {
+        CreditCard fragment = new CreditCard();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -69,25 +68,10 @@ public class payment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_payment, container, false);
+        View v = inflater.inflate(R.layout.fragment_credit_card, container, false);
 
-        Button drawe_bnt=(Button) v.findViewById(R.id.drawer_btn);
-        drawe_bnt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(MainActivity.mSlideState){
-                    MainActivity.drawer.closeDrawer(Gravity.START);
-                }else{
-                    MainActivity.drawer.openDrawer(Gravity.START);
-                }
-
-
-            }
-        });
-
-        proceed=(Button)v.findViewById(R.id.pay_proceed);
-        proceed.setOnClickListener(new View.OnClickListener() {
+        add_creditcard=(Button)v.findViewById(R.id.add_card_btn);
+        add_creditcard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Fragment main=new Main_fragment();
@@ -96,17 +80,7 @@ public class payment extends Fragment {
             }
         });
 
-        add_card=(Button)v.findViewById(R.id.credit_card);
-        add_card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment addCard=new CreditCard();
-                FragmentTransaction transaction=getFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment,addCard).addToBackStack(null).commit();
-            }
-        });
-
-        return  v;
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -24,7 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity
-        implements  Main_fragment.OnFragmentInteractionListener,payment.OnFragmentInteractionListener,Saved_hostels.OnFragmentInteractionListener,Filters.OnFragmentInteractionListener,HostelProfile.OnFragmentInteractionListener,NavigationView.OnNavigationItemSelectedListener{
+        implements  Main_fragment.OnFragmentInteractionListener,CreditCard.OnFragmentInteractionListener,payment.OnFragmentInteractionListener,Saved_hostels.OnFragmentInteractionListener,Filters.OnFragmentInteractionListener,HostelProfile.OnFragmentInteractionListener,NavigationView.OnNavigationItemSelectedListener{
 
     public static boolean mSlideState=false;
     public static DrawerLayout drawer;
