@@ -123,13 +123,14 @@ public class MainActivity extends AppCompatActivity
 
             FragmentManager fm = getSupportFragmentManager();
             payment fragment = new payment();
-            fm.beginTransaction().replace(R.id.fragment,fragment).commit();
+            fm.beginTransaction().replace(R.id.fragment,fragment).addToBackStack(null).commit();
 
         } else if (id == R.id.saved) {
 
             FragmentManager fm = getSupportFragmentManager();
             Saved_hostels fragment = new Saved_hostels();
-            fm.beginTransaction().replace(R.id.fragment,fragment).commit();
+            fm.beginTransaction().replace(R.id.fragment,fragment).addToBackStack(null).commit();
+
 
         } else if (id == R.id.my_profile) {
 

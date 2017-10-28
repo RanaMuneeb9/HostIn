@@ -146,6 +146,7 @@ public class Saved_hostels extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        getFragmentManager().popBackStack();
     }
 
     /**

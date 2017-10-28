@@ -137,8 +137,11 @@ public class HostelProfile extends Fragment implements Filters.OnFragmentInterac
     @Override
     public void onDetach() {
         super.onDetach();
+        getFragmentManager().popBackStack();
 
     }
+
+
 
     @Override
     public void onFragmentInteraction(Uri uri) {

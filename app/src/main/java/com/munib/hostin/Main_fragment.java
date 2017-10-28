@@ -1,5 +1,6 @@
 package com.munib.hostin;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -87,6 +88,7 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.main_fragment, container, false);
+
 
         Button drawe_bnt=(Button) v.findViewById(R.id.drawer_btn);
         drawe_bnt.setOnClickListener(new View.OnClickListener() {
