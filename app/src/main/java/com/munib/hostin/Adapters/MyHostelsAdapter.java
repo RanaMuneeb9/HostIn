@@ -21,8 +21,8 @@ import com.munib.hostin.R;
 import java.util.ArrayList;
 
 
-public class MainAdapter extends RecyclerView
-        .Adapter<MainAdapter
+public class MyHostelsAdapter extends RecyclerView
+        .Adapter<MyHostelsAdapter
         .DataObjectHolder> {
     private static String LOG_TAG = "AdminQeueOrderViewAdapter";
     public static ArrayList<HostelsData> mDataset;
@@ -63,11 +63,11 @@ public class MainAdapter extends RecyclerView
 
     }
     public void setOnItemClickListener(MyClickListener myClickListener) {
-        MainAdapter.myClickListener = myClickListener;
+        MyHostelsAdapter.myClickListener = myClickListener;
     }
 
-    public MainAdapter(Context ctx, ArrayList<HostelsData> myDataset) {
-        MainAdapter.ctx =ctx;
+    public MyHostelsAdapter(Context ctx, ArrayList<HostelsData> myDataset) {
+        MyHostelsAdapter.ctx =ctx;
         mDataset = myDataset;
     }
 
@@ -87,9 +87,7 @@ public class MainAdapter extends RecyclerView
 
         current_item= mDataset.get(position);
         Log.d("mubi","here inside 2");
-        holder.prices.setText(mDataset.get(position).getPrices());
-        holder.places.setText(mDataset.get(position).getPlaces());
-        holder.imageView.setImageResource(mDataset.get(position).getImg_res());
+
         holder.materialRippleLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 
 import com.balysv.materialripple.MaterialRippleLayout;
-import com.munib.hostin.DataModel.HostelsData;
+import com.munib.hostin.DataModel.NotificationsData;
 import com.munib.hostin.HostelProfile;
 import com.munib.hostin.MainActivity;
 import com.munib.hostin.R;
@@ -21,14 +21,14 @@ import com.munib.hostin.R;
 import java.util.ArrayList;
 
 
-public class MainAdapter extends RecyclerView
-        .Adapter<MainAdapter
+public class NotificationsAdapter extends RecyclerView
+        .Adapter<NotificationsAdapter
         .DataObjectHolder> {
     private static String LOG_TAG = "AdminQeueOrderViewAdapter";
-    public static ArrayList<HostelsData> mDataset;
+    public static ArrayList<NotificationsData> mDataset;
     public  static Context ctx;
     private static MyClickListener myClickListener;
-    static HostelsData current_item;
+    static NotificationsData current_item;
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
     {
@@ -63,11 +63,11 @@ public class MainAdapter extends RecyclerView
 
     }
     public void setOnItemClickListener(MyClickListener myClickListener) {
-        MainAdapter.myClickListener = myClickListener;
+        NotificationsAdapter.myClickListener = myClickListener;
     }
 
-    public MainAdapter(Context ctx, ArrayList<HostelsData> myDataset) {
-        MainAdapter.ctx =ctx;
+    public NotificationsAdapter(Context ctx, ArrayList<NotificationsData> myDataset) {
+        NotificationsAdapter.ctx =ctx;
         mDataset = myDataset;
     }
 
@@ -75,7 +75,7 @@ public class MainAdapter extends RecyclerView
     public DataObjectHolder onCreateViewHolder(ViewGroup parent,
                                                int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.hostel_items_layout, parent, false);
+                .inflate(R.layout.notification_items_layout, parent, false);
 
         Log.d("mubi","here inside 1");
         DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
@@ -87,9 +87,7 @@ public class MainAdapter extends RecyclerView
 
         current_item= mDataset.get(position);
         Log.d("mubi","here inside 2");
-        holder.prices.setText(mDataset.get(position).getPrices());
-        holder.places.setText(mDataset.get(position).getPlaces());
-        holder.imageView.setImageResource(mDataset.get(position).getImg_res());
+
         holder.materialRippleLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,7 +99,7 @@ public class MainAdapter extends RecyclerView
 
     }
 
-    public void addItem(HostelsData dataObj, int index) {
+    public void addItem(NotificationsData dataObj, int index) {
         mDataset.add(index, dataObj);
         notifyItemInserted(index);
     }

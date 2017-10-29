@@ -14,12 +14,12 @@ import android.widget.Button;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link CreditCard.OnFragmentInteractionListener} interface
+ * {@link AddCreditCard_fragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link CreditCard#newInstance} factory method to
+ * Use the {@link AddCreditCard_fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CreditCard extends Fragment {
+public class AddCreditCard_fragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -33,7 +33,7 @@ public class CreditCard extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public CreditCard() {
+    public AddCreditCard_fragment() {
         // Required empty public constructor
     }
 
@@ -43,11 +43,11 @@ public class CreditCard extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment CreditCard.
+     * @return A new instance of fragment AddCreditCard_fragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CreditCard newInstance(String param1, String param2) {
-        CreditCard fragment = new CreditCard();
+    public static AddCreditCard_fragment newInstance(String param1, String param2) {
+        AddCreditCard_fragment fragment = new AddCreditCard_fragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

@@ -4,23 +4,39 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+
+import com.munib.hostin.Adapters.MainAdapter;
+import com.munib.hostin.Adapters.NotificationsAdapter;
+import com.munib.hostin.Adapters.PaymentsAdapter;
+import com.munib.hostin.Adapters.PaymentsHistoryAdapter;
+import com.munib.hostin.DataModel.HostelsData;
+import com.munib.hostin.DataModel.NotificationsData;
+import com.munib.hostin.DataModel.PaymentsData;
+
+import java.util.ArrayList;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link payment.OnFragmentInteractionListener} interface
+ * {@link Notifications_fragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link payment#newInstance} factory method to
+ * Use the {@link Notifications_fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class payment extends Fragment {
+public class Notifications_fragment extends Fragment {
+
+    RecyclerView my_notif_rv;
+    RecyclerView.LayoutManager layoutManager;
+    ArrayList<NotificationsData> my_notif=new ArrayList<>();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -34,7 +50,7 @@ public class payment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public payment() {
+    public Notifications_fragment() {
         // Required empty public constructor
     }
 
@@ -44,11 +60,11 @@ public class payment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment payment.
+     * @return A new instance of fragment Notifications_fragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static payment newInstance(String param1, String param2) {
-        payment fragment = new payment();
+    public static Notifications_fragment newInstance(String param1, String param2) {
+        Notifications_fragment fragment = new Notifications_fragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -69,7 +85,7 @@ public class payment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_payment, container, false);
+        View v = inflater.inflate(R.layout.fragment_notifications, container, false);
 
         Button drawe_bnt=(Button) v.findViewById(R.id.drawer_btn);
         drawe_bnt.setOnClickListener(new View.OnClickListener() {
@@ -86,25 +102,21 @@ public class payment extends Fragment {
             }
         });
 
-        proceed=(Button)v.findViewById(R.id.pay_proceed);
-        proceed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment main=new Main_fragment();
-                FragmentTransaction transaction=getFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment,main).addToBackStack(null).commit();
-            }
-        });
+        my_notif.add(new NotificationsData());
+        my_notif.add(new NotificationsData());
+        my_notif.add(new NotificationsData());
+        my_notif.add(new NotificationsData());
 
-        add_card=(Button)v.findViewById(R.id.credit_card);
-        add_card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment addCard=new CreditCard();
-                FragmentTransaction transaction=getFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment,addCard).addToBackStack(null).commit();
-            }
-        });
+
+        my_notif_rv = (RecyclerView)v.findViewById(R.id.notifications_rv);
+
+        NotificationsAdapter adapter = new NotificationsAdapter(getActivity(),my_notif);
+
+        my_notif_rv.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this.getActivity());
+        my_notif_rv.setAdapter(adapter);
+        my_notif_rv.setNestedScrollingEnabled(false);
+        my_notif_rv.setLayoutManager(layoutManager);
 
         return  v;
     }

@@ -1,13 +1,8 @@
 package com.munib.hostin;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,16 +10,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity
-        implements  Main_fragment.OnFragmentInteractionListener,CreditCard.OnFragmentInteractionListener,payment.OnFragmentInteractionListener,Saved_hostels.OnFragmentInteractionListener,Filters.OnFragmentInteractionListener,HostelProfile.OnFragmentInteractionListener,NavigationView.OnNavigationItemSelectedListener{
+        implements  Main_fragment.OnFragmentInteractionListener,AddCreditCard_fragment.OnFragmentInteractionListener,Payments_fragment.OnFragmentInteractionListener,Saved_hostels.OnFragmentInteractionListener,Notifications_fragment.OnFragmentInteractionListener,Filters.OnFragmentInteractionListener,HostelProfile.OnFragmentInteractionListener,NavigationView.OnNavigationItemSelectedListener{
 
     public static boolean mSlideState=false;
     public static DrawerLayout drawer;
@@ -122,7 +113,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.payments) {
 
             FragmentManager fm = getSupportFragmentManager();
-            payment fragment = new payment();
+            Payments_fragment fragment = new Payments_fragment();
             fm.beginTransaction().replace(R.id.fragment,fragment).addToBackStack(null).commit();
 
         } else if (id == R.id.saved) {
@@ -135,6 +126,10 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.my_profile) {
 
         } else if (id == R.id.notif) {
+            FragmentManager fm = getSupportFragmentManager();
+            Notifications_fragment fragment = new Notifications_fragment();
+            fm.beginTransaction().replace(R.id.fragment,fragment).addToBackStack(null).commit();
+
 
         }
 

@@ -72,7 +72,7 @@ public class SavedHostelAdapter extends RecyclerView
     public SavedHostelAdapter.DataObjectHolder onCreateViewHolder(ViewGroup parent,
                                                                   int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.saved_hostels_layout, parent, false);
+                .inflate(R.layout.hostel_items_layout, parent, false);
 
         Log.d("mubi", "here inside 1");
         SavedHostelAdapter.DataObjectHolder dataObjectHolder = new SavedHostelAdapter.DataObjectHolder(view);
