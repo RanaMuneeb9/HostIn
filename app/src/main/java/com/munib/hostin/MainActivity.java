@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity
-        implements  Main_fragment.OnFragmentInteractionListener,AddCreditCard_fragment.OnFragmentInteractionListener,Payments_fragment.OnFragmentInteractionListener,Saved_hostels.OnFragmentInteractionListener,Notifications_fragment.OnFragmentInteractionListener,Filters.OnFragmentInteractionListener,HostelProfile.OnFragmentInteractionListener,NavigationView.OnNavigationItemSelectedListener{
+        implements  Main_fragment.OnFragmentInteractionListener,user_profile.OnFragmentInteractionListener,AddCreditCard_fragment.OnFragmentInteractionListener,Payments_fragment.OnFragmentInteractionListener,Saved_hostels.OnFragmentInteractionListener,Notifications_fragment.OnFragmentInteractionListener,Filters.OnFragmentInteractionListener,HostelProfile.OnFragmentInteractionListener,NavigationView.OnNavigationItemSelectedListener{
 
     public static boolean mSlideState=false;
     public static DrawerLayout drawer;
@@ -124,6 +124,10 @@ public class MainActivity extends AppCompatActivity
 
 
         } else if (id == R.id.my_profile) {
+
+            FragmentManager fm = getSupportFragmentManager();
+            user_profile uprofile = new user_profile();
+            fm.beginTransaction().replace(R.id.fragment,uprofile).addToBackStack(null).commit();
 
         } else if (id == R.id.notif) {
             FragmentManager fm = getSupportFragmentManager();
