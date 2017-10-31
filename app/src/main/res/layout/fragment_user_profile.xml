@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
     android:orientation="vertical"
-    tools:context="com.munib.hostin.Payments_fragment">
+    tools:context="com.munib.hostin.user_profile">
 
     <RelativeLayout
         android:layout_width="match_parent"

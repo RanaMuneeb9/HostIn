@@ -3,9 +3,7 @@ package com.munib.hostin;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +14,12 @@ import android.widget.Button;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link user_profile.OnFragmentInteractionListener} interface
+ * {@link edit_user_profile.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link user_profile#newInstance} factory method to
+ * Use the {@link edit_user_profile#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class user_profile extends Fragment {
+public class edit_user_profile extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -33,7 +31,7 @@ public class user_profile extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public user_profile() {
+    public edit_user_profile() {
         // Required empty public constructor
     }
 
@@ -43,11 +41,11 @@ public class user_profile extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment user_profile.
+     * @return A new instance of fragment edit_user_profile.
      */
     // TODO: Rename and change types and number of parameters
-    public static user_profile newInstance(String param1, String param2) {
-        user_profile fragment = new user_profile();
+    public static edit_user_profile newInstance(String param1, String param2) {
+        edit_user_profile fragment = new edit_user_profile();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -68,7 +66,7 @@ public class user_profile extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_user_profile, container, false);
+        View v = inflater.inflate(R.layout.fragment_edit_user_profile, container, false);
 
         Button drawe_bnt=(Button) v.findViewById(R.id.drawer_btn);
         drawe_bnt.setOnClickListener(new View.OnClickListener() {
@@ -84,22 +82,6 @@ public class user_profile extends Fragment {
 
             }
         });
-
-        if(savedInstanceState == null){
-            final FloatingActionButton fab = (FloatingActionButton)v.findViewById(R.id.fab);
-            fab.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view){
-                    fab.setVisibility(View.INVISIBLE);
-                    Fragment filter=new edit_user_profile();
-                    FragmentTransaction transaction=getFragmentManager().beginTransaction();
-                    transaction.setCustomAnimations(R.anim.slide_in_up, R.anim.slide_up_out);
-                    transaction.replace(R.id.fragment,filter).addToBackStack(null).commit();
-
-
-                }
-            });
-        }
 
         return v;
     }
