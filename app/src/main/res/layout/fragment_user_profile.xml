@@ -174,7 +174,7 @@
                         android:layout_height="match_parent"
                         android:background="@color/transparent"
                         android:text="Credits / Coupons"
-                        android:paddingTop="12dp"
+                        android:paddingTop="20dp"
                         android:gravity="left"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="16sp"/>
@@ -348,6 +348,7 @@
                     android:layout_marginTop="20dp">
 
                     <Button
+                        android:id="@+id/feedback"
                         android:layout_width="315dp"
                         android:layout_height="match_parent"
                         android:background="@color/transparent"
