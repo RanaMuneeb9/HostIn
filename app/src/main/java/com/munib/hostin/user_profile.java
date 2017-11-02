@@ -1,10 +1,12 @@
 package com.munib.hostin;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,6 +28,7 @@ public class user_profile extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    Button add_payment,add_coupon,share;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -81,6 +84,46 @@ public class user_profile extends Fragment {
                     MainActivity.drawer.openDrawer(Gravity.START);
                 }
 
+
+            }
+        });
+
+        add_coupon = (Button)v.findViewById(R.id.add_coupon);
+        add_coupon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Add_coupon filter=new Add_coupon();
+                FragmentManager transaction=getFragmentManager();
+                filter.show(transaction,"Add_coupon");
+
+            }
+        });
+
+        share = (Button)v.findViewById(R.id.share);
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent=new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                String shareBody = "Body Here";
+                String shareSub = "Subject Here";
+                intent.putExtra(Intent.EXTRA_SUBJECT,shareSub);
+                intent.putExtra(Intent.EXTRA_TEXT,shareBody);
+                startActivity(Intent.createChooser(intent,"Share Using"));
+
+            }
+        });
+
+        add_payment = (Button)v.findViewById(R.id.add_payment);
+        add_payment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Fragment filter=new AddCreditCard_fragment();
+                FragmentTransaction transaction=getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment,filter).addToBackStack(null).commit();
 
             }
         });

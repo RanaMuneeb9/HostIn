@@ -169,6 +169,7 @@
                     android:layout_marginTop="20dp">
 
                     <Button
+                        android:id="@+id/add_coupon"
                         android:layout_width="315dp"
                         android:layout_height="match_parent"
                         android:background="@color/transparent"
@@ -204,6 +205,7 @@
                     android:layout_marginTop="20dp">
 
                     <Button
+                        android:id="@+id/share"
                         android:layout_width="315dp"
                         android:layout_height="match_parent"
                         android:background="@color/transparent"
@@ -240,6 +242,7 @@
                     android:layout_marginTop="20dp">
 
                     <Button
+                        android:id="@+id/add_payment"
                         android:layout_width="315dp"
                         android:layout_height="match_parent"
                         android:background="@color/transparent"
