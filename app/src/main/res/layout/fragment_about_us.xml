@@ -1,0 +1,87 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/setting_frag"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:minHeight="250dp"
+    android:minWidth="340dp"
+    android:orientation="vertical"
+    tools:context="com.munib.hostin.About_us">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@color/colorPrimary"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/drawer_btn"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/menubutton"
+            android:padding="10dp" />
+
+        <TextView
+            android:id="@+id/user_profile_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            android:textAlignment="center"
+            android:textColor="#815097"
+            android:textSize="24sp" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/cardview_light_background">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="110dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="10dp"
+                android:src="@mipmap/ic_launcher"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="363dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="25dp"
+                android:text="Host Inn is a web and mobile based platform which will provide the users facility to search and book hostels in a given location. It will also help hostel owners grow their business by getting online exposure through this software. They can list their hostels in the software so that other users can book and benefit from it."
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/back"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Back"
+                android:textStyle="bold"
+                android:background="@color/colorPrimary"
+                android:textColor="@android:color/white"/>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+
+</LinearLayout>

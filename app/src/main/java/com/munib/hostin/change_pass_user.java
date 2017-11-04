@@ -1,12 +1,9 @@
 package com.munib.hostin;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,17 +15,17 @@ import android.widget.Button;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link user_profile.OnFragmentInteractionListener} interface
+ * {@link change_pass_user.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link user_profile#newInstance} factory method to
+ * Use the {@link change_pass_user#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class user_profile extends Fragment {
+public class change_pass_user extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    Button add_payment,add_coupon,share,feedback,settings;
+    Button submit,cancel;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -36,7 +33,7 @@ public class user_profile extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public user_profile() {
+    public change_pass_user() {
         // Required empty public constructor
     }
 
@@ -46,11 +43,11 @@ public class user_profile extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment user_profile.
+     * @return A new instance of fragment change_pass_user.
      */
     // TODO: Rename and change types and number of parameters
-    public static user_profile newInstance(String param1, String param2) {
-        user_profile fragment = new user_profile();
+    public static change_pass_user newInstance(String param1, String param2) {
+        change_pass_user fragment = new change_pass_user();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -71,7 +68,7 @@ public class user_profile extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_user_profile, container, false);
+        View v = inflater.inflate(R.layout.fragment_change_pass_user, container, false);
 
         Button drawe_bnt=(Button) v.findViewById(R.id.drawer_btn);
         drawe_bnt.setOnClickListener(new View.OnClickListener() {
@@ -88,60 +85,8 @@ public class user_profile extends Fragment {
             }
         });
 
-        add_coupon = (Button)v.findViewById(R.id.add_coupon);
-        add_coupon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                Add_coupon filter=new Add_coupon();
-                FragmentManager transaction=getFragmentManager();
-                filter.show(transaction,"Add_coupon");
-
-            }
-        });
-
-        feedback = (Button)v.findViewById(R.id.feedback);
-        feedback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                User_feedback filter=new User_feedback();
-                FragmentManager transaction=getFragmentManager();
-                filter.show(transaction,"FeedBack");
-
-            }
-        });
-
-        share = (Button)v.findViewById(R.id.share);
-        share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent=new Intent(Intent.ACTION_SEND);
-                intent.setType("text/plain");
-                String shareBody = "Body Here";
-                String shareSub = "Subject Here";
-                intent.putExtra(Intent.EXTRA_SUBJECT,shareSub);
-                intent.putExtra(Intent.EXTRA_TEXT,shareBody);
-                startActivity(Intent.createChooser(intent,"Share Using"));
-
-            }
-        });
-
-        add_payment = (Button)v.findViewById(R.id.add_payment);
-        add_payment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                Fragment filter=new AddCreditCard_fragment();
-                FragmentTransaction transaction=getFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment,filter).addToBackStack(null).commit();
-
-            }
-        });
-
-        settings = (Button)v.findViewById(R.id.settings);
-        settings.setOnClickListener(new View.OnClickListener() {
+        submit = (Button)v.findViewById(R.id.submit);
+        submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
@@ -152,23 +97,18 @@ public class user_profile extends Fragment {
             }
         });
 
+        cancel = (Button)v.findViewById(R.id.cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Fragment filter=new settings();
+                FragmentTransaction transaction=getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment,filter).addToBackStack(null).commit();
 
+            }
+        });
 
-        if(savedInstanceState == null){
-            final FloatingActionButton fab = (FloatingActionButton)v.findViewById(R.id.fab);
-            fab.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view){
-                    fab.setVisibility(View.INVISIBLE);
-                    Fragment filter=new edit_user_profile();
-                    FragmentTransaction transaction=getFragmentManager().beginTransaction();
-                    transaction.setCustomAnimations(R.anim.slide_in_up, R.anim.slide_up_out);
-                    transaction.replace(R.id.fragment,filter).addToBackStack(null).commit();
-
-
-                }
-            });
-        }
 
         return v;
     }
