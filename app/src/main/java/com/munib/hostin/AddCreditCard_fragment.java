@@ -74,7 +74,7 @@ public class AddCreditCard_fragment extends Fragment {
         add_creditcard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment main=new Main_fragment();
+                Fragment main=new user_profile();
                 FragmentTransaction transaction=getFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment,main).addToBackStack(null).commit();
             }
