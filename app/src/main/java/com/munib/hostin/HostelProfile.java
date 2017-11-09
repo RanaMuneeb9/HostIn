@@ -3,6 +3,8 @@ package com.munib.hostin;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -13,9 +15,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.munib.hostin.Adapters.MainAdapter;
+import com.munib.hostin.Adapters.PaymentsAdapter;
+import com.munib.hostin.Adapters.ReviewsAdapter;
 import com.munib.hostin.DataModel.HostelsData;
+import com.munib.hostin.DataModel.PaymentsData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +51,10 @@ public class HostelProfile extends Fragment implements Filters.OnFragmentInterac
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    RecyclerView rv_reviews;
+    RecyclerView.LayoutManager layoutManager;
+    ArrayList<PaymentsData> reviews_list=new ArrayList<>();
 
     private OnFragmentInteractionListener mListener;
 
@@ -108,6 +120,45 @@ public class HostelProfile extends Fragment implements Filters.OnFragmentInterac
         banners.add(new DrawableBanner(R.drawable.pic4));
         banners.add(new DrawableBanner(R.drawable.pic5));
         bannerSlider.setBanners(banners);
+
+
+        final HorizontalScrollView hz_sv=(HorizontalScrollView) v.findViewById(R.id.hz_scrollview);
+
+        final LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.ln);
+
+        new CountDownTimer(3000, 20) {
+            int done=0;
+
+            public void onTick(long millisUntilFinished) {
+
+
+                    hz_sv.scrollTo((int) (500 - millisUntilFinished),0);
+
+            }
+
+            public void onFinish() {
+            }
+
+        }.start();
+
+
+        rv_reviews = (RecyclerView)v.findViewById(R.id.rv_reviews);
+
+
+
+
+
+        reviews_list.add(new PaymentsData());
+        reviews_list.add(new PaymentsData());
+
+        ReviewsAdapter adapter = new ReviewsAdapter(getActivity(),reviews_list);
+
+        rv_reviews.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this.getActivity());
+        rv_reviews.setAdapter(adapter);
+        rv_reviews.setNestedScrollingEnabled(false);
+        rv_reviews.setLayoutManager(layoutManager);
+
 
 
         return  v;
