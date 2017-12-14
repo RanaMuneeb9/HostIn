@@ -25,7 +25,7 @@
                 android:paddingRight="20dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/circleImageView"
+                    android:id="@+id/img"
                     android:layout_width="60dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
@@ -42,7 +42,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textView21"
+                        android:id="@+id/name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Person Name"
@@ -50,7 +50,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/textView23"
+                        android:id="@+id/date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="19/04/17"
@@ -84,12 +84,14 @@
                         android:paddingLeft="5dp">
 
                         <TextView
-                            android:id="@+id/notif_desc"
+                            android:id="@+id/desc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_toEndOf="@+id/prices"
                             android:paddingLeft="5dp"
+                            android:lines="2"
+                            android:maxLines="2"
                             android:paddingRight="10dp"
                             android:text="Here we will show the review of the user"
                             android:textAlignment="viewStart"

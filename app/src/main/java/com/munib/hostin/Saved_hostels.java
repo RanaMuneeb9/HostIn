@@ -108,12 +108,12 @@ public class Saved_hostels extends Fragment {
         pay = getResources().getStringArray(R.array.price);
         int i = 0;
 
-        while (i<4)
-        {
-            HostelsData savedHostelData  = new HostelsData(img_res1[i],p_name[i],h_name[i],pay[i]);
-            arrayList.add(savedHostelData);
-            i++;
-        }
+//        while (i<4)
+//        {
+//            HostelsData savedHostelData  = new HostelsData(img_res1[i],p_name[i],h_name[i],pay[i]);
+//            arrayList.add(savedHostelData);
+//            i++;
+//        }
 
         adapter = new SavedHostelAdapter(getActivity(),arrayList);
         recyclerView1.setHasFixedSize(true);

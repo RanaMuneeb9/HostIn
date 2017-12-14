@@ -1,6 +1,7 @@
 package com.munib.hostin.Adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,8 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+import com.aurelhubert.simpleratingbar.SimpleRatingBar;
 import com.balysv.materialripple.MaterialRippleLayout;
-import com.munib.hostin.DataModel.PaymentsData;
+import com.munib.hostin.DataModel.RoomTypes;
 import com.munib.hostin.HostelProfile;
 import com.munib.hostin.MainActivity;
 import com.munib.hostin.R;
@@ -21,52 +23,37 @@ import com.munib.hostin.R;
 import java.util.ArrayList;
 
 
-public class PaymentsAdapter extends RecyclerView
-        .Adapter<PaymentsAdapter
+public class RoomTypesAdapter extends RecyclerView
+        .Adapter<RoomTypesAdapter
         .DataObjectHolder> {
     private static String LOG_TAG = "AdminQeueOrderViewAdapter";
-    public static ArrayList<PaymentsData> mDataset;
+    public static ArrayList<RoomTypes> mDataset;
     public  static Context ctx;
     private static MyClickListener myClickListener;
-    static PaymentsData current_item;
+    static RoomTypes current_item;
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
     {
 
 
-        TextView prices,places,hostel_name;
+        TextView price;
         ImageView imageView;
-        LinearLayout main;
-        MaterialRippleLayout materialRippleLayout;
-
 
         public DataObjectHolder(View itemView) {
             super(itemView);
 
-            prices=(TextView) itemView.findViewById(R.id.prices);
-            hostel_name=(TextView)  itemView.findViewById(R.id.hostel_name);
-            imageView=(ImageView) itemView.findViewById(R.id.img);
-            materialRippleLayout=(MaterialRippleLayout) itemView.findViewById(R.id.ripple);
-
-//            itemView.findViewById(R.id.ripple).setOnClickListener(new View.OnClickListener() {
-//                @Override public void onClick(View v) {
-//
-//
-//                    // handle me
-//                }
-//            });
-
-
+            price=(TextView) itemView.findViewById(R.id.price);
+            imageView=(ImageView) itemView.findViewById(R.id.image);
 
         }
 
     }
     public void setOnItemClickListener(MyClickListener myClickListener) {
-        PaymentsAdapter.myClickListener = myClickListener;
+        RoomTypesAdapter.myClickListener = myClickListener;
     }
 
-    public PaymentsAdapter(Context ctx, ArrayList<PaymentsData> myDataset) {
-        PaymentsAdapter.ctx =ctx;
+    public RoomTypesAdapter(Context ctx, ArrayList<RoomTypes> myDataset) {
+        RoomTypesAdapter.ctx =ctx;
         mDataset = myDataset;
     }
 
@@ -74,9 +61,7 @@ public class PaymentsAdapter extends RecyclerView
     public DataObjectHolder onCreateViewHolder(ViewGroup parent,
                                                int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.payment_items_layout, parent, false);
-
-        Log.d("mubi","here inside 1");
+                .inflate(R.layout.item_room_types, parent, false);
         DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
         return dataObjectHolder;
     }
@@ -85,20 +70,21 @@ public class PaymentsAdapter extends RecyclerView
     public void onBindViewHolder(DataObjectHolder holder, int position) {
 
         current_item= mDataset.get(position);
-        Log.d("mubi","here inside 2");
-
-        holder.materialRippleLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = ((MainActivity) ctx).getSupportFragmentManager();
-                HostelProfile fragment = new HostelProfile();
-                fm.beginTransaction().addToBackStack("frag").replace(R.id.fragment, fragment).commit();
-            }
-        });
+        Log.d("mubi-r",mDataset.get(position).getType_id()+"");
+        holder.price.setText("PKR "+mDataset.get(position).getBase_price()+"/-");
+        if(mDataset.get(position).getType_id()==1)
+        {
+            holder.imageView.setImageResource(R.drawable.person);
+        }else if(mDataset.get(position).getType_id()==2)
+        {
+            holder.imageView.setImageResource(R.drawable.person2);
+        }else{
+            holder.imageView.setImageResource(R.drawable.person3);
+        }
 
     }
 
-    public void addItem(PaymentsData dataObj, int index) {
+    public void addItem(RoomTypes dataObj, int index) {
         mDataset.add(index, dataObj);
         notifyItemInserted(index);
     }

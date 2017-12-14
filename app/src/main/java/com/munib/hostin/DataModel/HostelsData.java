@@ -1,53 +1,92 @@
 package com.munib.hostin.DataModel;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 /**
  * Created by MuhammadMusa on 10/24/2017.
  */
 
-public class HostelsData {
+public class HostelsData implements Serializable {
 
-    private int img_res;
-    private String hostel_name,prices,places;
+    private int id;
+    private String name,about,email,phone,mobile,type;
+    private double latitude,longitude;
+    ArrayList<Facilities> facilities;
+    ArrayList<Reviews> reviews;
+    ArrayList<RoomTypes> roomTypes;
 
-    public HostelsData(int img_res, String hostel_name, String places, String prices)
+    public HostelsData(int id, String name, double latitude, double longitude, String about, String email, String phone, String mobile, String type, ArrayList<Facilities> facilities, ArrayList<Reviews> reviews,ArrayList roomTypes)
     {
-        this.setImg_res(img_res);
-        this.setHostel_name(hostel_name);
-        this.setPlaces(places);
-        this.setPrices(prices);
-
-
+       this.id=id;
+       this.name=name;
+       this.latitude=latitude;
+       this.longitude=longitude;
+       this.about=about;
+       this.email=email;
+       this.phone=phone;
+       this.mobile=mobile;
+       this.type=type;
+       this.facilities=facilities;
+       this.reviews=reviews;
+       this.roomTypes=roomTypes;
     }
 
-    public int getImg_res() {
-        return img_res;
+    public ArrayList<RoomTypes> getRoomTypes() {
+        return roomTypes;
     }
 
-    public void setImg_res(int img_res) {
-        this.img_res = img_res;
+    public int getId() {
+        return id;
     }
 
-    public String getHostel_name() {
-        return hostel_name;
+    public String getName() {
+        return name;
     }
 
-    public void setHostel_name(String hostel_name) {
-        this.hostel_name = hostel_name;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public String getPrices() {
-        return prices;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setPrices(String prices) {
-        this.prices = prices;
+    public ArrayList<Facilities> getFacilities() {
+        return facilities;
     }
 
-    public String getPlaces() {
-        return places;
+    public ArrayList<Reviews> getReviews() {
+        return reviews;
     }
 
-    public void setPlaces(String places) {
-        this.places = places;
+    public String getAbout() {
+        return about;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public double getAverageReview()
+    {
+        double total=0;
+        for(int i=0;i<reviews.size();i++)
+        {
+            total+=reviews.get(i).getReview_overall();
+        }
+        return total/reviews.size();
     }
 }

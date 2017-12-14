@@ -44,7 +44,6 @@ public class MyHostelsAdapter extends RecyclerView
             super(itemView);
 
             prices=(TextView) itemView.findViewById(R.id.prices);
-            places=(TextView) itemView.findViewById(R.id.places);
             hostel_name=(TextView)  itemView.findViewById(R.id.hostel_name);
             imageView=(ImageView) itemView.findViewById(R.id.img);
             materialRippleLayout=(MaterialRippleLayout) itemView.findViewById(R.id.ripple);

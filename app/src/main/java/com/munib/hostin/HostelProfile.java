@@ -1,6 +1,9 @@
 package com.munib.hostin;
 
 import android.content.Context;
+import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -8,25 +11,43 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
+import com.aurelhubert.simpleratingbar.SimpleRatingBar;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.munib.hostin.Adapters.FacilitiesAdapter;
 import com.munib.hostin.Adapters.MainAdapter;
 import com.munib.hostin.Adapters.PaymentsAdapter;
 import com.munib.hostin.Adapters.ReviewsAdapter;
+import com.munib.hostin.Adapters.RoomTypesAdapter;
 import com.munib.hostin.DataModel.HostelsData;
 import com.munib.hostin.DataModel.PaymentsData;
+import com.munib.hostin.DataModel.Reviews;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import ss.com.bannerslider.banners.Banner;
 import ss.com.bannerslider.banners.DrawableBanner;
@@ -42,11 +63,16 @@ import ss.com.bannerslider.views.BannerSlider;
  * Use the {@link HostelProfile#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HostelProfile extends Fragment implements Filters.OnFragmentInteractionListener {
+public class HostelProfile extends Fragment implements Filters.OnFragmentInteractionListener,OnMapReadyCallback {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private GoogleMap mMap;
+    RecyclerView rv_room_types;
+    TextView location,name,about;
+    Button book_btn;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -54,13 +80,17 @@ public class HostelProfile extends Fragment implements Filters.OnFragmentInterac
 
     RecyclerView rv_reviews;
     RecyclerView.LayoutManager layoutManager;
-    ArrayList<PaymentsData> reviews_list=new ArrayList<>();
+    ArrayList<Reviews> reviews_list=new ArrayList<>();
+
+    HostelsData hostel_data;
 
     private OnFragmentInteractionListener mListener;
 
     public HostelProfile() {
         // Required empty public constructor
+
     }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -97,6 +127,8 @@ public class HostelProfile extends Fragment implements Filters.OnFragmentInterac
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.hostel_profile_fragment, container, false);
 
+        hostel_data = (HostelsData) getArguments().getSerializable("hostel_object");
+
         Button drawe_bnt=(Button) v.findViewById(R.id.drawer_btn);
         drawe_bnt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,6 +142,14 @@ public class HostelProfile extends Fragment implements Filters.OnFragmentInterac
             }
         });
 
+        location=(TextView) v.findViewById(R.id.location);
+        name=(TextView) v.findViewById(R.id.hostel_name);
+        about=(TextView) v.findViewById(R.id.about);
+
+        name.setText(hostel_data.getName());
+        about.setText(hostel_data.getAbout());
+
+
         BannerSlider bannerSlider = (BannerSlider) v.findViewById(R.id.banner_slider1);
         List<Banner> banners=new ArrayList<>();
         //add banner using image url
@@ -122,34 +162,96 @@ public class HostelProfile extends Fragment implements Filters.OnFragmentInterac
         bannerSlider.setBanners(banners);
 
 
-        final HorizontalScrollView hz_sv=(HorizontalScrollView) v.findViewById(R.id.hz_scrollview);
+        //Location City
 
-        final LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.ln);
-
-        new CountDownTimer(3000, 20) {
-            int done=0;
-
-            public void onTick(long millisUntilFinished) {
-
-
-                    hz_sv.scrollTo((int) (500 - millisUntilFinished),0);
-
+        Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
+        StringBuilder builder = new StringBuilder();
+        try {
+            List<Address> address = geoCoder.getFromLocation(hostel_data.getLatitude(), hostel_data.getLongitude(), 1);
+            int maxLines = address.get(0).getMaxAddressLineIndex();
+            for (int i=0; i<maxLines; i++) {
+                String addressStr = address.get(0).getAddressLine(i);
+                builder.append(addressStr);
+                builder.append(" ");
             }
 
-            public void onFinish() {
-            }
+            String fnialAddress = builder.toString(); //This is the complete address.
 
-        }.start();
+
+            location.setText(fnialAddress); //This will display the final address.
+
+        } catch (IOException e) {
+            // Handle IOException
+        } catch (NullPointerException e) {
+            // Handle NullPointerException
+        }
+
+
+        SupportMapFragment mapFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        mapFrag.getMapAsync(this);
+
+        rv_room_types=(RecyclerView) v.findViewById(R.id.rv_room_types);
+        LinearLayoutManager manager=new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        rv_room_types.setLayoutManager(manager);
+        Log.d("mubi-l",hostel_data.getRoomTypes().size()+"");
+        RoomTypesAdapter roomTypesAdapter=new RoomTypesAdapter(getActivity(),hostel_data.getRoomTypes());
+        rv_room_types.setAdapter(roomTypesAdapter);
+
+
+
+        //Reviews Calculations
+
+        double food=0,atmosphere=0,cleanliness=0,facilities=0,security=0,value=0;
+        for(int i=0;i<hostel_data.getReviews().size();i++)
+        {
+            food+=hostel_data.getReviews().get(i).getReview_food();
+            atmosphere+=hostel_data.getReviews().get(i).getReview_atmosphere();
+            cleanliness+=hostel_data.getReviews().get(i).getReview_cleanliness();
+            facilities+=hostel_data.getReviews().get(i).getReview_facilities();
+            security+=hostel_data.getReviews().get(i).getReview_security();
+            value+=hostel_data.getReviews().get(i).getReview_value();
+        }
+
+        SimpleRatingBar food_rating=(SimpleRatingBar) v.findViewById(R.id.food_rating);
+        SimpleRatingBar atmosphere_rating=(SimpleRatingBar) v.findViewById(R.id.atmosphere_rating);
+        SimpleRatingBar cleanliness_rating=(SimpleRatingBar) v.findViewById(R.id.cleanliness_rating);
+        SimpleRatingBar facilities_rating=(SimpleRatingBar) v.findViewById(R.id.facilities_rating);
+        SimpleRatingBar security_rating=(SimpleRatingBar) v.findViewById(R.id.security_rating);
+        SimpleRatingBar value_rating=(SimpleRatingBar) v.findViewById(R.id.value_rating);
+        TextView overall_rating=(TextView) v.findViewById(R.id.overall_rating);
+        TextView total_reviews=(TextView) v.findViewById(R.id.total_reviews);
+
+        overall_rating.setText(hostel_data.getAverageReview()+"");
+        food_rating.setRating((int)food);
+        atmosphere_rating.setRating((int)atmosphere);
+        cleanliness_rating.setRating((int)cleanliness);
+        facilities_rating.setRating((int)facilities);
+        security_rating.setRating((int)security);
+        value_rating.setRating((int)value);
+        total_reviews.setText(hostel_data.getReviews().size()+" Reviews");
+        TextView more_reviews=(TextView) v.findViewById(R.id.view_more_reviews);
+
+//        if(hostel_data.getReviews().size()<=2)
+//            more_reviews.setVisibility(View.GONE);
+
+
 
 
         rv_reviews = (RecyclerView)v.findViewById(R.id.rv_reviews);
 
+        for(int i=0;i<hostel_data.getReviews().size();i++)
+        reviews_list.add(hostel_data.getReviews().get(i));
 
+        more_reviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                Intent intent=new Intent(getActivity(),MoreReviewsActivity.class);
+                intent.putExtra("reviews",reviews_list);
+               startActivity(intent);
 
-
-        reviews_list.add(new PaymentsData());
-        reviews_list.add(new PaymentsData());
+            }
+        });
 
         ReviewsAdapter adapter = new ReviewsAdapter(getActivity(),reviews_list);
 
@@ -158,6 +260,31 @@ public class HostelProfile extends Fragment implements Filters.OnFragmentInterac
         rv_reviews.setAdapter(adapter);
         rv_reviews.setNestedScrollingEnabled(false);
         rv_reviews.setLayoutManager(layoutManager);
+
+
+
+        for(int i=0;i<hostel_data.getFacilities().size();i++)
+            Log.d("mubi-f",hostel_data.getFacilities().get(i).getName());
+
+        RecyclerView rv_facilities = (RecyclerView)v.findViewById(R.id.rv_facilities);
+        GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(),3);
+        rv_facilities.setLayoutManager(mLayoutManager);
+        FacilitiesAdapter adapter1=new FacilitiesAdapter(getActivity(),hostel_data.getFacilities());
+        rv_facilities.setAdapter(adapter1);
+
+
+        book_btn=(Button)v.findViewById(R.id.book_btn);
+        book_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent a=new Intent(getActivity(),BookingActivity.class);
+                Bundle bndle=new Bundle();
+                bndle.putSerializable("hostel_object",hostel_data);
+                a.putExtra("bndle",bndle);
+                startActivity(a);
+            }
+        });
 
 
 
@@ -213,4 +340,23 @@ public class HostelProfile extends Fragment implements Filters.OnFragmentInterac
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        LatLng sydney = new LatLng(hostel_data.getLatitude(),hostel_data.getLongitude());
+
+        CameraUpdate center=
+                CameraUpdateFactory.newLatLng(sydney);
+        CameraUpdate zoom=CameraUpdateFactory.zoomTo(15);
+
+
+        mMap.addMarker(new MarkerOptions().position(sydney).title(hostel_data.getName()));
+        mMap.moveCamera(center);
+        mMap.animateCamera(zoom);
+    }
+
 }
+

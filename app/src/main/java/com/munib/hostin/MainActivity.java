@@ -1,6 +1,9 @@
 package com.munib.hostin;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +13,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +28,8 @@ public class MainActivity extends AppCompatActivity
 
     public static boolean mSlideState=false;
     public static DrawerLayout drawer;
+
+    public static String API="http://172.20.52.46:3000/api/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,9 +58,49 @@ public class MainActivity extends AppCompatActivity
                 mSlideState=true;//is Opened
             }});
 
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.bringToFront();
+
+        if(SavedSharedPreferences.getCurrentHostelId(getApplication())==0) {
+
+            navigationView.getMenu().setGroupEnabled(R.id.group3, false);
+            for (int i = 2; i < 5; i++) {
+
+                MenuItem liveitem = navigationView.getMenu().getItem(i);
+                SpannableString s = new SpannableString(liveitem.getTitle().toString());
+                s.setSpan(new ForegroundColorSpan(Color.GRAY), 0, s.length(), 0);
+                liveitem.setTitle(s);
+
+            }
+
+            int[][] states = new int[][]{
+                    new int[]{android.R.attr.state_enabled}, // disabled
+                    new int[]{android.R.attr.state_enabled}, // enabled
+                    new int[]{-android.R.attr.state_enabled}, // unchecked
+                    new int[]{-android.R.attr.state_enabled},
+                    new int[]{-android.R.attr.state_enabled},
+                    new int[]{android.R.attr.state_enabled},// pressed
+                    new int[]{android.R.attr.state_enabled}
+
+            };
+
+            int[] colors = new int[]{
+                    Color.WHITE,
+                    Color.WHITE,
+                    Color.GRAY,
+                    Color.GRAY,
+                    Color.GRAY,
+                    Color.WHITE,
+                    Color.WHITE
+            };
+
+            ColorStateList ColorStateList2 = new ColorStateList(states, colors);
+
+            navigationView.setItemIconTintList(ColorStateList2);
+        }else{
+
+        }
+
         navigationView.setNavigationItemSelectedListener(this);
 
     }

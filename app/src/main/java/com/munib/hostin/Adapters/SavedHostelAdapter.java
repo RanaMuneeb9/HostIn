@@ -41,7 +41,6 @@ public class SavedHostelAdapter extends RecyclerView
             super(itemView);
 
             prices=(TextView) itemView.findViewById(R.id.prices);
-            places=(TextView) itemView.findViewById(R.id.places);
             hostel_name=(TextView)  itemView.findViewById(R.id.hostel_name);
             imageView=(ImageView) itemView.findViewById(R.id.img);
 
@@ -84,9 +83,9 @@ public class SavedHostelAdapter extends RecyclerView
 
         current_item = mDataset.get(position);
         Log.d("mubi", "here inside 2");
-        holder.prices.setText(mDataset.get(position).getPrices());
-        holder.places.setText(mDataset.get(position).getPlaces());
-        holder.imageView.setImageResource(mDataset.get(position).getImg_res());
+//        holder.prices.setText(mDataset.get(position).getPrices());
+//        holder.places.setText(mDataset.get(position).getPlaces());
+//        holder.imageView.setImageResource(mDataset.get(position).getImg_res());
 
     }
 

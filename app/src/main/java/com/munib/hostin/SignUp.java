@@ -84,7 +84,7 @@ public class SignUp extends AppCompatActivity implements LocationListener {
 
 
                 if (haveNetworkConnection()) {
-                    String url = "http://192.168.8.104:3000/api/add_user";
+                    String url = MainActivity.API+"add_user";
 
                     pDialog = new ProgressDialog(SignUp.this);
                     pDialog.setMessage("Loading...");

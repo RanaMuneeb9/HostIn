@@ -24,6 +24,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.facebook.FacebookSdk;
 import com.munib.hostin.volley.AppController;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -53,7 +54,7 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(haveNetworkConnection()) {
-                    String url = "http://192.168.8.104:3000/api/userLogin";
+                    String url = MainActivity.API+"userLogin";
 
                     pDialog = new ProgressDialog(Login.this);
                     pDialog.setMessage("Loading...");
@@ -74,6 +75,35 @@ public class Login extends AppCompatActivity {
                                         if(!error)
                                         {
                                             pDialog.hide();
+
+                                            Log.d("mubi",error+"inside 00");
+                                            JSONArray array=response.getJSONArray("Users");
+
+
+                                            Log.d("mubi",error+"inside 000");
+                                            JSONObject obj=array.getJSONObject(0);
+
+                                            Log.d("mubi",error+"inside 0");
+                                            int id=obj.getInt("user_id");
+                                            SavedSharedPreferences.setUserId(getApplicationContext(),id);
+                                            String name=obj.getString("first_name")+" "+obj.getString("last_name");
+                                            Log.d("mubi","inside 1");
+                                            SavedSharedPreferences.setUserName(getApplicationContext(),name);
+                                            Log.d("mubi","inside 1.11");
+                                            String lat=obj.getDouble("user_lat")+"";
+                                            SavedSharedPreferences.setUserLat(getApplicationContext(),lat);
+                                            Log.d("mubi","inside 1.12");
+                                            String lang=obj.getDouble("user_lang")+"";
+                                            SavedSharedPreferences.setUserLang(getApplicationContext(),lang);
+                                            String gender=obj.getString("user_gender");
+                                            SavedSharedPreferences.setUserGender(getApplicationContext(),gender);
+                                            Log.d("mubi",error+"inside 2");
+                                            String email=obj.getString("email");
+                                            SavedSharedPreferences.setUserEmail(getApplicationContext(),email);
+                                            String user_image=obj.getString("user_image");
+                                            SavedSharedPreferences.setUserImage(getApplicationContext(),user_image);
+
+                                            Log.d("mubi",error+"inside 3");
                                             Intent intent =new Intent(Login.this,MainActivity.class);
                                             startActivity(intent);
                                         }else{

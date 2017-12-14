@@ -1,6 +1,7 @@
 package com.munib.hostin.Adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+import com.aurelhubert.simpleratingbar.SimpleRatingBar;
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.munib.hostin.DataModel.HostelsData;
 import com.munib.hostin.HostelProfile;
@@ -34,17 +36,19 @@ public class MainAdapter extends RecyclerView
     {
 
 
-        TextView prices,places,hostel_name;
+        TextView prices,hostel_name;
+        SimpleRatingBar ratingBar;
         ImageView imageView;
         LinearLayout main;
         MaterialRippleLayout materialRippleLayout;
+
 
 
         public DataObjectHolder(View itemView) {
             super(itemView);
 
             prices=(TextView) itemView.findViewById(R.id.prices);
-            places=(TextView) itemView.findViewById(R.id.places);
+            ratingBar=(SimpleRatingBar) itemView.findViewById(R.id.ratings);
             hostel_name=(TextView)  itemView.findViewById(R.id.hostel_name);
             imageView=(ImageView) itemView.findViewById(R.id.img);
             materialRippleLayout=(MaterialRippleLayout) itemView.findViewById(R.id.ripple);
@@ -83,18 +87,26 @@ public class MainAdapter extends RecyclerView
     }
 
     @Override
-    public void onBindViewHolder(DataObjectHolder holder, int position) {
+    public void onBindViewHolder(DataObjectHolder holder, final int position) {
 
-        current_item= mDataset.get(position);
+
         Log.d("mubi","here inside 2");
-        holder.prices.setText(mDataset.get(position).getPrices());
-        holder.places.setText(mDataset.get(position).getPlaces());
-        holder.imageView.setImageResource(mDataset.get(position).getImg_res());
+        holder.prices.setText(mDataset.get(position).getRoomTypes().get(0).getPrice()+"");
+        holder.hostel_name.setText(mDataset.get(position).getName());
+        holder.ratingBar.setRating((int)mDataset.get(position).getAverageReview());
+        holder.ratingBar.setEnable(false);
+//        holder.imageView.setImageResource(mDataset.get(position).getImg_res());
         holder.materialRippleLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                current_item= mDataset.get(position);
+                Log.d("mubi-rooms",mDataset.get(position).getRoomTypes().size()+"");
                 FragmentManager fm = ((MainActivity) ctx).getSupportFragmentManager();
                 HostelProfile fragment = new HostelProfile();
+                Bundle a=new Bundle();
+                a.putSerializable("hostel_object",current_item);
+                fragment.setArguments(a);
                 fm.beginTransaction().addToBackStack("frag").replace(R.id.fragment, fragment).commit();
             }
         });

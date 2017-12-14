@@ -3,7 +3,6 @@
     android:id="@+id/payment_card"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
     android:orientation="vertical"
     tools:context="com.munib.hostin.AddCreditCard_fragment">
 
@@ -47,15 +46,16 @@
         </RelativeLayout>
 
         <Button
-            android:id="@+id/add_card_btn"
+            android:id="@+id/pay_btn"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:background="@drawable/signup_background"
-            android:text="ADD CARD"
-            android:textColor="@android:color/white" />
+            android:text="Pay"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
 
         <ScrollView
             android:id="@+id/scrollView2"

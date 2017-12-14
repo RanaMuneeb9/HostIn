@@ -51,6 +51,7 @@
                     android:layout_alignBottom="@+id/img"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
+                    android:gravity="left"
                     android:orientation="vertical">
 
                     <TextView
@@ -62,34 +63,6 @@
                         android:text="Hostel Name"
                         android:textSize="20sp"
                         android:textStyle="bold" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="5dp"
-                        android:orientation="horizontal"
-                        android:paddingLeft="10dp">
-
-                        <ImageView
-                            android:id="@+id/imageView"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:layout_gravity="center_vertical"
-                            android:background="@drawable/ic_location_on_grey_700_24dp"
-                            android:backgroundTint="@color/SecondryColor" />
-
-                        <TextView
-                            android:id="@+id/places"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_toEndOf="@+id/prices"
-                            android:layout_weight="1"
-                            android:paddingLeft="5dp"
-                            android:text="Multan"
-                            android:textSize="14sp" />
-
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -118,6 +91,17 @@
                             android:textSize="14sp" />
 
                     </LinearLayout>
+
+
+                    <com.aurelhubert.simpleratingbar.SimpleRatingBar
+                        android:id="@+id/ratings"
+                        android:layout_width="115dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="left"
+                        android:layout_marginTop="5dp"
+                        app:drawablePadding="4dp"
+                        app:maxRating="5"
+                        app:rating="4" />
 
                 </LinearLayout>
 
