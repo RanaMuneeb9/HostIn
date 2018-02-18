@@ -103,8 +103,6 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        getHostels();
-
 
     }
 
@@ -195,6 +193,7 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
     public void onResume() {
         super.onResume();
 
+        getHostels();
 
 
     }

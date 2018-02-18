@@ -34,29 +34,14 @@ public class NotificationsAdapter extends RecyclerView
     {
 
 
-        TextView prices,places,hostel_name;
-        ImageView imageView;
-        LinearLayout main;
-        MaterialRippleLayout materialRippleLayout;
-
+        TextView title,desc,date,status;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
 
-            prices=(TextView) itemView.findViewById(R.id.prices);
-            hostel_name=(TextView)  itemView.findViewById(R.id.hostel_name);
-            imageView=(ImageView) itemView.findViewById(R.id.img);
-            materialRippleLayout=(MaterialRippleLayout) itemView.findViewById(R.id.ripple);
-
-//            itemView.findViewById(R.id.ripple).setOnClickListener(new View.OnClickListener() {
-//                @Override public void onClick(View v) {
-//
-//
-//                    // handle me
-//                }
-//            });
-
-
+            title=(TextView) itemView.findViewById(R.id.notif_title);
+            desc=(TextView)  itemView.findViewById(R.id.notif_desc);
+            date=(TextView) itemView.findViewById(R.id.notif_date);
 
         }
 
@@ -87,14 +72,10 @@ public class NotificationsAdapter extends RecyclerView
         current_item= mDataset.get(position);
         Log.d("mubi","here inside 2");
 
-        holder.materialRippleLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = ((MainActivity) ctx).getSupportFragmentManager();
-                HostelProfile fragment = new HostelProfile();
-                fm.beginTransaction().addToBackStack("frag").replace(R.id.fragment, fragment).commit();
-            }
-        });
+        holder.title.setText(mDataset.get(position).getTitle());
+        holder.desc.setText(mDataset.get(position).getDescription());
+        holder.date.setText(mDataset.get(position).getDate());
+
 
     }
 

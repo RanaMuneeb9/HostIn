@@ -24,12 +24,12 @@ public class MainActivity extends AppCompatActivity
         settings.OnFragmentInteractionListener,About_us.OnFragmentInteractionListener,edit_user_profile.OnFragmentInteractionListener,
         user_profile.OnFragmentInteractionListener,AddCreditCard_fragment.OnFragmentInteractionListener,Payments_fragment.OnFragmentInteractionListener,
         Saved_hostels.OnFragmentInteractionListener,Notifications_fragment.OnFragmentInteractionListener,Filters.OnFragmentInteractionListener,
-        HostelProfile.OnFragmentInteractionListener,NavigationView.OnNavigationItemSelectedListener{
+        HostelProfile.OnFragmentInteractionListener,NavigationView.OnNavigationItemSelectedListener,MyHostelsFragment.OnFragmentInteractionListener{
 
     public static boolean mSlideState=false;
     public static DrawerLayout drawer;
 
-    public static String API="http://172.20.52.46:3000/api/";
+    public static String API="http://172.20.52.78:3000/api/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,9 +157,9 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.my_hostel) {
 
-            finish();
-            Intent intent = new Intent(this,Login.class);
-            startActivity(intent);
+            FragmentManager fm = getSupportFragmentManager();
+            MyHostelsFragment fragment = new MyHostelsFragment();
+            fm.beginTransaction().replace(R.id.fragment,fragment).addToBackStack(null).commit();
 
         } else if (id == R.id.payments) {
 

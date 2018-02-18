@@ -1,18 +1,28 @@
 package com.munib.hostin;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.munib.hostin.Adapters.MainAdapter;
 import com.munib.hostin.Adapters.NotificationsAdapter;
 import com.munib.hostin.Adapters.PaymentsAdapter;
@@ -20,8 +30,14 @@ import com.munib.hostin.Adapters.PaymentsHistoryAdapter;
 import com.munib.hostin.DataModel.HostelsData;
 import com.munib.hostin.DataModel.NotificationsData;
 import com.munib.hostin.DataModel.PaymentsData;
+import com.munib.hostin.volley.AppController;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -34,6 +50,7 @@ import java.util.ArrayList;
  */
 public class Notifications_fragment extends Fragment {
 
+    ProgressDialog pDialog;
     RecyclerView my_notif_rv;
     RecyclerView.LayoutManager layoutManager;
     ArrayList<NotificationsData> my_notif=new ArrayList<>();
@@ -102,21 +119,15 @@ public class Notifications_fragment extends Fragment {
             }
         });
 
-        my_notif.add(new NotificationsData());
-        my_notif.add(new NotificationsData());
-        my_notif.add(new NotificationsData());
-        my_notif.add(new NotificationsData());
-
-
         my_notif_rv = (RecyclerView)v.findViewById(R.id.notifications_rv);
 
-        NotificationsAdapter adapter = new NotificationsAdapter(getActivity(),my_notif);
 
         my_notif_rv.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this.getActivity());
-        my_notif_rv.setAdapter(adapter);
         my_notif_rv.setNestedScrollingEnabled(false);
         my_notif_rv.setLayoutManager(layoutManager);
+
+        getNotificationsData();
 
         return  v;
     }
@@ -158,5 +169,104 @@ public class Notifications_fragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    void getNotificationsData()
+    {
+
+        if(haveNetworkConnection()) {
+            String url = MainActivity.API+"hostelNotifications";
+
+            pDialog = new ProgressDialog(getActivity());
+            pDialog.setMessage("Loading...");
+            pDialog.setCancelable(false);
+            pDialog.show();
+
+            StringRequest strRequest = new StringRequest(Request.Method.POST, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String res) {
+                            try {
+
+                                JSONObject response = new JSONObject(res.toString());
+                                Log.d("mubi",response.toString());
+                                boolean error = response.getBoolean("Error");
+                                String msg=response.getString("Message");
+
+                                Log.d("mubi",error+"aa");
+                                if(!error)
+                                {
+                                    pDialog.hide();
+
+                                    Log.d("mubi",error+"inside 00");
+                                    JSONArray array=response.getJSONArray("Notifications");
+
+                                    for(int i=0;i<array.length();i++) {
+                                        JSONObject obj = array.getJSONObject(i);
+
+                                        int id = obj.getInt("notification_id");
+                                        String title = obj.getString("notification_title");
+                                        String desc = obj.getString("notification_description");
+                                        String date = obj.getString("notification_date");
+                                        int hostel_id = obj.getInt("Hostels_hostel_id");
+
+                                        my_notif.add(new NotificationsData(id,hostel_id,title,desc,date));
+
+                                    }
+                                    Log.d("mubi",error+"inside 3");
+
+                                    NotificationsAdapter adapter = new NotificationsAdapter(getActivity(),my_notif);
+                                    my_notif_rv.setAdapter(adapter);
+
+
+                                }else{
+                                    Toast.makeText(getActivity(), msg,Toast.LENGTH_SHORT).show();
+                                    pDialog.hide();
+                                }
+
+                            } catch (Exception ex) {
+
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("mubi", "Error: " + error.getMessage());
+                    // hide the progress dialog
+                    pDialog.hide();
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("hostel_id", SavedSharedPreferences.getCurrentHostelId(getActivity())+"");
+
+                    return params;
+                }
+            };
+
+// Adding request to request queue
+            AppController.getInstance().addToRequestQueue(strRequest, "login");
+
+
+        }
+    }
+
+    public boolean haveNetworkConnection() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected())
+                    haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected())
+                    haveConnectedMobile = true;
+        }
+        return haveConnectedWifi || haveConnectedMobile;
     }
 }

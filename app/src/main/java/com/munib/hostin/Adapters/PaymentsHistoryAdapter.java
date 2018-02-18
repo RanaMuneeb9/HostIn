@@ -34,30 +34,16 @@ public class PaymentsHistoryAdapter extends RecyclerView
     {
 
 
-        TextView prices,places,hostel_name;
-        ImageView imageView;
-        LinearLayout main;
-        MaterialRippleLayout materialRippleLayout;
-
+        TextView amount,name,desc,date,status;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
 
-            prices=(TextView) itemView.findViewById(R.id.prices);
-            hostel_name=(TextView)  itemView.findViewById(R.id.hostel_name);
-            imageView=(ImageView) itemView.findViewById(R.id.img);
-            materialRippleLayout=(MaterialRippleLayout) itemView.findViewById(R.id.ripple);
-
-//            itemView.findViewById(R.id.ripple).setOnClickListener(new View.OnClickListener() {
-//                @Override public void onClick(View v) {
-//
-//
-//                    // handle me
-//                }
-//            });
-
-
-
+            name=(TextView) itemView.findViewById(R.id.payment_name);
+            desc=(TextView)  itemView.findViewById(R.id.payment_desc);
+            date=(TextView) itemView.findViewById(R.id.payment_date);
+            status=(TextView) itemView.findViewById(R.id.payment_status);
+            amount=(TextView) itemView.findViewById(R.id.payment_amount);
         }
 
     }
@@ -87,15 +73,10 @@ public class PaymentsHistoryAdapter extends RecyclerView
         current_item= mDataset.get(position);
         Log.d("mubi","here inside 2");
 
-        holder.materialRippleLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = ((MainActivity) ctx).getSupportFragmentManager();
-                HostelProfile fragment = new HostelProfile();
-                fm.beginTransaction().addToBackStack("frag").replace(R.id.fragment, fragment).commit();
-            }
-        });
-
+        holder.name.setText(mDataset.get(position).getName());
+        holder.amount.setText("PKR "+mDataset.get(position).getAmount()+" /-");
+        holder.desc.setText(mDataset.get(position).getDesc());
+        holder.date.setText(mDataset.get(position).getPaid_date());
     }
 
     public void addItem(PaymentsData dataObj, int index) {

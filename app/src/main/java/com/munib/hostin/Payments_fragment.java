@@ -1,25 +1,42 @@
 package com.munib.hostin;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.munib.hostin.Adapters.MainAdapter;
+import com.munib.hostin.Adapters.NotificationsAdapter;
 import com.munib.hostin.Adapters.PaymentsAdapter;
 import com.munib.hostin.Adapters.PaymentsHistoryAdapter;
 import com.munib.hostin.DataModel.HostelsData;
+import com.munib.hostin.DataModel.NotificationsData;
 import com.munib.hostin.DataModel.PaymentsData;
+import com.munib.hostin.volley.AppController;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -32,6 +49,8 @@ import java.util.ArrayList;
  */
 public class Payments_fragment extends Fragment {
 
+    TextView history_msg,unpaid_msg;
+    ProgressDialog pDialog=null;
     RecyclerView unpaid_rv,history_rv;
     RecyclerView.LayoutManager layoutManager,history_layoutManager;
     ArrayList<PaymentsData> unpaid_payments=new ArrayList<>();
@@ -102,8 +121,8 @@ public class Payments_fragment extends Fragment {
         });
 
 
-        TextView unpaid_msg=(TextView) v.findViewById(R.id.unpaid_rv_txtmsg);
-        TextView history_msg=(TextView) v.findViewById(R.id.history_rv_txtmsg);
+        unpaid_msg=(TextView) v.findViewById(R.id.unpaid_rv_txtmsg);
+        history_msg=(TextView) v.findViewById(R.id.history_rv_txtmsg);
 
 
         unpaid_rv = (RecyclerView)v.findViewById(R.id.unpaid_rv);
@@ -111,40 +130,20 @@ public class Payments_fragment extends Fragment {
 
 
 
-
-        unpaid_payments.add(new PaymentsData());
-        unpaid_payments.add(new PaymentsData());
-
-        PaymentsAdapter adapter = new PaymentsAdapter(getActivity(),unpaid_payments);
-
         unpaid_rv.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this.getActivity());
-        unpaid_rv.setAdapter(adapter);
         unpaid_rv.setNestedScrollingEnabled(false);
         unpaid_rv.setLayoutManager(layoutManager);
 
 
 
-        payments_history.add(new PaymentsData());
-        payments_history.add(new PaymentsData());
-        payments_history.add(new PaymentsData());
-        payments_history.add(new PaymentsData());
-        payments_history.add(new PaymentsData());
 
-        PaymentsHistoryAdapter history_adapter = new PaymentsHistoryAdapter(getActivity(),payments_history);
         history_layoutManager = new LinearLayoutManager(this.getActivity());
         history_rv.setLayoutManager(history_layoutManager);
-        history_rv.setAdapter(history_adapter);
         history_rv.setNestedScrollingEnabled(false);
 
-        if(payments_history.size()>0)
-            history_msg.setVisibility(View.GONE);
-        else
-            history_rv.setVisibility(View.GONE);
-        if(unpaid_payments.size()>0)
-            unpaid_msg.setVisibility(View.GONE);
-        else
-            unpaid_rv.setVisibility(View.GONE);
+
+        getPaymentsData();
 
         return  v;
     }
@@ -186,5 +185,127 @@ public class Payments_fragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    void getPaymentsData()
+    {
+
+        if(haveNetworkConnection()) {
+            String url = MainActivity.API+"userPayments";
+
+
+            pDialog = new ProgressDialog(getActivity());
+            pDialog.setMessage("Loading...");
+            pDialog.setCancelable(false);
+            pDialog.show();
+
+            StringRequest strRequest = new StringRequest(Request.Method.POST, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String res) {
+                            try {
+
+                                JSONObject response = new JSONObject(res.toString());
+                                Log.d("mubi",response.toString());
+                                boolean error = response.getBoolean("Error");
+                                String msg=response.getString("Message");
+
+                                Log.d("mubi",error+"aa");
+                                if(!error)
+                                {
+                                    pDialog.hide();
+
+                                    Log.d("mubi","inside 00");
+                                    JSONArray array=response.getJSONArray("Payments");
+
+                                    for(int i=0;i<array.length();i++) {
+                                        JSONObject obj = array.getJSONObject(i);
+
+                                        Log.d("mubi",error+"inside 1");
+                                        int id = obj.getInt("payment_id");
+                                        String title = obj.getString("payment_name");
+                                        Log.d("mubi",error+"inside 1.1");
+                                        String desc = obj.getString("payment_details");
+                                        int amount = obj.getInt("payment_amount");
+                                        Log.d("mubi",error+"inside 1.2");
+                                        String status = obj.getString("payment_status");
+                                        String created_date = obj.getString("payment_created_date");
+                                        Log.d("mubi",error+"inside 1.3");
+                                        String paid_date = obj.getString("payment_paid_date");
+                                        int hostel_id = obj.getInt("Hostels_hostel_id");
+                                        int user_id = obj.getInt("Users_user_id");
+                                        Log.d("mubi",error+"inside 1.4");
+                                        if(status.equals("done"))
+                                        payments_history.add(new PaymentsData(id,user_id,hostel_id,amount,title,desc,status,created_date,paid_date));
+                                        else
+                                        unpaid_payments.add(new PaymentsData(id,user_id,hostel_id,amount,title,desc,status,created_date,paid_date));
+
+
+                                    }
+                                    Log.d("mubi",error+"inside 3");
+
+                                    if(payments_history.size()>0)
+                                        history_msg.setVisibility(View.GONE);
+                                    else
+                                        history_rv.setVisibility(View.GONE);
+                                    if(unpaid_payments.size()>0)
+                                        unpaid_msg.setVisibility(View.GONE);
+                                    else
+                                        unpaid_rv.setVisibility(View.GONE);
+                                    PaymentsHistoryAdapter history_adapter = new PaymentsHistoryAdapter(getActivity(),payments_history);
+                                    history_rv.setAdapter(history_adapter);
+
+                                    PaymentsAdapter adapter = new PaymentsAdapter(getActivity(),unpaid_payments);
+                                    unpaid_rv.setAdapter(adapter);
+
+                                }else{
+                                    Toast.makeText(getActivity(), msg,Toast.LENGTH_SHORT).show();
+                                    pDialog.hide();
+                                }
+
+                            } catch (Exception ex) {
+
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("mubi", "Error: " + error.getMessage());
+                    // hide the progress dialog
+                    pDialog.hide();
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("hostel_id", SavedSharedPreferences.getCurrentHostelId(getActivity())+"");
+                    params.put("user_id", SavedSharedPreferences.getUserId(getActivity())+"");
+
+                    return params;
+                }
+            };
+
+// Adding request to request queue
+            AppController.getInstance().addToRequestQueue(strRequest, "login");
+
+
+        }
+    }
+    public boolean haveNetworkConnection() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected())
+                    haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected())
+                    haveConnectedMobile = true;
+        }
+        return haveConnectedWifi || haveConnectedMobile;
     }
 }
