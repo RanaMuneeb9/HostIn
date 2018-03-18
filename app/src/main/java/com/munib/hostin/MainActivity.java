@@ -15,21 +15,32 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class MainActivity extends AppCompatActivity
         implements  Main_fragment.OnFragmentInteractionListener,change_pass_user.OnFragmentInteractionListener,
         settings.OnFragmentInteractionListener,About_us.OnFragmentInteractionListener,edit_user_profile.OnFragmentInteractionListener,
         user_profile.OnFragmentInteractionListener,AddCreditCard_fragment.OnFragmentInteractionListener,Payments_fragment.OnFragmentInteractionListener,
         Saved_hostels.OnFragmentInteractionListener,Notifications_fragment.OnFragmentInteractionListener,Filters.OnFragmentInteractionListener,
-        HostelProfile.OnFragmentInteractionListener,NavigationView.OnNavigationItemSelectedListener,MyHostelsFragment.OnFragmentInteractionListener{
+        HostelProfile.OnFragmentInteractionListener,NavigationView.OnNavigationItemSelectedListener,MyHostelsFragment.OnFragmentInteractionListener,MapViewFragment.OnFragmentInteractionListener,FragmentMess.OnFragmentInteractionListener{
 
     public static boolean mSlideState=false;
     public static DrawerLayout drawer;
 
-    public static String API="http://172.20.52.78:3000/api/";
+    public static String API="http://192.168.43.31:3000/api/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,46 +71,20 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.bringToFront();
+        ((TextView)navigationView.getHeaderView(0).findViewById(R.id.name)).setText(SavedSharedPreferences.getUserName(getApplicationContext()));
+        ((TextView)navigationView.getHeaderView(0).findViewById(R.id.email)).setText(SavedSharedPreferences.getUserEmail(getApplicationContext()));
 
-        if(SavedSharedPreferences.getCurrentHostelId(getApplication())==0) {
+        if(SavedSharedPreferences.getUserImage(getApplicationContext()).equals("null"))
+        {
 
-            navigationView.getMenu().setGroupEnabled(R.id.group3, false);
-            for (int i = 2; i < 5; i++) {
-
-                MenuItem liveitem = navigationView.getMenu().getItem(i);
-                SpannableString s = new SpannableString(liveitem.getTitle().toString());
-                s.setSpan(new ForegroundColorSpan(Color.GRAY), 0, s.length(), 0);
-                liveitem.setTitle(s);
-
-            }
-
-            int[][] states = new int[][]{
-                    new int[]{android.R.attr.state_enabled}, // disabled
-                    new int[]{android.R.attr.state_enabled}, // enabled
-                    new int[]{-android.R.attr.state_enabled}, // unchecked
-                    new int[]{-android.R.attr.state_enabled},
-                    new int[]{-android.R.attr.state_enabled},
-                    new int[]{android.R.attr.state_enabled},// pressed
-                    new int[]{android.R.attr.state_enabled}
-
-            };
-
-            int[] colors = new int[]{
-                    Color.WHITE,
-                    Color.WHITE,
-                    Color.GRAY,
-                    Color.GRAY,
-                    Color.GRAY,
-                    Color.WHITE,
-                    Color.WHITE
-            };
-
-            ColorStateList ColorStateList2 = new ColorStateList(states, colors);
-
-            navigationView.setItemIconTintList(ColorStateList2);
-        }else{
+        }else
+        {
+            Picasso.with(getApplicationContext()).load(MainActivity.API+"userImage/"+SavedSharedPreferences.getUserImage(getApplicationContext())).into((CircleImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image));
 
         }
+
+//
+
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -185,6 +170,11 @@ public class MainActivity extends AppCompatActivity
             Notifications_fragment fragment = new Notifications_fragment();
             fm.beginTransaction().replace(R.id.fragment,fragment).addToBackStack(null).commit();
 
+
+        }else if (id == R.id.nav_log_out) {
+
+            SavedSharedPreferences.clear(getApplication());
+            MainActivity.this.finish();
 
         }
 

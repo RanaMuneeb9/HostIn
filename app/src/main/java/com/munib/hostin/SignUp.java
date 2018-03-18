@@ -105,6 +105,9 @@ public class SignUp extends AppCompatActivity implements LocationListener {
                                         Toast.makeText(SignUp.this, message, Toast.LENGTH_SHORT).show();
                                         if (!error) {
                                             pDialog.hide();
+
+                                            SavedSharedPreferences.setUserName(getApplicationContext(),first_name.getText().toString()+" "+last_name.getText().toString());
+                                            SavedSharedPreferences.setUserEmail(getApplicationContext(),email.getText().toString());
                                             Intent intent = new Intent(SignUp.this, MainActivity.class);
                                             startActivity(intent);
                                         } else {

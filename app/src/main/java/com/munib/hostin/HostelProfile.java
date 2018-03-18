@@ -1,14 +1,19 @@
 package com.munib.hostin;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
@@ -26,7 +31,12 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.aurelhubert.simpleratingbar.SimpleRatingBar;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -43,11 +53,18 @@ import com.munib.hostin.Adapters.RoomTypesAdapter;
 import com.munib.hostin.DataModel.HostelsData;
 import com.munib.hostin.DataModel.PaymentsData;
 import com.munib.hostin.DataModel.Reviews;
+import com.munib.hostin.DataModel.SavedHostelsData;
+import com.munib.hostin.volley.AppController;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import ss.com.bannerslider.banners.Banner;
 import ss.com.bannerslider.banners.DrawableBanner;
@@ -72,7 +89,8 @@ public class HostelProfile extends Fragment implements Filters.OnFragmentInterac
     private GoogleMap mMap;
     RecyclerView rv_room_types;
     TextView location,name,about;
-    Button book_btn;
+    boolean saved;
+    Button book_btn,save_btn;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -129,6 +147,17 @@ public class HostelProfile extends Fragment implements Filters.OnFragmentInterac
 
         hostel_data = (HostelsData) getArguments().getSerializable("hostel_object");
 
+
+        save_btn=(Button) v.findViewById(R.id.save_btn);
+        for (SavedHostelsData data:Main_fragment.saved_hostels)
+        {
+            if(data.getHostel_id()==hostel_data.getId())
+            {
+                saved=true;
+                save_btn.setBackground(getResources().getDrawable(R.drawable.save_icon_done));
+            }
+        }
+
         Button drawe_bnt=(Button) v.findViewById(R.id.drawer_btn);
         drawe_bnt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,12 +171,140 @@ public class HostelProfile extends Fragment implements Filters.OnFragmentInterac
             }
         });
 
+
+        save_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final ProgressDialog pDialog = new ProgressDialog(getActivity());
+                pDialog.setMessage("Loading...");
+                pDialog.setCancelable(false);
+
+
+                if(!saved)
+                {
+                    if(haveNetworkConnection()) {
+                        pDialog.show();
+                        String url = MainActivity.API+"SaveHostel";
+
+                        StringRequest strRequest = new StringRequest(Request.Method.POST, url,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String res) {
+                                        try {
+
+                                            JSONObject response = new JSONObject(res.toString());
+                                            Log.d("mubi",response.toString());
+                                            boolean error = response.getBoolean("Error");
+
+                                            Log.d("mubi",error+"aa");
+                                            if(!error)
+                                            {
+
+                                                saved=true;
+                                                save_btn.setBackground(getResources().getDrawable(R.drawable.save_icon_done));
+                                                pDialog.hide();
+
+                                            }else{
+                                                Toast.makeText(getActivity(), "Wrong Password/Email !",Toast.LENGTH_SHORT).show();
+                                                pDialog.hide();
+                                            }
+
+                                        } catch (Exception ex) {
+
+                                        }
+                                    }
+                                }, new Response.ErrorListener() {
+
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("mubi", "Error: " + error.getMessage());
+                                // hide the progress dialog
+                                pDialog.hide();
+                            }
+                        }) {
+                            @Override
+                            protected Map<String, String> getParams() {
+                                Map<String, String> params = new HashMap<String, String>();
+                                params.put("hostel_id", hostel_data.getId()+"");
+                                params.put("user_id", SavedSharedPreferences.getUserId(getActivity())+"");
+
+                                return params;
+                            }
+                        };
+
+// Adding request to request queue
+                        AppController.getInstance().addToRequestQueue(strRequest, "save_hostel");
+
+
+                    }
+
+                }else{
+
+                    pDialog.show();
+                    String url = MainActivity.API+"UnsaveHostel";
+
+                    StringRequest strRequest = new StringRequest(Request.Method.POST, url,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String res) {
+                                    try {
+
+                                        JSONObject response = new JSONObject(res.toString());
+                                        Log.d("mubi",response.toString());
+                                        boolean error = response.getBoolean("Error");
+
+                                        Log.d("mubi",error+"aa");
+                                        if(!error)
+                                        {
+                                            saved=false;
+                                            save_btn.setBackground(getResources().getDrawable(R.drawable.save_icon));
+                                            pDialog.hide();
+
+                                        }else{
+                                            Toast.makeText(getActivity(), "Wrong Password/Email !",Toast.LENGTH_SHORT).show();
+                                            pDialog.hide();
+                                        }
+
+                                    } catch (Exception ex) {
+
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("mubi", "Error: " + error.getMessage());
+                            // hide the progress dialog
+                            pDialog.hide();
+                        }
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams() {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("hostel_id", hostel_data.getId()+"");
+                            params.put("user_id", SavedSharedPreferences.getUserId(getActivity())+"");
+
+                            return params;
+                        }
+                    };
+
+// Adding request to request queue
+                    AppController.getInstance().addToRequestQueue(strRequest, "login");
+
+
+                }
+
+            }
+        });
+
         location=(TextView) v.findViewById(R.id.location);
         name=(TextView) v.findViewById(R.id.hostel_name);
         about=(TextView) v.findViewById(R.id.about);
 
         name.setText(hostel_data.getName());
         about.setText(hostel_data.getAbout());
+
 
 
         BannerSlider bannerSlider = (BannerSlider) v.findViewById(R.id.banner_slider1);
@@ -358,5 +515,22 @@ public class HostelProfile extends Fragment implements Filters.OnFragmentInterac
         mMap.animateCamera(zoom);
     }
 
+    public boolean haveNetworkConnection() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected())
+                    haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected())
+                    haveConnectedMobile = true;
+        }
+        return haveConnectedWifi || haveConnectedMobile;
+    }
 }
+
 

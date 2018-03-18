@@ -1,5 +1,6 @@
 package com.munib.hostin;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.munib.hostin.Adapters.MainAdapter;
 import com.munib.hostin.Adapters.SavedHostelAdapter;
 import com.munib.hostin.DataModel.HostelsData;
 import com.munib.hostin.DataModel.HostelsData;
+import com.munib.hostin.DataModel.SavedHostelsData;
 
 import java.util.ArrayList;
 
@@ -86,6 +88,13 @@ public class Saved_hostels extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_saved_hostels, container, false);
 
+
+        ProgressDialog progressDialog=new ProgressDialog(getContext());
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+
+
         Button drawe_bnt=(Button) v.findViewById(R.id.drawer_btn);
         drawe_bnt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,23 +112,24 @@ public class Saved_hostels extends Fragment {
 
         arrayList.clear();
         recyclerView1 = (RecyclerView)v.findViewById(R.id.recycler_view1);
-        h_name = getResources().getStringArray(R.array.film_names);
-        p_name = getResources().getStringArray(R.array.director_names);
-        pay = getResources().getStringArray(R.array.price);
-        int i = 0;
 
-//        while (i<4)
-//        {
-//            HostelsData savedHostelData  = new HostelsData(img_res1[i],p_name[i],h_name[i],pay[i]);
-//            arrayList.add(savedHostelData);
-//            i++;
-//        }
+
+        for(SavedHostelsData host1 : Main_fragment.saved_hostels) {
+            for(HostelsData host2 : Main_fragment.hostels_arrayList) {
+                if(host1.getHostel_id()==host2.getId())
+                {
+                    arrayList.add(host2);
+                }
+            }
+        }
 
         adapter = new SavedHostelAdapter(getActivity(),arrayList);
         recyclerView1.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this.getActivity());
         recyclerView1.setLayoutManager(layoutManager);
         recyclerView1.setAdapter(adapter);
+
+        progressDialog.hide();
 
         return  v;
     }

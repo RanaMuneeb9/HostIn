@@ -17,30 +17,54 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.munib.hostin.Adapters.MainAdapter;
+import com.munib.hostin.Adapters.PaymentsAdapter;
+import com.munib.hostin.Adapters.PaymentsHistoryAdapter;
 import com.munib.hostin.DataModel.Facilities;
 import com.munib.hostin.DataModel.HostelsData;
+import com.munib.hostin.DataModel.PaymentsData;
 import com.munib.hostin.DataModel.Reviews;
 import com.munib.hostin.DataModel.RoomTypes;
+import com.munib.hostin.DataModel.SavedHostelsData;
 import com.munib.hostin.volley.AppController;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import io.ghyeok.stickyswitch.widget.StickySwitch;
+
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+import static com.munib.hostin.volley.AppController.TAG;
 
 
 /**
@@ -58,20 +82,31 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
     private static final String ARG_PARAM2 = "param2";
     ProgressDialog pDialog=null;
 
+    PlaceAutocompleteFragment autocompleteFragment;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
-    RecyclerView recyclerView;
-    RecyclerView.Adapter adapter;
+    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1000;
+
+    public static RecyclerView recyclerView;
+    public static FloatingActionButton floatingActionButton;
+    public static RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
     String[] f_name,d_name,price;
+    EditText search_edittext;
     int[] img_res = {R.drawable.pic1,R.drawable.pic2,R.drawable.pic3,R.drawable.pic4,R.drawable.pic5,
             R.drawable.pic6,R.drawable.pic7,R.drawable.pic3,R.drawable.pic2,R.drawable.pic1,R.drawable.pic4};
 
-    ArrayList<HostelsData> hostels_arrayList = new ArrayList<HostelsData>();
+    public static boolean filter_menu=false;
+    public static ArrayList<HostelsData> hostels_arrayList = new ArrayList<HostelsData>();
+    public static ArrayList<SavedHostelsData>saved_hostels=new ArrayList<>();
+
+    public static TextView filter_rating_view,filter_price_view;
+    LinearLayout filter_layout;
 
     public Main_fragment() {
         // Required empty public constructor
@@ -110,12 +145,40 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.main_fragment, container, false);
+       final View v = inflater.inflate(R.layout.main_fragment, container, false);
 
+        filter_rating_view=(TextView) v.findViewById(R.id.filter_rating_view);
+        filter_price_view=(TextView) v.findViewById(R.id.filter_price_view);
+        filter_layout=(LinearLayout) v.findViewById(R.id.filters_layout);
+
+
+        final AutocompleteFilter autocompleteFilter = new AutocompleteFilter.Builder()
+                .setTypeFilter(Place.TYPE_ADMINISTRATIVE_AREA_LEVEL_3)
+                .setCountry("PAK")
+                .build();
+
+        search_edittext=(EditText) v.findViewById(R.id.search_edittext);
+        search_edittext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                try {
+                    Intent intent =
+                            new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).setFilter(autocompleteFilter)
+                                    .build(getActivity());
+                    startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+                } catch (GooglePlayServicesRepairableException e) {
+                    // TODO: Handle the error.
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    // TODO: Handle the error.
+                }
+
+            }
+        });
 
         Button drawe_bnt=(Button) v.findViewById(R.id.drawer_btn);
         drawe_bnt.setOnClickListener(new View.OnClickListener() {
-            @Override
             public void onClick(View v) {
 
                 if(MainActivity.mSlideState){
@@ -130,14 +193,178 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
 
         hostels_arrayList.clear();
 
-
         recyclerView= (RecyclerView) v.findViewById(R.id.recycler_view);
+
+        StickySwitch stickySwitch = (StickySwitch) v.findViewById(R.id.sticky_switch);
+        stickySwitch.setOnSelectedChangeListener(new StickySwitch.OnSelectedChangeListener() {
+            @Override
+            public void onSelectedChange(@NotNull StickySwitch.Direction direction, @NotNull String text) {
+                Log.d(TAG, "Now Selected : " + direction.name() + ", Current Text : " + text);
+
+                FrameLayout fm1=(FrameLayout) v.findViewById(R.id.fragment1);
+                if(direction.name().equals("RIGHT"))
+                {
+                    recyclerView.setVisibility(View.INVISIBLE);
+                    fm1.setVisibility(View.VISIBLE);
+
+                }else{
+                    recyclerView.setVisibility(View.VISIBLE);
+                    fm1.setVisibility(View.INVISIBLE);
+                }
+
+            }
+        });
+
+        stickySwitch.setTextVisibility(StickySwitch.TextVisibility.GONE); // GONE Text
+
+
 
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
 
+        floatingActionButton=(FloatingActionButton) v.findViewById(R.id.fab);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.support.v4.app.FragmentManager fm = getActivity().getSupportFragmentManager();
+
+                if(!filter_menu) {
+                    Filters fragment = new Filters();
+                    fm.beginTransaction().replace(R.id.fragment2, fragment).setCustomAnimations(R.anim.slide_in_up, R.anim.slide_up_out).addToBackStack("frag").commit();
+
+                    floatingActionButton.setImageResource(R.drawable.ic_check_circle_white_24dp);
+                    filter_menu=true;
+                }else{
+
+                    ArrayList<HostelsData> arr=new ArrayList<>();
+                    if(Filters.rating_min==0 && Filters._rating_max==5)
+                    {
+                        recyclerView.setAdapter(new MainAdapter(getActivity(),hostels_arrayList));
+                        SavedSharedPreferences.setRating(getActivity(),0);
+                        filter_layout.setVisibility(View.GONE);
+                    }else{
+                        Log.d("munib-rating","inside1 :"+Filters.rating_min+ " : "+Filters._rating_max);
+
+                        for(int i=0;i<hostels_arrayList.size();i++)
+                        {
+                            if((int)hostels_arrayList.get(i).getAverageReview()>=Filters.rating_min )
+                            {
+                                Log.d("munib-rating","added1"+hostels_arrayList.get(i).getAverageReview());
+
+                                arr.add(hostels_arrayList.get(i));
+                            }
+                        }
+
+                        Log.d("munib-rating","after");
+
+                        SavedSharedPreferences.setRating(getActivity(),Filters.rating_min);
+                        filter_rating_view.setVisibility(View.VISIBLE);
+                        filter_layout.setVisibility(View.VISIBLE);
+                        Filters.rating_filter=true;
+
+                        ArrayList<HostelsData> arr1=new ArrayList<>();
+
+                        if(Filters.price_min==6000 && Filters.price_max==15000)
+                        {
+                            Log.d("munib-rating","setting adapter"+arr.size());
+                            filter_price_view.setVisibility(View.GONE);
+                            recyclerView.setAdapter(new MainAdapter(getActivity(),arr));
+                            SavedSharedPreferences.setMinPrice(getActivity(),6000+"");
+                            SavedSharedPreferences.setMaxPrice(getActivity(),15000+"");
+                        }else{
+
+                            Log.d("munib-rating","inside price");
+                            Filters.price_filter=true;
+                            for(int i=0;i<arr.size();i++)
+                            {
+                                for(int j=0;j<arr.get(i).getRoomTypes().size();j++) {
+
+                                    int price;
+                                    if ((int) arr.get(i).getRoomTypes().get(j).getPrice()>= Filters.price_min && (int) arr.get(i).getRoomTypes().get(j).getPrice()<= Filters.price_max ) {
+                                        arr1.add(arr.get(i));
+                                        break;
+                                    }
+
+                                }
+                            }
+                            SavedSharedPreferences.setMinPrice(getActivity(),Filters.price_min+"");
+                            SavedSharedPreferences.setMaxPrice(getActivity(),Filters.price_max+"");
+                            filter_price_view.setVisibility(View.VISIBLE);
+                            recyclerView.setAdapter(new MainAdapter(getActivity(),arr1));
+                        }
+                    }
+
+
+                    Log.d("munib-state",Filters.price_filter+ " : "+Filters.rating_filter);
+
+                    if(!Filters.price_filter) {
+
+                        if (Filters.price_min == 6000 && Filters.price_max == 15000) {
+                            filter_price_view.setVisibility(View.GONE);
+                            if(!Filters.rating_filter) {
+                                filter_layout.setVisibility(View.GONE);
+                                recyclerView.setAdapter(new MainAdapter(getActivity(),hostels_arrayList));
+                            }
+
+                            SavedSharedPreferences.setMinPrice(getActivity(),6000+"");
+                            SavedSharedPreferences.setMaxPrice(getActivity(),15000+"");
+
+                        } else {
+                            Log.d("munib-price","start");
+                            Filters.price_filter=true;
+                            arr.clear();
+                            for(int i=0;i<hostels_arrayList.size();i++)
+                            {
+                                for(int j=0;j<hostels_arrayList.get(i).getRoomTypes().size();j++) {
+
+                                    int price;
+                                    if ((int) hostels_arrayList.get(i).getRoomTypes().get(j).getPrice()>= Filters.price_min && (int) hostels_arrayList.get(i).getRoomTypes().get(j).getPrice()<= Filters.price_max ) {
+
+                                        Log.d("munib-price","added"+hostels_arrayList.get(i).getRoomTypes().get(j).getPrice());
+                                        arr.add(hostels_arrayList.get(i));
+                                        break;
+                                    }
+
+                                }
+                            }
+                            SavedSharedPreferences.setMinPrice(getActivity(),Filters.price_min+"");
+                            SavedSharedPreferences.setMaxPrice(getActivity(),Filters.price_max+"");
+                            filter_price_view.setVisibility(View.VISIBLE);
+                            filter_layout.setVisibility(View.VISIBLE);
+                            recyclerView.setAdapter(new MainAdapter(getActivity(),arr));
+
+                        }
+                    }
+                    floatingActionButton.setImageResource(R.drawable.filter_icon);
+                    filter_menu=false;
+                    fm.popBackStack();
+
+                }
+
+            }
+        });
+
+        ImageButton filters_rest=(ImageButton) v.findViewById(R.id.filters_cancel);
+        filters_rest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                SavedSharedPreferences.setMaxPrice(getActivity(),"0.0");
+                SavedSharedPreferences.setMinPrice(getActivity(),"0.0");
+                SavedSharedPreferences.setRating(getActivity(),0);
+                filter_layout.setVisibility(View.GONE);
+                recyclerView.setAdapter(new MainAdapter(getActivity(),hostels_arrayList));
+                adapter.notifyDataSetChanged();
+
+            }
+        });
+
+
+        getHostels();
+
+        getSavedHostels();
 
         return  v;
     }
@@ -193,9 +420,77 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
     public void onResume() {
         super.onResume();
 
-        getHostels();
+    }
 
 
+    void getSavedHostels()
+    {
+
+        saved_hostels.clear();
+        if(haveNetworkConnection()) {
+            String url = MainActivity.API+"getSavedHostels";
+
+
+            StringRequest strRequest = new StringRequest(Request.Method.POST, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String res) {
+                            try {
+
+                                JSONObject response = new JSONObject(res.toString());
+                                Log.d("saved_hostels",response.toString());
+                                boolean error = response.getBoolean("Error");
+                                String msg=response.getString("Message");
+
+                                if(!error)
+                                {
+
+                                    JSONArray array=response.getJSONArray("SavedHostels");
+
+                                    for(int i=0;i<array.length();i++) {
+                                        JSONObject obj = array.getJSONObject(i);
+
+                                        int id = obj.getInt("save_id");
+                                        int hostel_id1 = obj.getInt("hostel_id");
+                                        int user_id = obj.getInt("user_id");
+
+
+                                        saved_hostels.add(new SavedHostelsData(id,hostel_id1,user_id));
+
+                                    }
+                                    Log.d("saved_hostels","done");
+
+
+                                }else{
+
+                                }
+
+                            } catch (Exception ex) {
+
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("mubi", "Error: " + error.getMessage());
+                    // hide the progress dialog
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("user_id", SavedSharedPreferences.getUserId(getActivity())+"");
+
+                    return params;
+                }
+            };
+
+// Adding request to request queue
+            AppController.getInstance().addToRequestQueue(strRequest, "login");
+
+
+        }
     }
 
     void getHostels()
@@ -250,11 +545,11 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
                                         {
                                             JSONObject f_obj=facilities.getJSONObject(j);
                                             int f_id=f_obj.getInt("facility_id");
-                                            String f_name=f_obj.getString("facility_name");
+                                            String fac_name=f_obj.getString("facility_name");
                                             String f_desc=f_obj.getString("facility_description");
 
-                                            Log.d("mubi-ff1",f_name);
-                                            arrayList_facilites.add(new Facilities(f_id,f_name,f_desc));
+                                            Log.d("mubi-ff1",fac_name);
+                                            arrayList_facilites.add(new Facilities(f_id,fac_name,f_desc));
 
                                         }
 
@@ -309,9 +604,13 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
                                             arrayList_room_types.add(new RoomTypes(r_id,r_id,price,price_with_mess));
                                         }
                                         Log.d("mubi-room_types",arrayList_room_types.size()+"");
-
+                                        Log.d("mubi-final",arrayList_room_types.size()+"");
                                         hostels_arrayList.add(new HostelsData(hostel_id,name,lat,lang,about,email,phone,mobile,type,arrayList_facilites,arrayList_reviews,arrayList_room_types));
                                     }
+
+                                    android.support.v4.app.FragmentManager fm = getActivity().getSupportFragmentManager();
+                                    MapViewFragment fragment = new MapViewFragment();
+                                    fm.beginTransaction().replace(R.id.fragment1,fragment).commit();
 
                                     adapter = new MainAdapter(getActivity(),hostels_arrayList);
                                     recyclerView.setAdapter(adapter);
@@ -323,6 +622,7 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
 
                             } catch (Exception ex) {
 
+                                ex.printStackTrace();
                             }
                         }
                     }, new Response.ErrorListener() {
@@ -358,5 +658,24 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
                     haveConnectedMobile = true;
         }
         return haveConnectedWifi || haveConnectedMobile;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(getActivity(), data);
+                Log.i("mubi-place", "Place: " + place.getName());
+
+                search_edittext.setText(place.getName());
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                Status status = PlaceAutocomplete.getStatus(getActivity(), data);
+                // TODO: Handle the error.
+                Log.i("mubi", status.getStatusMessage());
+
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+        }
     }
 }

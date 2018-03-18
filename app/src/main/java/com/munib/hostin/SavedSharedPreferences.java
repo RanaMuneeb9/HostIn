@@ -20,6 +20,25 @@ public class SavedSharedPreferences
         editor.putInt("hostel_id", id);
         editor.commit();
     }
+    public static void setRating(Context ctx, int rating)
+    {
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putInt("rating", rating);
+        editor.commit();
+    }
+    public static void setMinPrice(Context ctx, String min)
+    {
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putString("min_price", min);
+        editor.commit();
+    }
+
+    public static void setMaxPrice(Context ctx, String min)
+    {
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putString("max_price", min);
+        editor.commit();
+    }
 
     public static void setUserId(Context ctx,int id)
     {
@@ -64,7 +83,26 @@ public class SavedSharedPreferences
         editor.putString("user_email", email);
         editor.commit();
     }
-
+    public static void setCustomRadius(Context ctx,int radius)
+    {
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putInt("custom_radius",radius);
+        editor.commit();
+    }
+    public static void setMobile(Context ctx,String phone)
+    {
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putString("user_mobile",phone);
+        editor.commit();
+    }
+    public static String getMobileNo(Context ctx)
+    {
+        return getSharedPreferences(ctx).getString("user_mobile","");
+    }
+    public static int getCustomRadius(Context ctx)
+    {
+        return getSharedPreferences(ctx).getInt("custom_radius",100);
+    }
     public static int getCurrentHostelId(Context ctx)
     {
         return getSharedPreferences(ctx).getInt("hostel_id",0);
@@ -77,6 +115,18 @@ public class SavedSharedPreferences
     {
         return getSharedPreferences(ctx).getInt("user_id", 0);
     }
+    public static int getRating(Context ctx)
+    {
+        return getSharedPreferences(ctx).getInt("rating", 0);
+    }
+    public static String getMinPrice(Context ctx)
+    {
+        return getSharedPreferences(ctx).getString("min_price", "0.0");
+    }
+    public static String getMaxPrice(Context ctx)
+{
+    return getSharedPreferences(ctx).getString("max_price", "0.0");
+}
     public static String getUserLat(Context ctx)
     {
         return getSharedPreferences(ctx).getString("user_lat", "0.0");

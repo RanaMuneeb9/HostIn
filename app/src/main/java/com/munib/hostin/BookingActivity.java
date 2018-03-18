@@ -39,7 +39,7 @@ public class BookingActivity extends AppCompatActivity {
         setContentView(R.layout.booking_fragment_1);
 
         name=(TextView) findViewById(R.id.hostel_name);
-        place=(TextView) findViewById(R.id.locaion);
+        place=(TextView) findViewById(R.id.location11);
         price=(TextView) findViewById(R.id.total_price);
         include_mess=(CheckBox) findViewById(R.id.include_mess);
         proceed =(Button) findViewById(R.id.proceed_btn);

@@ -51,221 +51,249 @@
 
     </RelativeLayout>
 
-    <android.support.v4.widget.NestedScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/scroll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.CardView
-                    android:id="@+id/card2"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_height="match_parent"
                     android:layout_marginRight="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp">
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
 
-                    <LinearLayout
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/card2"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:paddingLeft="10dp"
-                            android:paddingTop="10dp"
-                            android:text="Current"
-                            android:textColor="@android:color/holo_green_dark"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="@android:color/darker_gray" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical">
 
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:paddingLeft="10dp"
+                                android:paddingTop="10dp"
+                                android:text="Current"
+                                android:textColor="@android:color/holo_green_dark"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@android:color/darker_gray" />
+
+                            <TextView
+                                android:id="@+id/no_current_hostel"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:paddingLeft="10dp"
+                                android:paddingTop="10dp"
+                                android:text="You are not living in any of the hostel yet"
+                                android:textSize="14sp"
+                                android:visibility="gone" />
+
                             <LinearLayout
-                                android:id="@+id/layout_main"
+                                android:id="@+id/current_hostel_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:orientation="vertical"
-                                android:paddingLeft="20dp"
-                                android:paddingRight="20dp"
-                                android:paddingTop="10dp">
+                                android:visibility="gone">
 
-
-                                <android.support.v7.widget.CardView
-                                    app:cardCornerRadius="2dp"
+                                <LinearLayout
+                                    android:id="@+id/layout_main"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center">
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    android:paddingLeft="20dp"
+                                    android:paddingRight="20dp"
+                                    android:paddingTop="10dp">
 
-                                    <LinearLayout
+
+                                    <android.support.v7.widget.CardView
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:orientation="vertical">
-
-                                        <RelativeLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content">
-
-                                            <ImageView
-                                                android:id="@+id/img"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="200dp"
-                                                android:layout_alignParentEnd="true"
-                                                android:layout_alignParentLeft="true"
-                                                android:layout_alignParentRight="true"
-                                                android:layout_alignParentStart="true"
-                                                android:layout_alignParentTop="true"
-                                                android:background="@drawable/pic1"
-                                                android:scaleType="centerCrop" />
-
-                                            <TextView
-                                                android:id="@+id/hostel_name"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:layout_alignParentBottom="true"
-                                                android:layout_alignParentLeft="true"
-                                                android:layout_alignParentStart="true"
-                                                android:background="@drawable/items_back"
-                                                android:paddingBottom="10dp"
-                                                android:paddingLeft="10dp"
-                                                android:paddingTop="10dp"
-                                                android:text="Hostel Name"
-                                                android:textColor="@color/cardview_light_background"
-                                                android:textSize="20sp"
-                                                android:textStyle="bold" />
-                                        </RelativeLayout>
+                                        android:layout_gravity="center"
+                                        app:cardCornerRadius="2dp">
 
                                         <LinearLayout
                                             android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:layout_marginBottom="10dp"
-                                            android:layout_marginTop="5dp"
+                                            android:layout_height="wrap_content"
                                             android:orientation="vertical">
 
-                                            <Button
-                                                android:id="@+id/pay_btn2"
+                                            <RelativeLayout
                                                 android:layout_width="match_parent"
-                                                android:layout_height="50dp"
-                                                android:layout_alignParentBottom="true"
-                                                android:layout_alignParentLeft="true"
-                                                android:layout_alignParentStart="true"
-                                                android:layout_weight="1"
-                                                android:background="@drawable/rb_a"
-                                                android:text="Mess Schedule"
-                                                android:textColor="@android:color/black"
-                                                android:textSize="16sp" />
+                                                android:layout_height="wrap_content">
 
-                                            <Button
-                                                android:id="@+id/pay_btn3"
+                                                <ImageView
+                                                    android:id="@+id/img"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="200dp"
+                                                    android:layout_alignParentEnd="true"
+                                                    android:layout_alignParentLeft="true"
+                                                    android:layout_alignParentRight="true"
+                                                    android:layout_alignParentStart="true"
+                                                    android:layout_alignParentTop="true"
+                                                    android:background="@drawable/pic1"
+                                                    android:scaleType="centerCrop" />
+
+                                                <TextView
+                                                    android:id="@+id/hostel_name"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_alignParentBottom="true"
+                                                    android:layout_alignParentLeft="true"
+                                                    android:layout_alignParentStart="true"
+                                                    android:background="@drawable/items_back"
+                                                    android:paddingBottom="10dp"
+                                                    android:paddingLeft="10dp"
+                                                    android:paddingTop="10dp"
+                                                    android:text="Hostel Name"
+                                                    android:textColor="@color/cardview_light_background"
+                                                    android:textSize="20sp"
+                                                    android:textStyle="bold" />
+                                            </RelativeLayout>
+
+                                            <LinearLayout
                                                 android:layout_width="match_parent"
-                                                android:layout_height="50dp"
-                                                android:layout_alignParentBottom="true"
-                                                android:layout_alignParentLeft="true"
-                                                android:layout_alignParentStart="true"
+                                                android:layout_height="match_parent"
+                                                android:layout_marginBottom="10dp"
                                                 android:layout_marginTop="5dp"
-                                                android:layout_weight="1"
-                                                android:background="@drawable/rb_a"
-                                                android:text="Rate"
-                                                android:textColor="@android:color/black"
-                                                android:textSize="16sp" />
+                                                android:orientation="vertical">
+
+                                                <Button
+                                                    android:id="@+id/mess_schedule"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="50dp"
+                                                    android:layout_alignParentBottom="true"
+                                                    android:layout_alignParentLeft="true"
+                                                    android:layout_alignParentStart="true"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/rb_a"
+                                                    android:text="Mess Schedule"
+                                                    android:textColor="@android:color/black"
+                                                    android:textSize="16sp" />
+
+                                                <Button
+                                                    android:id="@+id/rate"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="50dp"
+                                                    android:layout_alignParentBottom="true"
+                                                    android:layout_alignParentLeft="true"
+                                                    android:layout_alignParentStart="true"
+                                                    android:layout_marginTop="5dp"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/rb_a"
+                                                    android:text="Rate"
+                                                    android:textColor="@android:color/black"
+                                                    android:textSize="16sp" />
+                                            </LinearLayout>
+
                                         </LinearLayout>
 
-                                    </LinearLayout>
+                                    </android.support.v7.widget.CardView>
 
-                                </android.support.v7.widget.CardView>
+                                </LinearLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginTop="10dp"
+                                    android:background="@color/cardview_shadow_start_color">
+
+                                </RelativeLayout>
 
                             </LinearLayout>
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@color/cardview_shadow_start_color">
-
-                            </RelativeLayout>
 
                         </LinearLayout>
 
+                    </android.support.v7.widget.CardView>
 
-                    </LinearLayout>
+                </LinearLayout>
 
-                </android.support.v7.widget.CardView>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical">
-
-                <android.support.v7.widget.CardView
-                    android:id="@+id/card2"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp">
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
 
-                    <LinearLayout
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/card2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:paddingLeft="10dp"
-                            android:paddingTop="10dp"
-                            android:text="History"
-                            android:textColor="@android:color/black"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="@android:color/darker_gray" />
-
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/history_hostel_rv"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:isScrollContainer="false"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:paddingTop="10dp" />
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:paddingLeft="10dp"
+                                android:paddingTop="10dp"
+                                android:text="History"
+                                android:textColor="@android:color/black"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@android:color/darker_gray" />
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/history_hostel_rv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:isScrollContainer="false"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:paddingTop="10dp" />
 
 
-                    </LinearLayout>
+                        </LinearLayout>
 
-                </android.support.v7.widget.CardView>
+                    </android.support.v7.widget.CardView>
+
+                </LinearLayout>
 
             </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
 
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+        <FrameLayout
+            android:id="@+id/fragment1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/linearLayout2"
+            android:layout="@layout/content_navigation"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp" />
+    </RelativeLayout>
 
 </LinearLayout>

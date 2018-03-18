@@ -7,6 +7,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +16,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.TextView;
+
+import com.jaygoo.widget.RangeSeekBar;
+import com.munib.hostin.Adapters.MainAdapter;
+import com.munib.hostin.DataModel.HostelsData;
+
+import java.util.ArrayList;
 
 
 /**
@@ -37,6 +48,12 @@ public class Filters extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    public static RangeSeekBar price_seekbar,rating_seekbar;
+
+    public static boolean rating_filter=false,price_filter=false,type_filter=false,seater_filter=false;
+
+    public static int price_min=6000,price_max=15000,rating_min=0,_rating_max=5;
 
     public Filters() {
         // Required empty public constructor
@@ -75,13 +92,100 @@ public class Filters extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_filters, container, false);
 
-        proceed = (Button)v.findViewById(R.id.proceed_filter);
-        proceed.setOnClickListener(new View.OnClickListener() {
+
+        price_seekbar=(RangeSeekBar) v.findViewById(R.id.seekbar1);
+        rating_seekbar=(RangeSeekBar) v.findViewById(R.id.rating_seekbar);
+
+        if(SavedSharedPreferences.getRating(getContext())==0)
+        {
+            rating_seekbar.setValue(0);
+        }else{
+            rating_seekbar.setValue(SavedSharedPreferences.getRating(getContext()));
+        }
+
+        int min,max;
+        if(SavedSharedPreferences.getMinPrice(getContext()).equals("0.0"))
+        {
+            min=6000;
+        }else{
+            min=Integer.parseInt(SavedSharedPreferences.getMinPrice(getContext()));
+        }
+
+        if(SavedSharedPreferences.getMaxPrice(getContext()).equals("0.0"))
+        {
+            max=15000;
+        }else
+        {
+            max=Integer.parseInt(SavedSharedPreferences.getMaxPrice(getContext()));
+        }
+
+        price_seekbar.setValue(min,max);
+        price_seekbar.setOnRangeChangedListener(new RangeSeekBar.OnRangeChangedListener() {
             @Override
-            public void onClick(View v) {
-                getFragmentManager().popBackStack();
+            public void onRangeChanged(RangeSeekBar view, float min, float max, boolean isFromUser) {
+                price_min=(int)min;
+                price_max=(int)max;
+                if(price_min==6000 && price_max==15000)
+                {
+
+                    price_filter=false;
+                }
+                SavedSharedPreferences.setMinPrice(getActivity(),price_min+"");
+                SavedSharedPreferences.setMaxPrice(getActivity(),price_max+"");
+            }
+
+            @Override
+            public void onStartTrackingTouch(RangeSeekBar view, boolean isLeft) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(RangeSeekBar view, boolean isLeft) {
+
             }
         });
+
+
+
+        rating_seekbar.setOnRangeChangedListener(new RangeSeekBar.OnRangeChangedListener() {
+            @Override
+            public void onRangeChanged(RangeSeekBar view, float min, float max, boolean isFromUser) {
+                rating_min=(int)min;
+
+                if(rating_min==0)
+                {
+                    rating_filter=false;
+                }
+                SavedSharedPreferences.setRating(getActivity(),rating_min);
+            }
+
+            @Override
+            public void onStartTrackingTouch(RangeSeekBar view, boolean isLeft) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(RangeSeekBar view, boolean isLeft) {
+
+            }
+        });
+
+        v.setFocusableInTouchMode(true);
+        v.requestFocus();
+        v.setOnKeyListener( new View.OnKeyListener()
+        {
+            @Override
+            public boolean onKey( View v, int keyCode, KeyEvent event )
+            {
+                if( keyCode == KeyEvent.KEYCODE_BACK )
+                {
+                    Main_fragment.floatingActionButton.setImageResource(R.drawable.filter_icon);
+                    Main_fragment.filter_menu=false;
+                    return false;
+                }
+                return false;
+            }
+        } );
 
         return  v;
 

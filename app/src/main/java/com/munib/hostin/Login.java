@@ -42,8 +42,12 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(SavedSharedPreferences.getUserName(getApplicationContext()).equals("null"))
+        {
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.login);
+
 
         email=(EditText) findViewById(R.id.email);
         password=(EditText) findViewById(R.id.password);
@@ -89,6 +93,7 @@ public class Login extends AppCompatActivity {
                                             String name=obj.getString("first_name")+" "+obj.getString("last_name");
                                             Log.d("mubi","inside 1");
                                             SavedSharedPreferences.setUserName(getApplicationContext(),name);
+                                            SavedSharedPreferences.setMobile(getApplicationContext(),obj.getString("mobile_no"));
                                             Log.d("mubi","inside 1.11");
                                             String lat=obj.getDouble("user_lat")+"";
                                             SavedSharedPreferences.setUserLat(getApplicationContext(),lat);
@@ -102,6 +107,8 @@ public class Login extends AppCompatActivity {
                                             SavedSharedPreferences.setUserEmail(getApplicationContext(),email);
                                             String user_image=obj.getString("user_image");
                                             SavedSharedPreferences.setUserImage(getApplicationContext(),user_image);
+                                            int current_hostel=obj.getInt("current_hostel");
+                                            SavedSharedPreferences.setCurrentHostelId(getApplicationContext(),current_hostel);
 
                                             Log.d("mubi",error+"inside 3");
                                             Intent intent =new Intent(Login.this,MainActivity.class);
@@ -153,6 +160,9 @@ public class Login extends AppCompatActivity {
 
                     snackbar.show();
                 }
+
+//                Intent a=new Intent(Login.this,MainActivity.class);
+//                startActivity(a);
             }
         });
 
@@ -164,6 +174,15 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        }else{
+
+            Intent a=new Intent(Login.this,MainActivity.class);
+            a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(a);
+            this.finish();
+        }
     }
 
     public boolean haveNetworkConnection() {

@@ -47,7 +47,7 @@
         </RelativeLayout>
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/save_btn"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
@@ -386,7 +386,9 @@
                         android:layout_height="20dp"
                         android:layout_weight="1"
                         android:backgroundTint="@color/SecondryColor"
+                        android:clickable="false"
                         app:drawablePadding="4dp"
+                        app:enable="false"
                         app:maxRating="5"
                         app:rating="4" />
 
@@ -412,7 +414,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="20dp"
                         android:layout_weight="1"
+                        android:clickable="false"
                         app:drawablePadding="4dp"
+                        app:enable="false"
                         app:maxRating="5"
                         app:rating="4" />
 
@@ -438,7 +442,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="20dp"
                         android:layout_weight="1"
+                        android:clickable="false"
                         app:drawablePadding="4dp"
+                        app:enable="false"
                         app:maxRating="5"
                         app:rating="4" />
 
@@ -464,7 +470,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="20dp"
                         android:layout_weight="1"
+                        android:clickable="false"
                         app:drawablePadding="4dp"
+                        app:enable="false"
                         app:maxRating="5"
                         app:rating="4" />
 
@@ -490,7 +498,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="20dp"
                         android:layout_weight="1"
+                        android:clickable="false"
                         app:drawablePadding="4dp"
+                        app:enable="false"
                         app:maxRating="5"
                         app:rating="4" />
 
@@ -516,7 +526,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="20dp"
                         android:layout_weight="1"
+                        android:clickable="false"
                         app:drawablePadding="4dp"
+                        app:enable="false"
                         app:maxRating="5"
                         app:rating="4" />
 

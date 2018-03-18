@@ -4,22 +4,36 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.munib.hostin.Adapters.MainAdapter;
 import com.munib.hostin.Adapters.PaymentsAdapter;
 import com.munib.hostin.Adapters.PaymentsHistoryAdapter;
 import com.munib.hostin.DataModel.HostelsData;
 import com.munib.hostin.DataModel.PaymentsData;
+import com.munib.hostin.DataModel.SavedHostelsData;
+import com.munib.hostin.volley.AppController;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -40,6 +54,7 @@ public class MyHostelsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    HostelsData current_hostel;
 
     Button proceed,add_card;
 
@@ -85,6 +100,44 @@ public class MyHostelsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_my_hostels, container, false);
+
+        LinearLayout current_hostel_layout=(LinearLayout) v.findViewById(R.id.current_hostel_layout);
+        TextView no_current_hostel=(TextView) v.findViewById(R.id.no_current_hostel);
+        TextView name=(TextView) v.findViewById(R.id.hostel_name);
+        Button mess=(Button) v.findViewById(R.id.mess_schedule);
+        Button rate=(Button) v.findViewById(R.id.rate);
+        final NestedScrollView scrollView=(NestedScrollView) v.findViewById(R.id.scroll);
+
+        if(SavedSharedPreferences.getCurrentHostelId(getActivity())!=0)
+        {
+            current_hostel_layout.setVisibility(View.VISIBLE);
+
+
+                for(HostelsData host2 : Main_fragment.hostels_arrayList) {
+                    if(SavedSharedPreferences.getCurrentHostelId(getActivity())==host2.getId())
+                    {
+                        current_hostel=host2;
+                    }
+                }
+
+
+            name.setText(current_hostel.getName());
+            mess.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+
+                    android.support.v4.app.FragmentManager fm = getActivity().getSupportFragmentManager();
+                    fm.beginTransaction().add(R.id.fragment1, new FragmentMess()).setCustomAnimations(R.anim.slide_in_up, R.anim.slide_up_out).addToBackStack("frag").commit();
+
+
+                    }
+            });
+
+        }else{
+            no_current_hostel.setVisibility(View.VISIBLE);
+        }
 
         Button drawe_bnt=(Button) v.findViewById(R.id.drawer_btn);
         drawe_bnt.setOnClickListener(new View.OnClickListener() {
@@ -141,5 +194,10 @@ public class MyHostelsFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 }
