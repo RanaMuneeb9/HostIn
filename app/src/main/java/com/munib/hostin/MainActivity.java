@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity
     public static boolean mSlideState=false;
     public static DrawerLayout drawer;
 
-    public static String API="http://192.168.43.31:3000/api/";
+    public static String API="http://13.127.35.98:3000/api/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

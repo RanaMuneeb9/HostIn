@@ -233,12 +233,13 @@ public class Payments_fragment extends Fragment {
                                         Log.d("mubi",error+"inside 1.3");
                                         String paid_date = obj.getString("payment_paid_date");
                                         int hostel_id = obj.getInt("Hostels_hostel_id");
+                                        String hostel_name = obj.getString("hostel_name");
                                         int user_id = obj.getInt("Users_user_id");
                                         Log.d("mubi",error+"inside 1.4");
                                         if(status.equals("done"))
-                                        payments_history.add(new PaymentsData(id,user_id,hostel_id,amount,title,desc,status,created_date,paid_date));
+                                        payments_history.add(new PaymentsData(id,user_id,hostel_id,hostel_name,amount,title,desc,status,created_date,paid_date));
                                         else
-                                        unpaid_payments.add(new PaymentsData(id,user_id,hostel_id,amount,title,desc,status,created_date,paid_date));
+                                        unpaid_payments.add(new PaymentsData(id,user_id,hostel_id,hostel_name,amount,title,desc,status,created_date,paid_date));
 
 
                                     }
@@ -279,7 +280,6 @@ public class Payments_fragment extends Fragment {
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<String, String>();
-                    params.put("hostel_id", SavedSharedPreferences.getCurrentHostelId(getActivity())+"");
                     params.put("user_id", SavedSharedPreferences.getUserId(getActivity())+"");
 
                     return params;

@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Layout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -18,8 +19,13 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.pagination.Pagination;
@@ -28,9 +34,15 @@ import com.munib.hostin.tableview.TableViewListener;
 import com.munib.hostin.tableview.model.Cell;
 import com.munib.hostin.tableview.model.ColumnHeader;
 import com.munib.hostin.tableview.model.RowHeader;
+import com.munib.hostin.volley.AppController;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -54,18 +66,9 @@ public class FragmentMess extends Fragment implements Filters.OnFragmentInteract
     private String mParam2;
 
 
-    public static final int COLUMN_SIZE = 3;
-    public static final int ROW_SIZE = 7;
-
-    private List<RowHeader> mRowHeaderList;
-    private List<ColumnHeader> mColumnHeaderList;
-    private List<List<Cell>> mCellList;
 
     private AbstractTableAdapter mTableViewAdapter;
-    private TableView mTableView;
-
-
-    private MainActivity mainActivity;
+    ProgressDialog progressDialog;
 
     // Columns indexes
     public static final int MOOD_COLUMN_INDEX = 3;
@@ -118,93 +121,135 @@ public class FragmentMess extends Fragment implements Filters.OnFragmentInteract
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_mess, container, false);
+       final  View v = inflater.inflate(R.layout.fragment_mess, container, false);
+
+        progressDialog=new ProgressDialog(getActivity());
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Loaing...");
 
 
-//        initData();
-//        RelativeLayout fragment_container = v.findViewById(R.id.fragment_container);
-//
-//        // Create Table view
-//        mTableView = createTableView();
-//
-//
-//        fragment_container.addView(mTableView);
-//
-//        loadData();
 
 
-        TableLayout stk = (TableLayout) v.findViewById(R.id.table_main);
-        TableRow tbrow0 = new TableRow(getActivity());
-        TextView tv0 = new TextView(getActivity());
-        tv0.setText(" Day ");
-        tv0.setTextSize(18);
-        tv0.setTypeface(null, Typeface.BOLD);
-        tv0.setBackground(getActivity().getDrawable(R.drawable.cell_shape));
-        tv0.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        tv0.setPadding(0,40,0,40);
-        tbrow0.addView(tv0);
-        TextView tv1 = new TextView(getActivity());
-        tv1.setText(" Breakfast ");
-        tv1.setTextSize(18);
-        tv1.setTypeface(null, Typeface.BOLD);
-        tv1.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        tv1.setBackground(getActivity().getDrawable(R.drawable.cell_shape));
-        tv1.setPadding(0,40,0,40);
-        tbrow0.addView(tv1);
-        TextView tv2 = new TextView(getActivity());
-        tv2.setText(" Lunch ");
-        tv2.setTextSize(18);
-        tv2.setTypeface(null, Typeface.BOLD);
-        tv2.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        tv2.setBackground(getActivity().getDrawable(R.drawable.cell_shape));
-        tv2.setPadding(0,40,0,40);
-        tbrow0.addView(tv2);
-        TextView tv3 = new TextView(getActivity());
-        tv3.setText(" Dinner ");
-        tv3.setTextSize(18);
-        tv3.setTypeface(null, Typeface.BOLD);
-        tv3.setBackground(getActivity().getDrawable(R.drawable.cell_shape));
-        tv3.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        tv3.setPadding(0,40,0,40);
-        tbrow0.addView(tv3);
-        stk.addView(tbrow0);
+            progressDialog.show();
+            String url = MainActivity.API+"getMess";
 
-        for (int i = 0; i < 7; i++) {
-            TableRow tbrow = new TableRow(getActivity());
-            TextView t1v = new TextView(getActivity());
-            t1v.setText("  Monday  ");
-            t1v.setTextSize(18);
-            t1v.setBackground(getActivity().getDrawable(R.drawable.cell_shape));
-            t1v.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            t1v.setTypeface(null, Typeface.BOLD);
-            t1v.setPadding(0,40,0,40);
-            tbrow.addView(t1v);
-            TextView t2v = new TextView(getActivity());
-            t2v.setText("  Paratha + Omlete + roti  ");
-            t2v.setTextSize(18);
-            t2v.setBackground(getActivity().getDrawable(R.drawable.cell_shape1));
-            t2v.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            t2v.setPadding(0,40,0,40);
-            t2v.setTextColor(Color.WHITE);
-            tbrow.addView(t2v);
-            TextView t3v = new TextView(getActivity());
-            t3v.setText("  Chicken Qorma +dahri rait  ");
-            t3v.setTextSize(18);
-            t3v.setBackground(getActivity().getDrawable(R.drawable.cell_shape1));
-            t3v.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            t3v.setPadding(0,40,0,40);
-            t3v.setTextColor(Color.WHITE);
-            tbrow.addView(t3v);
-            TextView t4v = new TextView(getActivity());
-            t4v.setText("  Chinese Rice  ");
-            t4v.setTextSize(18);
-            t4v.setBackground(getActivity().getDrawable(R.drawable.cell_shape1));
-            t4v.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            t4v.setPadding(0,40,0,40);
-            t4v.setTextColor(Color.WHITE);
-            tbrow.addView(t4v);
-            stk.addView(tbrow);
-        }
+            StringRequest strRequest = new StringRequest(Request.Method.POST, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String res) {
+                            try {
+
+                                JSONObject response = new JSONObject(res.toString());
+                                Log.d("mubi",response.toString());
+                                boolean error = response.getBoolean("Error");
+                                JSONArray array=response.getJSONArray("Schedule");
+
+                                Log.d("mubi",error+"aa");
+                                if(!error)
+                                {
+
+                                    TableLayout stk = (TableLayout) v.findViewById(R.id.table_main);
+                                    TableRow tbrow0 = new TableRow(getActivity());
+                                    TextView tv0 = new TextView(getActivity());
+                                    tv0.setText(" Day ");
+                                    tv0.setTextSize(18);
+                                    tv0.setTypeface(null, Typeface.BOLD);
+                                    tv0.setBackground(getActivity().getDrawable(R.drawable.cell_shape));
+                                    tv0.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                    tv0.setPadding(0,40,0,40);
+                                    tbrow0.addView(tv0);
+                                    TextView tv1 = new TextView(getActivity());
+                                    tv1.setText(" Breakfast ");
+                                    tv1.setTextSize(18);
+                                    tv1.setTypeface(null, Typeface.BOLD);
+                                    tv1.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                    tv1.setBackground(getActivity().getDrawable(R.drawable.cell_shape));
+                                    tv1.setPadding(0,40,0,40);
+                                    tbrow0.addView(tv1);
+                                    TextView tv2 = new TextView(getActivity());
+                                    tv2.setText(" Lunch ");
+                                    tv2.setTextSize(18);
+                                    tv2.setTypeface(null, Typeface.BOLD);
+                                    tv2.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                    tv2.setBackground(getActivity().getDrawable(R.drawable.cell_shape));
+                                    tv2.setPadding(0,40,0,40);
+                                    tbrow0.addView(tv2);
+                                    TextView tv3 = new TextView(getActivity());
+                                    tv3.setText(" Dinner ");
+                                    tv3.setTextSize(18);
+                                    tv3.setTypeface(null, Typeface.BOLD);
+                                    tv3.setBackground(getActivity().getDrawable(R.drawable.cell_shape));
+                                    tv3.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                    tv3.setPadding(0,40,0,40);
+                                    tbrow0.addView(tv3);
+                                    stk.addView(tbrow0);
+
+                                    for (int i = 0; i < array.length(); i++) {
+                                        TableRow tbrow = new TableRow(getActivity());
+                                        TextView t1v = new TextView(getActivity());
+                                        t1v.setText("  "+array.getJSONObject(i).getString("day")+"  ");
+                                        t1v.setTextSize(18);
+                                        t1v.setBackground(getActivity().getDrawable(R.drawable.cell_shape));
+                                        t1v.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                        t1v.setTypeface(null, Typeface.BOLD);
+                                        t1v.setPadding(0,40,0,40);
+                                        tbrow.addView(t1v);
+                                        TextView t2v = new TextView(getActivity());
+                                        t2v.setText("  "+array.getJSONObject(i).getString("breakfast")+"  ");
+                                        t2v.setTextSize(18);
+                                        t2v.setBackground(getActivity().getDrawable(R.drawable.cell_shape1));
+                                        t2v.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                        t2v.setPadding(0,40,0,40);
+                                        t2v.setTextColor(Color.WHITE);
+                                        tbrow.addView(t2v);
+                                        TextView t3v = new TextView(getActivity());
+                                        t3v.setText("  "+array.getJSONObject(i).getString("lunch")+"  ");
+                                        t3v.setTextSize(18);
+                                        t3v.setBackground(getActivity().getDrawable(R.drawable.cell_shape1));
+                                        t3v.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                        t3v.setPadding(0,40,0,40);
+                                        t3v.setTextColor(Color.WHITE);
+                                        tbrow.addView(t3v);
+                                        TextView t4v = new TextView(getActivity());
+                                        t4v.setText("  "+array.getJSONObject(i).getString("dinner")+"  ");
+                                        t4v.setTextSize(18);
+                                        t4v.setBackground(getActivity().getDrawable(R.drawable.cell_shape1));
+                                        t4v.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                        t4v.setPadding(0,40,0,40);
+                                        t4v.setTextColor(Color.WHITE);
+                                        tbrow.addView(t4v);
+                                        stk.addView(tbrow);
+                                    }
+
+                                    progressDialog.hide();
+                                }else{
+                                    progressDialog.hide();
+                                }
+
+                            } catch (Exception ex) {
+
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("mubi", "Error: " + error.getMessage());
+                    // hide the progress dialog
+                    progressDialog.hide();
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("hostel_id", SavedSharedPreferences.getCurrentHostelId(getActivity())+"");
+
+                    return params;
+                }
+            };
+
+// Adding request to request queue
+            AppController.getInstance().addToRequestQueue(strRequest, "mess");
 
 
         v.setFocusableInTouchMode(true);
@@ -291,231 +336,6 @@ public class FragmentMess extends Fragment implements Filters.OnFragmentInteract
         // Set TableView listener
         tableView.setTableViewListener(new TableViewListener(tableView));
         return tableView;
-    }
-
-
-    private void initData() {
-        mRowHeaderList = new ArrayList<>();
-        mColumnHeaderList = new ArrayList<>();
-        mCellList = new ArrayList<>();
-        for (int i = 0; i < ROW_SIZE; i++) {
-            mCellList.add(new ArrayList<Cell>());
-        }
-    }
-
-    private void loadData() {
-        List<RowHeader> rowHeaders = getRowHeaderList();
-        List<List<Cell>> cellList = getCellListForSortingTest(); // getCellList();
-        List<ColumnHeader> columnHeaders = getColumnHeaderList(); //getRandomColumnHeaderList(); //
-
-        mRowHeaderList.addAll(rowHeaders);
-        for (int i = 0; i < cellList.size(); i++) {
-            mCellList.get(i).addAll(cellList.get(i));
-        }
-
-        // Load all data
-        mColumnHeaderList.addAll(columnHeaders);
-        mTableViewAdapter.setAllItems(mColumnHeaderList, mRowHeaderList, mCellList);
-
-        // Example: Set row header width manually
-        // DisplayMetrics metrics = getResources().getDisplayMetrics();
-        // int rowHeaderWidth = Math.round(65 * (metrics.densityDpi / 160f));
-        // mTableView.setRowHeaderWidth(rowHeaderWidth);
-
-    }
-
-    private List<RowHeader> getRowHeaderList() {
-        List<RowHeader> list = new ArrayList<>();
-        for (int i = 0; i < ROW_SIZE; i++) {
-            String rh = "row " + i ;
-
-            RowHeader header = new RowHeader(String.valueOf(i), rh);
-            list.add(header);
-        }
-
-        return list;
-    }
-
-    /**
-     * This is a dummy model list test some cases.
-     */
-    public static List<RowHeader> getRowHeaderList(int startIndex) {
-        List<RowHeader> list = new ArrayList<>();
-        for (int i = 0; i < ROW_SIZE; i++) {
-            RowHeader header = new RowHeader(String.valueOf(i), "row " + (startIndex + i));
-            list.add(header);
-        }
-
-        return list;
-    }
-
-
-    private List<ColumnHeader> getColumnHeaderList() {
-        List<ColumnHeader> list = new ArrayList<>();
-
-        for (int i = 0; i < COLUMN_SIZE; i++) {
-            String title = "column " + i;
-            if (i % 6 == 2) {
-                title = "large column " + i;
-            } else if (i == MOOD_COLUMN_INDEX) {
-                title = "mood";
-            } else if (i == GENDER_COLUMN_INDEX) {
-                title = "gender";
-            }
-            ColumnHeader header = new ColumnHeader(String.valueOf(i), title);
-            list.add(header);
-        }
-
-        return list;
-    }
-
-    /**
-     * This is a dummy model list test some cases.
-     */
-    private List<ColumnHeader> getRandomColumnHeaderList() {
-        List<ColumnHeader> list = new ArrayList<>();
-
-        for (int i = 0; i < COLUMN_SIZE; i++) {
-            String title = "column " + i;
-            int nRandom = new Random().nextInt();
-            if (nRandom % 4 == 0 || nRandom % 3 == 0 || nRandom == i) {
-                title = "large column " + i;
-            }
-
-            ColumnHeader header = new ColumnHeader(String.valueOf(i), title);
-            list.add(header);
-        }
-
-        return list;
-    }
-
-    private List<List<Cell>> getCellList() {
-        List<List<Cell>> list = new ArrayList<>();
-        for (int i = 0; i < ROW_SIZE; i++) {
-            List<Cell> cellList = new ArrayList<>();
-            for (int j = 0; j < COLUMN_SIZE; j++) {
-                String text = "cell " + j + " " + i;
-                if (j % 4 == 0 && i % 5 == 0) {
-                    text = "large cell " + j + " " + i + ".";
-                }
-                String id = j + "-" + i;
-
-                Cell cell = new Cell(id, text);
-                cellList.add(cell);
-            }
-            list.add(cellList);
-        }
-
-        return list;
-    }
-
-    /**
-     * This is a dummy model list test some cases.
-     */
-    private List<List<Cell>> getCellListForSortingTest() {
-        List<List<Cell>> list = new ArrayList<>();
-        for (int i = 0; i < ROW_SIZE; i++) {
-            List<Cell> cellList = new ArrayList<>();
-            for (int j = 0; j < COLUMN_SIZE; j++) {
-                Object text = "cell " + j + " " + i;
-
-                final int random = new Random().nextInt();
-                if (j == 0) {
-                    text = i;
-                } else if (j == 1) {
-                    text = random;
-                } else if (j == MOOD_COLUMN_INDEX) {
-                    text = random % 2 == 0 ? HAPPY : SAD;
-                } else if (j == GENDER_COLUMN_INDEX) {
-                    text = random % 2 == 0 ? BOY : GIRL;
-                }
-
-                // Create dummy id.
-                String id = j + "-" + i;
-
-                Cell cell;
-                if (j == 3) {
-                    cell = new Cell(id, text, random % 2 == 0 ? "happy" : "sad");
-                } else if (j == 4) {
-                    // NOTE female and male keywords for filter will have conflict since "female"
-                    // contains "male"
-                    cell = new Cell(id, text, random % 2 == 0 ? "boy" : "girl");
-                } else {
-                    cell = new Cell(id, text);
-                }
-                cellList.add(cell);
-            }
-            list.add(cellList);
-        }
-
-        return list;
-    }
-
-    /**
-     * This is a dummy model list test some cases.
-     */
-    private List<List<Cell>> getRandomCellList() {
-        List<List<Cell>> list = new ArrayList<>();
-        for (int i = 0; i < ROW_SIZE; i++) {
-            List<Cell> cellList = new ArrayList<>();
-            list.add(cellList);
-            for (int j = 0; j < COLUMN_SIZE; j++) {
-                String text = "cell " + j + " " + i;
-                int random = new Random().nextInt();
-                if (random % 2 == 0 || random % 5 == 0 || random == j) {
-                    text = "large cell  " + j + " " + i + getRandomString() + ".";
-                }
-
-                // Create dummy id.
-                String id = j + "-" + i;
-
-                Cell cell = new Cell(id, text);
-                cellList.add(cell);
-            }
-        }
-
-        return list;
-    }
-
-    /**
-     * This is a dummy model list test some cases.
-     */
-    public static List<List<Cell>> getRandomCellList(int startIndex) {
-        List<List<Cell>> list = new ArrayList<>();
-        for (int i = 0; i < ROW_SIZE; i++) {
-            List<Cell> cellList = new ArrayList<>();
-            list.add(cellList);
-            for (int j = 0; j < COLUMN_SIZE; j++) {
-                String text = "cell " + j + " " + (i + startIndex);
-                int random = new Random().nextInt();
-                if (random % 2 == 0 || random % 5 == 0 || random == j) {
-                    text = "large cell  " + j + " " + (i + startIndex) + getRandomString() + ".";
-                }
-
-                String id = j + "-" + (i + startIndex);
-
-                Cell cell = new Cell(id, text);
-                cellList.add(cell);
-            }
-        }
-
-        return list;
-    }
-
-    private static String getRealRandomString() {
-
-        int length = (int)Math.round(Math.random() * 20.0);
-        return UUID.randomUUID().toString().substring(0, length);
-    }
-
-    private static String getRandomString() {
-        Random r = new Random();
-        String str = " a ";
-        for (int i = 0; i < r.nextInt(); i++) {
-            str = str + " a ";
-        }
-
-        return str;
     }
 
 

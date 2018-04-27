@@ -159,26 +159,28 @@ public class user_profile extends Fragment {
             }
         });
 
-        Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
-        StringBuilder builder = new StringBuilder();
-        try {
-            List<Address> address = geoCoder.getFromLocation(Float.parseFloat(SavedSharedPreferences.getUserLat(getActivity())),Float.parseFloat(SavedSharedPreferences.getUserLang(getActivity())), 1);
-            int maxLines = address.get(0).getMaxAddressLineIndex();
-            for (int i=0; i<maxLines; i++) {
-                String addressStr = address.get(0).getAddressLine(i);
-                builder.append(addressStr);
-                builder.append(" ");
+        if(!SavedSharedPreferences.getUserLat(getActivity()).equals("0.0")) {
+            Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
+            StringBuilder builder = new StringBuilder();
+            try {
+                List<Address> address = geoCoder.getFromLocation(Float.parseFloat(SavedSharedPreferences.getUserLat(getActivity())), Float.parseFloat(SavedSharedPreferences.getUserLang(getActivity())), 1);
+                int maxLines = address.get(0).getMaxAddressLineIndex();
+                for (int i = 0; i < maxLines; i++) {
+                    String addressStr = address.get(0).getAddressLine(i);
+                    builder.append(addressStr);
+                    builder.append(" ");
+                }
+
+                String fnialAddress = builder.toString(); //This is the complete address.
+
+
+                location.setText(fnialAddress); //This will display the final address.
+
+            } catch (IOException e) {
+                // Handle IOException
+            } catch (NullPointerException e) {
+                // Handle NullPointerException
             }
-
-            String fnialAddress = builder.toString(); //This is the complete address.
-
-
-            location.setText(fnialAddress); //This will display the final address.
-
-        } catch (IOException e) {
-            // Handle IOException
-        } catch (NullPointerException e) {
-            // Handle NullPointerException
         }
 
 

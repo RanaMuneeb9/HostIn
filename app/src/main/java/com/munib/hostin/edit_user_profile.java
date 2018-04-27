@@ -182,6 +182,7 @@ public class edit_user_profile extends Fragment {
                         params.put("firstName", first_name.getText().toString());
                         params.put("lastName", last_name.getText().toString());
                         params.put("phone", phone.getText().toString());
+                        params.put("user_id", SavedSharedPreferences.getUserId(getActivity())+"");
 
                         return params;
                     }

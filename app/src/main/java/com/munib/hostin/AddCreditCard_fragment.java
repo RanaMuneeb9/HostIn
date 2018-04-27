@@ -70,15 +70,15 @@ public class AddCreditCard_fragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_credit_card, container, false);
 
-        add_creditcard=(Button)v.findViewById(R.id.pay_btn);
-        add_creditcard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment main=new user_profile();
-                FragmentTransaction transaction=getFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment,main).addToBackStack(null).commit();
-            }
-        });
+//        add_creditcard=(Button)v.findViewById(R.id.pay_btn);
+//        add_creditcard.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Fragment main=new user_profile();
+//                FragmentTransaction transaction=getFragmentManager().beginTransaction();
+//                transaction.replace(R.id.fragment,main).addToBackStack(null).commit();
+//            }
+//        });
 
         return v;
     }

@@ -97,7 +97,32 @@ public class SavedHostelAdapter extends RecyclerView
         holder.hostel_name.setText(mDataset.get(position).getName());
         holder.ratingBar.setRating((int)mDataset.get(position).getAverageReview());
         holder.ratingBar.setEnable(false);
-//        holder.imageView.setImageResource(mDataset.get(position).getImg_res());
+
+        if(position==1)
+        {
+            holder.imageView.setImageResource(R.drawable.pic1);
+        }else if(position==2)
+        {
+            holder.imageView.setImageResource(R.drawable.pic3);
+        }
+        else if(position==3)
+        {
+            holder.imageView.setImageResource(R.drawable.pic4);
+        }
+        else if(position==4)
+        {
+            holder.imageView.setImageResource(R.drawable.pic5);
+        }
+        else if(position==5)
+        {
+            holder.imageView.setImageResource(R.drawable.pic6);
+        }
+        else if(position==6)
+        {
+            holder.imageView.setImageResource(R.drawable.pic7);
+        }else{
+            holder.imageView.setImageResource(R.drawable.pic2);
+        }
         holder.materialRippleLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -307,6 +307,7 @@ public class MapViewFragment extends SupportMapFragment
 
             ImageView markerIcon = (ImageView) v.findViewById(R.id.marker_icon);
 
+
             TextView markerLabel = (TextView)v.findViewById(R.id.marker_label);
 
 

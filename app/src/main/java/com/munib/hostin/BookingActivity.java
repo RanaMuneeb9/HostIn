@@ -181,9 +181,7 @@ public class BookingActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent a=new Intent(BookingActivity.this,PaymentProceedActivity.class);
-                Bundle bndle=new Bundle();
-                bndle.putSerializable("hostel_object",hostelsData);
-                a.putExtra("bndle",bndle);
+                a.putExtra("hostel_id",hostelsData.getId()+"");
                 String amount[]=price.getText().toString().split(" ");
                 a.putExtra("amount",amount[1]);
                 startActivity(a);

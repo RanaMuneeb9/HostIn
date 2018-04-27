@@ -106,6 +106,7 @@ public class SignUp extends AppCompatActivity implements LocationListener {
                                         if (!error) {
                                             pDialog.hide();
 
+                                            SavedSharedPreferences.setUserId(getApplicationContext(),response.getJSONObject("Row").getInt("insertId"));
                                             SavedSharedPreferences.setUserName(getApplicationContext(),first_name.getText().toString()+" "+last_name.getText().toString());
                                             SavedSharedPreferences.setUserEmail(getApplicationContext(),email.getText().toString());
                                             Intent intent = new Intent(SignUp.this, MainActivity.class);
@@ -136,6 +137,8 @@ public class SignUp extends AppCompatActivity implements LocationListener {
                             params.put("mobile_no", mobile.getText().toString());
                             params.put("password",confirm_passowrd.getText().toString());
                             params.put("user_gender",gender);
+                            params.put("user_lat",lat+"");
+                            params.put("user_lang",lang+"");
 
                             return params;
                         }
@@ -310,6 +313,4 @@ public class SignUp extends AppCompatActivity implements LocationListener {
     public void onProviderDisabled(String provider) {
 
     }
-
-
 }

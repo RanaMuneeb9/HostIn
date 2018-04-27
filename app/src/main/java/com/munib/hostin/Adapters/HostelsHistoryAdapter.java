@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 
 import com.balysv.materialripple.MaterialRippleLayout;
-import com.munib.hostin.DataModel.HostelsData;
 import com.munib.hostin.HostelProfile;
 import com.munib.hostin.MainActivity;
 import com.munib.hostin.R;
@@ -21,32 +20,26 @@ import com.munib.hostin.R;
 import java.util.ArrayList;
 
 
-public class MyHostelsAdapter extends RecyclerView
-        .Adapter<MyHostelsAdapter
+public class HostelsHistoryAdapter extends RecyclerView
+        .Adapter<HostelsHistoryAdapter
         .DataObjectHolder> {
     private static String LOG_TAG = "AdminQeueOrderViewAdapter";
-    public static ArrayList<HostelsData> mDataset;
+    public static ArrayList<String> mDataset;
     public  static Context ctx;
     private static MyClickListener myClickListener;
-    static HostelsData current_item;
+    static String current_item;
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
     {
 
 
-        TextView prices,places,hostel_name;
-        ImageView imageView;
-        LinearLayout main;
-        MaterialRippleLayout materialRippleLayout;
-
+        TextView name;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
 
-            prices=(TextView) itemView.findViewById(R.id.prices);
-            hostel_name=(TextView)  itemView.findViewById(R.id.hostel_name);
-            imageView=(ImageView) itemView.findViewById(R.id.img);
-            materialRippleLayout=(MaterialRippleLayout) itemView.findViewById(R.id.ripple);
+           name=(TextView) itemView.findViewById(R.id.hostel_name);
+
 
 //            itemView.findViewById(R.id.ripple).setOnClickListener(new View.OnClickListener() {
 //                @Override public void onClick(View v) {
@@ -62,11 +55,11 @@ public class MyHostelsAdapter extends RecyclerView
 
     }
     public void setOnItemClickListener(MyClickListener myClickListener) {
-        MyHostelsAdapter.myClickListener = myClickListener;
+        HostelsHistoryAdapter.myClickListener = myClickListener;
     }
 
-    public MyHostelsAdapter(Context ctx, ArrayList<HostelsData> myDataset) {
-        MyHostelsAdapter.ctx =ctx;
+    public HostelsHistoryAdapter(Context ctx, ArrayList<String> myDataset) {
+        HostelsHistoryAdapter.ctx =ctx;
         mDataset = myDataset;
     }
 
@@ -74,7 +67,7 @@ public class MyHostelsAdapter extends RecyclerView
     public DataObjectHolder onCreateViewHolder(ViewGroup parent,
                                                int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.hostel_items_layout, parent, false);
+                .inflate(R.layout.hostel_history_item, parent, false);
 
         Log.d("mubi","here inside 1");
         DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
@@ -87,18 +80,11 @@ public class MyHostelsAdapter extends RecyclerView
         current_item= mDataset.get(position);
         Log.d("mubi","here inside 2");
 
-        holder.materialRippleLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = ((MainActivity) ctx).getSupportFragmentManager();
-                HostelProfile fragment = new HostelProfile();
-                fm.beginTransaction().addToBackStack("frag").replace(R.id.fragment, fragment).commit();
-            }
-        });
+        holder.name.setText(mDataset.get(position));
 
     }
 
-    public void addItem(HostelsData dataObj, int index) {
+    public void addItem(String dataObj, int index) {
         mDataset.add(index, dataObj);
         notifyItemInserted(index);
     }

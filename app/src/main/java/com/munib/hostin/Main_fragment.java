@@ -50,6 +50,7 @@ import com.munib.hostin.DataModel.PaymentsData;
 import com.munib.hostin.DataModel.Reviews;
 import com.munib.hostin.DataModel.RoomTypes;
 import com.munib.hostin.DataModel.SavedHostelsData;
+import com.munib.hostin.DataModel.TenantsData;
 import com.munib.hostin.volley.AppController;
 
 import org.jetbrains.annotations.NotNull;
@@ -106,6 +107,7 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
     public static ArrayList<SavedHostelsData>saved_hostels=new ArrayList<>();
 
     public static TextView filter_rating_view,filter_price_view;
+    public static ArrayList<TenantsData> tennants=new ArrayList<>();
     LinearLayout filter_layout;
 
     public Main_fragment() {
@@ -156,6 +158,65 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
                 .setTypeFilter(Place.TYPE_ADMINISTRATIVE_AREA_LEVEL_3)
                 .setCountry("PAK")
                 .build();
+
+
+        String url = MainActivity.API+"getTenants";
+
+        StringRequest strRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String res) {
+                        try {
+
+                            JSONObject response = new JSONObject(res.toString());
+                            Log.d("mubi",response.toString());
+                            boolean error = response.getBoolean("Error");
+                            String msg=response.getString("Message");
+
+                            Log.d("mubi-tenants",error+"aa");
+                            if(!error)
+                            {
+
+                                Log.d("mubi","inside 00");
+                                JSONArray array=response.getJSONArray("Tenants");
+                                for(int i=0;i<array.length();i++)
+                                {
+                                    JSONObject object=array.getJSONObject(i);
+
+                                    int count=object.getInt("count");
+                                    int hostel_id=object.getInt("hostel_id");
+
+                                    tennants.add(new TenantsData(count,hostel_id));
+                                }
+
+
+                            }else{
+                                Toast.makeText(getActivity(), msg,Toast.LENGTH_SHORT).show();
+
+                            }
+
+                        } catch (Exception ex) {
+
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("mubi", "Error: " + error.getMessage());
+                // hide the progress dialog
+                pDialog.hide();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                return params;
+            }
+        };
+
+// Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strRequest, "login");
 
         search_edittext=(EditText) v.findViewById(R.id.search_edittext);
         search_edittext.setOnClickListener(new View.OnClickListener() {
@@ -366,6 +427,9 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
 
         getSavedHostels();
 
+
+
+
         return  v;
     }
 
@@ -460,6 +524,7 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
                                     }
                                     Log.d("saved_hostels","done");
 
+                                    pDialog.hide();
 
                                 }else{
 
@@ -605,16 +670,38 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
                                         }
                                         Log.d("mubi-room_types",arrayList_room_types.size()+"");
                                         Log.d("mubi-final",arrayList_room_types.size()+"");
+
                                         hostels_arrayList.add(new HostelsData(hostel_id,name,lat,lang,about,email,phone,mobile,type,arrayList_facilites,arrayList_reviews,arrayList_room_types));
                                     }
+
+
+//
+//                                    Log.d("mubi-jj","start");
+//
+//                                    ArrayList<HostelsData> data=new ArrayList<>();
+//                                    for(int i=0;i<hostels_arrayList.size();i++)
+//                                    {
+//                                        for(int j=tennants;j<tennants.size();j++)
+//                                        {
+//                                            if(tennants.get(j).getHostel_id()==hostels_arrayList.get(i).getId())
+//                                            {
+//                                                Log.d("mubi-jj","after"+tennants.get(j).getHostel_id());
+//
+//                                                data.add(hostels_arrayList.get(i));
+//                                            }
+//                                        }
+//                                    }
+//                                    Log.d("mubi-jj","after"+data.get(0).getId());
+
+                                    adapter = new MainAdapter(getActivity(),hostels_arrayList);
+                                    recyclerView.setAdapter(adapter);
+                                    pDialog.hide();
 
                                     android.support.v4.app.FragmentManager fm = getActivity().getSupportFragmentManager();
                                     MapViewFragment fragment = new MapViewFragment();
                                     fm.beginTransaction().replace(R.id.fragment1,fragment).commit();
 
-                                    adapter = new MainAdapter(getActivity(),hostels_arrayList);
-                                    recyclerView.setAdapter(adapter);
-                                    pDialog.hide();
+
                                 }else{
                                     Toast.makeText(getActivity(), "Error Getting Data !",Toast.LENGTH_SHORT).show();
                                     pDialog.hide();

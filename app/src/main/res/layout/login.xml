@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="80dp"
         android:text="Welcome to"
         android:textAlignment="center"
         android:textColor="#815097"
@@ -37,7 +37,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="120dp"
         android:orientation="vertical"
         android:paddingLeft="40dp"
         android:paddingRight="40dp">
@@ -86,7 +86,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/my_btn"
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
@@ -105,7 +105,8 @@
         android:layout_marginTop="45dp"
         android:layout_weight="0.18"
         android:paddingBottom="12dp"
-        android:paddingTop="12dp" />
+        android:paddingTop="12dp"
+        android:visibility="gone" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
@@ -113,7 +114,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="42dp"
         android:layout_marginRight="42dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/signup_text"
@@ -122,7 +124,7 @@
         android:layout_below="@+id/loginButton"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:text="Don't have an account ? SignUp"
         android:textColor="#815097"
         android:textSize="16sp" />
