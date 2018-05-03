@@ -19,6 +19,7 @@ import com.munib.hostin.DataModel.HostelsData;
 import com.munib.hostin.HostelProfile;
 import com.munib.hostin.MainActivity;
 import com.munib.hostin.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -91,35 +92,14 @@ public class MainAdapter extends RecyclerView
 
 
         Log.d("mubi","here inside 2");
-        holder.prices.setText(mDataset.get(position).getRoomTypes().get(0).getPrice()+"");
+//        holder.prices.setText(mDataset.get(position).getRoomTypes().get(0).getPrice()+"");
         holder.hostel_name.setText(mDataset.get(position).getName());
         holder.ratingBar.setRating((int)mDataset.get(position).getAverageReview());
         holder.ratingBar.setEnable(false);
-        if(position==1)
-        {
-            holder.imageView.setImageResource(R.drawable.pic1);
-        }else if(position==2)
-        {
-            holder.imageView.setImageResource(R.drawable.pic3);
-        }
-        else if(position==3)
-        {
-            holder.imageView.setImageResource(R.drawable.pic4);
-        }
-        else if(position==4)
-        {
-            holder.imageView.setImageResource(R.drawable.pic5);
-        }
-        else if(position==5)
-        {
-            holder.imageView.setImageResource(R.drawable.pic6);
-        }
-        else if(position==6)
-        {
-            holder.imageView.setImageResource(R.drawable.pic7);
-        }else{
-            holder.imageView.setImageResource(R.drawable.pic2);
-        }
+
+        if(mDataset.get(position).getImages().size()>0)
+            Picasso.get().load("http://13.127.35.98/Api/images/"+mDataset.get(position).getImages().get(0)).placeholder(R.drawable.ic_location_city_grey_700_24dp).into(holder.imageView);
+
         holder.materialRippleLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

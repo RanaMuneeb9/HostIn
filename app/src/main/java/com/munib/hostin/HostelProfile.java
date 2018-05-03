@@ -47,6 +47,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.munib.hostin.Adapters.FacilitiesAdapter;
 import com.munib.hostin.Adapters.MainAdapter;
+import com.munib.hostin.Adapters.MainSliderAdapter;
 import com.munib.hostin.Adapters.PaymentsAdapter;
 import com.munib.hostin.Adapters.ReviewsAdapter;
 import com.munib.hostin.Adapters.RoomTypesAdapter;
@@ -66,10 +67,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import ss.com.bannerslider.banners.Banner;
-import ss.com.bannerslider.banners.DrawableBanner;
-import ss.com.bannerslider.banners.RemoteBanner;
-import ss.com.bannerslider.views.BannerSlider;
+import ss.com.bannerslider.Slider;
 
 
 /**
@@ -306,18 +304,11 @@ public class HostelProfile extends Fragment implements Filters.OnFragmentInterac
         about.setText(hostel_data.getAbout());
 
 
-
-        BannerSlider bannerSlider = (BannerSlider) v.findViewById(R.id.banner_slider1);
-        List<Banner> banners=new ArrayList<>();
-        //add banner using image url
-        //add banner using resource drawable
-        banners.add(new DrawableBanner(R.drawable.pic1));
-        banners.add(new DrawableBanner(R.drawable.pic2));
-        banners.add(new DrawableBanner(R.drawable.pic3));
-        banners.add(new DrawableBanner(R.drawable.pic4));
-        banners.add(new DrawableBanner(R.drawable.pic5));
-        bannerSlider.setBanners(banners);
-
+        if(hostel_data.getImages().size()>0) {
+            Slider.init(new PicassoImageLoadingService(getActivity()));
+            Slider slider = v.findViewById(R.id.banner_slider1);
+            slider.setAdapter(new MainSliderAdapter(hostel_data.getImages()));
+        }
 
         //Location City
 

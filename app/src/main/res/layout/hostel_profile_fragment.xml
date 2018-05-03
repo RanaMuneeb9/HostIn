@@ -69,14 +69,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ss.com.bannerslider.views.BannerSlider
+            <ss.com.bannerslider.Slider
                 android:id="@+id/banner_slider1"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
-                app:defaultBanner="1"
-                app:defaultIndicators="circle"
-                app:interval="5000"
-                app:loopSlides="true" />
+                app:slider_interval="5000"
+                app:slider_loopSlides="true"
+                />
 
             <RelativeLayout
                 android:layout_width="match_parent"

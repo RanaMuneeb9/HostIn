@@ -15,8 +15,9 @@ public class HostelsData implements Serializable {
     ArrayList<Facilities> facilities;
     ArrayList<Reviews> reviews;
     ArrayList<RoomTypes> roomTypes;
+    ArrayList<String> images;
 
-    public HostelsData(int id, String name, double latitude, double longitude, String about, String email, String phone, String mobile, String type, ArrayList<Facilities> facilities, ArrayList<Reviews> reviews,ArrayList roomTypes)
+    public HostelsData(int id, String name, double latitude, double longitude, String about, String email, String phone, String mobile, String type, ArrayList<Facilities> facilities, ArrayList<Reviews> reviews,ArrayList roomTypes,ArrayList images)
     {
        this.id=id;
        this.name=name;
@@ -30,6 +31,7 @@ public class HostelsData implements Serializable {
        this.facilities=facilities;
        this.reviews=reviews;
        this.roomTypes=roomTypes;
+       this.images=images;
     }
 
     public ArrayList<RoomTypes> getRoomTypes() {
@@ -78,6 +80,10 @@ public class HostelsData implements Serializable {
 
     public String getType() {
         return type;
+    }
+
+    public ArrayList<String> getImages() {
+        return images;
     }
 
     public double getAverageReview()

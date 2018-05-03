@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.munib.hostin.Services.NotificationService;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity
     public static boolean mSlideState=false;
     public static DrawerLayout drawer;
 
-    public static String API="http://13.127.35.98:3000/api/";
+    public static String API="http://13.127.35.98:3300/api/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity
 
         }else
         {
-            Picasso.with(getApplicationContext()).load(MainActivity.API+"userImage/"+SavedSharedPreferences.getUserImage(getApplicationContext())).into((CircleImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image));
+            Picasso.get().load(MainActivity.API+"userImage/"+SavedSharedPreferences.getUserImage(getApplicationContext())).into((CircleImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image));
 
         }
 
@@ -186,5 +187,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent i= new Intent(getApplicationContext(), NotificationService.class);
+        startService(i);
     }
 }

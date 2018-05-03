@@ -102,7 +102,7 @@ public class edit_user_profile extends Fragment {
         {
 
         }else{
-            Picasso.with(getApplicationContext()).load(MainActivity.API+"userImage/"+SavedSharedPreferences.getUserImage(getApplicationContext())).into(profile_image);
+            Picasso.get().load(MainActivity.API+"userImage/"+SavedSharedPreferences.getUserImage(getApplicationContext())).into(profile_image);
         }
 
         first_name=(EditText) v.findViewById(R.id.first_name);

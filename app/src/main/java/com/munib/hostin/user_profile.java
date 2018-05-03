@@ -119,7 +119,7 @@ public class user_profile extends Fragment {
         {
 
         }else{
-            Picasso.with(getApplicationContext()).load(MainActivity.API+"userImage/"+SavedSharedPreferences.getUserImage(getApplicationContext())).into(profile_image);
+            Picasso.get().load(MainActivity.API+"userImage/"+SavedSharedPreferences.getUserImage(getApplicationContext())).into(profile_image);
         }
         TextView name=(TextView) v.findViewById(R.id.person_name);
         TextView location=(TextView) v.findViewById(R.id.person_location);
@@ -288,7 +288,7 @@ public class user_profile extends Fragment {
                                     SavedSharedPreferences.setUserImage(getApplicationContext(),obj.getString("fileName"));
 
                                     Log.d("mubi",MainActivity.API+"userImage/"+SavedSharedPreferences.getUserImage(getApplicationContext()));
-                                    Picasso.with(getApplicationContext()).load(MainActivity.API+"userImage/"+SavedSharedPreferences.getUserImage(getApplicationContext())).into(profile_image);
+                                    Picasso.get().load(MainActivity.API+"userImage/"+SavedSharedPreferences.getUserImage(getApplicationContext())).into(profile_image);
                                 }
 
                             } catch (Exception e1) {

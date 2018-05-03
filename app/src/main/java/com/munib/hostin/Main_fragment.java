@@ -623,7 +623,7 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
                                         ArrayList<Reviews> arrayList_reviews=new ArrayList<>();
 
                                         JSONArray reviews=obj.getJSONArray("reviews");
-                                        Log.d("mubi-res","2.1");
+                                        Log.d("mubi-reviews",reviews.toString());
                                         for(int j=0;j<reviews.length();j++)
                                         {
                                             Log.d("mubi-res","2.2");
@@ -668,10 +668,22 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
 
                                             arrayList_room_types.add(new RoomTypes(r_id,r_id,price,price_with_mess));
                                         }
+
+                                        ArrayList<String> arrayList_images=new ArrayList<>();
+
+                                        JSONArray images=obj.getJSONArray("images");
+                                        for(int k=0;k<images.length();k++)
+                                        {
+                                            JSONObject r_obj=images.getJSONObject(k);
+                                            String image=r_obj.getString("image");
+
+                                            arrayList_images.add(image);
+                                        }
+
                                         Log.d("mubi-room_types",arrayList_room_types.size()+"");
                                         Log.d("mubi-final",arrayList_room_types.size()+"");
 
-                                        hostels_arrayList.add(new HostelsData(hostel_id,name,lat,lang,about,email,phone,mobile,type,arrayList_facilites,arrayList_reviews,arrayList_room_types));
+                                        hostels_arrayList.add(new HostelsData(hostel_id,name,lat,lang,about,email,phone,mobile,type,arrayList_facilites,arrayList_reviews,arrayList_room_types,arrayList_images));
                                     }
 
 
