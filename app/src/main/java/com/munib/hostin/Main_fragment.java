@@ -427,8 +427,7 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
 
         getSavedHostels();
 
-
-
+        getCurrentHostel();
 
         return  v;
     }
@@ -486,6 +485,77 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
 
     }
 
+    void getCurrentHostel()
+    {
+
+        if(haveNetworkConnection()) {
+            String url = MainActivity.API+"getUserCurrentHostel";
+
+
+            StringRequest strRequest = new StringRequest(Request.Method.POST, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String res) {
+                            try {
+
+                                JSONObject response = new JSONObject(res.toString());
+
+                                boolean error = response.getBoolean("Error");
+                                String msg=response.getString("Message");
+
+                                if(!error)
+                                {
+
+                                    JSONArray array=response.getJSONArray("Schedule");
+
+                                    for(int i=0;i<array.length();i++) {
+                                        JSONObject obj = array.getJSONObject(i);
+
+                                        int hostel_id1 = obj.getInt("current_hostel");
+                                        Log.d("current_hostel",hostel_id1+" : :");
+
+                                        SavedSharedPreferences.setCurrentHostelId(getActivity(),hostel_id1);
+
+                                        if(hostel_id1==0)
+                                        {
+                                            SavedSharedPreferences.setLeaveRequest(getActivity(),0);
+                                        }
+                                    }
+                                    Log.d("saved_hostels","done");
+
+                                    pDialog.hide();
+
+                                }else{
+
+                                }
+
+                            } catch (Exception ex) {
+
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("mubi", "Error: " + error.getMessage());
+                    // hide the progress dialog
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("user_id", SavedSharedPreferences.getUserId(getActivity())+"");
+
+                    return params;
+                }
+            };
+
+// Adding request to request queue
+            AppController.getInstance().addToRequestQueue(strRequest, "current_hostel");
+
+
+        }
+    }
 
     void getSavedHostels()
     {

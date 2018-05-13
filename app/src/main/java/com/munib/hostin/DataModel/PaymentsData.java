@@ -7,9 +7,9 @@ package com.munib.hostin.DataModel;
 public class PaymentsData {
 
     int id,user_id,hostel_id,amount;
-    String name,desc,status,created_date,paid_date,hostel_name;
+    String name,desc,status,created_date,paid_date,hostel_name,hostel_email;
 
-    public PaymentsData(int id,int user_id,int hostel_id,String hostel_name,int amount,String name,String desc,String status,String created_date,String paid_date)
+    public PaymentsData(int id,int user_id,int hostel_id,String hostel_name,int amount,String name,String desc,String status,String created_date,String paid_date,String hostel_email)
     {
         this.id=id;
         this.user_id=user_id;
@@ -21,6 +21,7 @@ public class PaymentsData {
         this.created_date=created_date;
         this.paid_date=paid_date;
         this.hostel_name=hostel_name;
+        this.hostel_email=hostel_email;
     }
 
     public String getHostel_name() {
@@ -37,6 +38,10 @@ public class PaymentsData {
 
     public int getHostel_id() {
         return hostel_id;
+    }
+
+    public String getHostel_email() {
+        return hostel_email;
     }
 
     public int getId() {

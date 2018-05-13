@@ -33,6 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -44,8 +45,9 @@ import java.util.Map;
 public class PaymentProceedActivity extends AppCompatActivity {
 
     ProgressDialog pDialog=null;
-    int hostels_id;
+    int hostels_id,payment_id;
     int total_amount;
+    String name,desc,hostels_email;
     final Context myApp = this;
 
     @Override
@@ -58,8 +60,12 @@ public class PaymentProceedActivity extends AppCompatActivity {
         pDialog.setCancelable(false);
         pDialog.show();
 
-        hostels_id=Integer.parseInt(getIntent().getExtras().getString("hostel_id"));
-        total_amount=Integer.parseInt(getIntent().getExtras().getString("amount"));
+        hostels_id=getIntent().getExtras().getInt("hostel_id");
+        total_amount=getIntent().getExtras().getInt("amount");
+        payment_id=getIntent().getExtras().getInt("payment_id");
+        name=getIntent().getExtras().getString("payment_name");
+        hostels_email=getIntent().getExtras().getString("hostel_email");
+        desc=getIntent().getExtras().getString("payment_details");
 
         Log.d("mubi-pay",hostels_id+" : "+total_amount+" : "+SavedSharedPreferences.getUserId(getApplication()));
 
@@ -137,7 +143,7 @@ public class PaymentProceedActivity extends AppCompatActivity {
             if(html.equals("<head><head></head><body>Successfully authorized the provided credit card</body></head>"))
             {
 
-                String url = MainActivity.API+"insertBooking";
+                String url = MainActivity.API+"updatepayment";
                 if(haveNetworkConnection()) {
                     StringRequest strRequest = new StringRequest(Request.Method.POST, url,
                             new Response.Listener<String>() {
@@ -158,11 +164,12 @@ public class PaymentProceedActivity extends AppCompatActivity {
                                             alert.showDialog(PaymentProceedActivity.this);
 
                                             Toast.makeText(getApplicationContext(), response.getString("Message"), Toast.LENGTH_LONG).show();
-                                            SavedSharedPreferences.setCurrentHostelId(getApplicationContext(), hostels_id);
+
                                             Log.d("mubi", error + "bb");
                                         } else {
                                             ViewDialog alert = new ViewDialog();
                                             alert.showDialog(PaymentProceedActivity.this);
+                                            finish();
                                             Toast.makeText(getApplicationContext(), "Error While Booking !", Toast.LENGTH_SHORT).show();
                                         }
 
@@ -182,13 +189,11 @@ public class PaymentProceedActivity extends AppCompatActivity {
                         @Override
                         protected Map<String, String> getParams() {
                             Map<String, String> params = new HashMap<String, String>();
-                            params.put("payment_status", "done");
-                            Calendar c = Calendar.getInstance();
-                            params.put("payment_name", "Payment for "+c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH ) );
-                            params.put("payment_details", "First Payment of users while booking form the app");
-                            params.put("payment_amount", total_amount + "");
-                            params.put("hostel_id", hostels_id + "");
-                            params.put("user_id", SavedSharedPreferences.getUserId(getApplicationContext()) + "");
+                            params.put("payment_paid_date", android.text.format.DateFormat.format("yyyy-MM-dd hh:mm:ss", new java.util.Date()).toString());
+                            params.put("payments",payment_id+"");
+                            params.put("hostel_email", hostels_email + "");
+                            params.put("user_email", SavedSharedPreferences.getUserId(getApplicationContext()) + "");
+                            Log.d("mubi00",android.text.format.DateFormat.format("yyyy-MM-dd hh:mm:ss", new java.util.Date()).toString()+" : "+payment_id+" : "+hostels_email+" : "+SavedSharedPreferences.getUserId(getApplicationContext()));
 
                             return params;
                         }

@@ -26,6 +26,8 @@ import com.munib.hostin.PaymentProceedActivity;
 import com.munib.hostin.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 
 public class PaymentsAdapter extends RecyclerView
@@ -123,7 +125,11 @@ public class PaymentsAdapter extends RecyclerView
 
                         Intent a=new Intent(ctx,PaymentProceedActivity.class);
                         a.putExtra("hostel_id",mDataset.get(position).getHostel_id());
+                        a.putExtra("hostel_email",mDataset.get(position).getHostel_email());
                         a.putExtra("amount",mDataset.get(position).getAmount());
+                        a.putExtra("payment_name",mDataset.get(position).getName());
+                        a.putExtra("payment_details",mDataset.get(position).getDesc());
+                        a.putExtra("payment_id",mDataset.get(position).getId());
                         ctx.startActivity(a);
 
                     }

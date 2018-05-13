@@ -143,8 +143,10 @@ public class Payments_fragment extends Fragment {
         history_rv.setNestedScrollingEnabled(false);
 
 
-        getPaymentsData();
+        if(SavedSharedPreferences.getCurrentHostelId(getActivity())!=0) {
 
+            getPaymentsData();
+        }
         return  v;
     }
 
@@ -234,12 +236,13 @@ public class Payments_fragment extends Fragment {
                                         String paid_date = obj.getString("payment_paid_date");
                                         int hostel_id = obj.getInt("Hostels_hostel_id");
                                         String hostel_name = obj.getString("hostel_name");
+                                        String hostel_email = obj.getString("hostel_email");
                                         int user_id = obj.getInt("Users_user_id");
-                                        Log.d("mubi",error+"inside 1.4");
+                                        Log.d("mubi",hostel_id+"");
                                         if(status.equals("done"))
-                                        payments_history.add(new PaymentsData(id,user_id,hostel_id,hostel_name,amount,title,desc,status,created_date,paid_date));
+                                        payments_history.add(new PaymentsData(id,user_id,hostel_id,hostel_name,amount,title,desc,status,created_date,paid_date,hostel_email));
                                         else
-                                        unpaid_payments.add(new PaymentsData(id,user_id,hostel_id,hostel_name,amount,title,desc,status,created_date,paid_date));
+                                        unpaid_payments.add(new PaymentsData(id,user_id,hostel_id,hostel_name,amount,title,desc,status,created_date,paid_date,hostel_email));
 
 
                                     }

@@ -20,6 +20,12 @@ public class SavedSharedPreferences
         editor.putInt("hostel_id", id);
         editor.commit();
     }
+    public static void setLeaveRequest(Context ctx, int id)
+    {
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putInt("leave_request", id);
+        editor.commit();
+    }
     public static void setRating(Context ctx, int rating)
     {
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
@@ -106,6 +112,10 @@ public class SavedSharedPreferences
     public static int getCurrentHostelId(Context ctx)
     {
         return getSharedPreferences(ctx).getInt("hostel_id",0);
+    }
+    public static int getLeaveRequest(Context ctx)
+    {
+        return getSharedPreferences(ctx).getInt("leave_request",0);
     }
     public static String getUserName(Context ctx)
     {

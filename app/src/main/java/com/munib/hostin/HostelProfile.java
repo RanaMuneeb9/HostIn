@@ -422,6 +422,11 @@ public class HostelProfile extends Fragment implements Filters.OnFragmentInterac
 
 
         book_btn=(Button)v.findViewById(R.id.book_btn);
+
+        if(SavedSharedPreferences.getCurrentHostelId(getActivity())!=0)
+        {
+            book_btn.setEnabled(false);
+        }
         book_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

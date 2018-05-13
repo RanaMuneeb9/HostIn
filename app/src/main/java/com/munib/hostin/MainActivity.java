@@ -47,6 +47,9 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent i= new Intent(MainActivity.this, NotificationService.class);
+        startService(i);
+
         FragmentManager fm = getSupportFragmentManager();
         Main_fragment fragment = new Main_fragment();
         fm.beginTransaction().add(R.id.fragment,fragment).commit();
@@ -190,9 +193,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        Intent i= new Intent(getApplicationContext(), NotificationService.class);
-        startService(i);
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 }

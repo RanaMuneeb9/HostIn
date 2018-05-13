@@ -120,6 +120,7 @@
                             android:layout_height="wrap_content"
                             android:backgroundTint="@color/SecondryColor"
                             android:hint="E-Mail"
+                            android:inputType="textEmailAddress"
                             android:textColor="@android:color/darker_gray"
                             android:textColorHint="@color/SecondryColor"
                             android:textSize="17sp" />
@@ -141,6 +142,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/SecondryColor"
                         android:hint="Mobile #"
+                        android:inputType="number"
                         android:textColor="@android:color/darker_gray"
                         android:textColorHint="@color/SecondryColor"
                         android:textSize="17sp" />
@@ -160,6 +162,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/SecondryColor"
                         android:hint="Password"
+                        android:inputType="textPassword"
                         android:textColor="@android:color/darker_gray"
                         android:textColorHint="@color/SecondryColor"
                         android:textSize="17sp" />
@@ -179,6 +182,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/SecondryColor"
                         android:hint="Confirm Password"
+                        android:inputType="textPassword"
                         android:textColor="@android:color/darker_gray"
                         android:textColorHint="@color/SecondryColor"
                         android:textSize="17sp" />

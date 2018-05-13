@@ -14,10 +14,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +39,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.munib.hostin.Login.isEmailValid;
 
 public class SignUp extends AppCompatActivity implements LocationListener {
 
@@ -82,89 +86,129 @@ public class SignUp extends AppCompatActivity implements LocationListener {
             @Override
             public void onClick(View v) {
 
+                if(TextUtils.isEmpty( ((TextInputLayout) findViewById(R.id.input_layout_first_name)).getEditText().getText().toString())) {
 
-                if (haveNetworkConnection()) {
-                    String url = MainActivity.API+"add_user";
+                    ((TextInputLayout) findViewById(R.id.input_layout_first_name)).setError("Input required");
+                    ((TextInputLayout) findViewById(R.id.input_layout_first_name)).setErrorEnabled(true);
 
-                    pDialog = new ProgressDialog(SignUp.this);
-                    pDialog.setMessage("Loading...");
-                    pDialog.setCancelable(false);
-                    pDialog.show();
+                } else if(TextUtils.isEmpty( ((TextInputLayout) findViewById(R.id.input_layout_last_name)).getEditText().getText().toString())) {
 
-                    StringRequest strRequest = new StringRequest(Request.Method.POST, url,
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String res) {
-                                    try {
+                    ((TextInputLayout) findViewById(R.id.input_layout_last_name)).setError("Input required");
+                    ((TextInputLayout) findViewById(R.id.input_layout_last_name)).setErrorEnabled(true);
 
-                                        JSONObject response = new JSONObject(res.toString());
-                                        Log.d("mubi",response.toString());
-                                        boolean error = response.getBoolean("Error");
-                                        String message = response.getString("Message");
+                }else if(TextUtils.isEmpty( ((TextInputLayout) findViewById(R.id.input_layout_email)).getEditText().getText().toString())) {
 
-                                        Toast.makeText(SignUp.this, message, Toast.LENGTH_SHORT).show();
-                                        if (!error) {
-                                            pDialog.hide();
+                    ((TextInputLayout) findViewById(R.id.input_layout_email)).setError("Input required");
+                    ((TextInputLayout) findViewById(R.id.input_layout_email)).setErrorEnabled(true);
 
-                                            SavedSharedPreferences.setUserId(getApplicationContext(),response.getJSONObject("Row").getInt("insertId"));
-                                            SavedSharedPreferences.setUserName(getApplicationContext(),first_name.getText().toString()+" "+last_name.getText().toString());
-                                            SavedSharedPreferences.setUserEmail(getApplicationContext(),email.getText().toString());
-                                            Intent intent = new Intent(SignUp.this, MainActivity.class);
-                                            startActivity(intent);
-                                        } else {
-                                            pDialog.hide();
+                }else if(!isEmailValid(email.getText().toString())) {
+
+                    ((TextInputLayout) findViewById(R.id.input_layout_email)).setError("Wrong Email!");
+                    ((TextInputLayout) findViewById(R.id.input_layout_email)).setErrorEnabled(true);
+
+                }else if(TextUtils.isEmpty( ((TextInputLayout) findViewById(R.id.input_layout_mobile)).getEditText().getText().toString())) {
+
+                    ((TextInputLayout) findViewById(R.id.input_layout_mobile)).setError("Input required");
+                    ((TextInputLayout) findViewById(R.id.input_layout_mobile)).setErrorEnabled(true);
+
+                }else if(TextUtils.isEmpty( ((TextInputLayout) findViewById(R.id.input_layout_password)).getEditText().getText().toString())) {
+
+                    ((TextInputLayout) findViewById(R.id.input_layout_password)).setError("Input required");
+                    ((TextInputLayout) findViewById(R.id.input_layout_password)).setErrorEnabled(true);
+
+                }else if(TextUtils.isEmpty( ((TextInputLayout) findViewById(R.id.input_layout_confirm_password)).getEditText().getText().toString())) {
+
+                    ((TextInputLayout) findViewById(R.id.input_layout_confirm_password)).setError("Input required");
+                    ((TextInputLayout) findViewById(R.id.input_layout_confirm_password)).setErrorEnabled(true);
+
+                }else {
+
+
+                    if (haveNetworkConnection()) {
+                        String url = MainActivity.API + "add_user";
+
+                        pDialog = new ProgressDialog(SignUp.this);
+                        pDialog.setMessage("Loading...");
+                        pDialog.setCancelable(false);
+                        pDialog.show();
+
+                        StringRequest strRequest = new StringRequest(Request.Method.POST, url,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String res) {
+                                        try {
+
+                                            JSONObject response = new JSONObject(res.toString());
+                                            Log.d("mubi", response.toString());
+                                            boolean error = response.getBoolean("Error");
+                                            String message = response.getString("Message");
+
+                                            Toast.makeText(SignUp.this, message, Toast.LENGTH_SHORT).show();
+                                            if (!error) {
+                                                pDialog.hide();
+
+                                                SavedSharedPreferences.setUserId(getApplicationContext(), response.getJSONObject("Row").getInt("insertId"));
+                                                SavedSharedPreferences.setUserName(getApplicationContext(), first_name.getText().toString() + " " + last_name.getText().toString());
+                                                SavedSharedPreferences.setUserEmail(getApplicationContext(), email.getText().toString());
+                                                Intent intent = new Intent(SignUp.this, MainActivity.class);
+                                                startActivity(intent);
+                                                finish();
+                                            } else {
+                                                pDialog.hide();
+                                            }
+
+                                        } catch (Exception ex) {
+
                                         }
-
-                                    } catch (Exception ex) {
-
                                     }
-                                }
-                            }, new Response.ErrorListener() {
+                                }, new Response.ErrorListener() {
 
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.d("mubi", "Error: " + error.getMessage());
-                            // hide the progress dialog
-                            pDialog.hide();
-                        }
-                    }) {
-                        @Override
-                        protected Map<String, String> getParams() {
-                            Map<String, String> params = new HashMap<String, String>();
-                            params.put("first_name",first_name.getText().toString());
-                            params.put("last_name", last_name.getText().toString());
-                            params.put("email", email.getText().toString());
-                            params.put("mobile_no", mobile.getText().toString());
-                            params.put("password",confirm_passowrd.getText().toString());
-                            params.put("user_gender",gender);
-                            params.put("user_lat",lat+"");
-                            params.put("user_lang",lang+"");
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("mubi", "Error: " + error.getMessage());
+                                // hide the progress dialog
+                                pDialog.hide();
+                            }
+                        }) {
+                            @Override
+                            protected Map<String, String> getParams() {
+                                Map<String, String> params = new HashMap<String, String>();
+                                params.put("first_name", first_name.getText().toString());
+                                params.put("last_name", last_name.getText().toString());
+                                params.put("email", email.getText().toString());
+                                params.put("mobile_no", mobile.getText().toString());
+                                params.put("password", confirm_passowrd.getText().toString());
+                                params.put("user_gender", gender);
+                                params.put("user_lat", lat + "");
+                                params.put("user_type", "online");
+                                params.put("user_lang", lang + "");
 
-                            return params;
-                        }
-                    };
+                                return params;
+                            }
+                        };
 
 // Adding request to request queue
-                    AppController.getInstance().addToRequestQueue(strRequest, "signup");
+                        AppController.getInstance().addToRequestQueue(strRequest, "signup");
 
-                } else {
+                    } else {
 
-                    LinearLayout main_layout=(LinearLayout) findViewById(R.id.main_layout);
-                    Snackbar snackbar = Snackbar
-                            .make(main_layout, "No Internet Connection !", Snackbar.LENGTH_LONG)
-                            .setAction("Settings", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    Intent intent=new Intent(Settings.ACTION_SETTINGS);
-                                    startActivity(intent);
-                                }
-                            });
+                        LinearLayout main_layout = (LinearLayout) findViewById(R.id.main_layout);
+                        Snackbar snackbar = Snackbar
+                                .make(main_layout, "No Internet Connection !", Snackbar.LENGTH_LONG)
+                                .setAction("Settings", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                                        startActivity(intent);
+                                    }
+                                });
 
-                    snackbar.show();
+                        snackbar.show();
 
+                    }
                 }
             }});
-    }
+     }
     public boolean haveNetworkConnection() {
         boolean haveConnectedWifi = false;
         boolean haveConnectedMobile = false;
