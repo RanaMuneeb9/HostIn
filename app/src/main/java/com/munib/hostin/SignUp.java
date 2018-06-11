@@ -150,6 +150,8 @@ public class SignUp extends AppCompatActivity implements LocationListener {
                                                 SavedSharedPreferences.setUserId(getApplicationContext(), response.getJSONObject("Row").getInt("insertId"));
                                                 SavedSharedPreferences.setUserName(getApplicationContext(), first_name.getText().toString() + " " + last_name.getText().toString());
                                                 SavedSharedPreferences.setUserEmail(getApplicationContext(), email.getText().toString());
+                                                SavedSharedPreferences.setUserLat(getApplicationContext(), lat+"");
+                                                SavedSharedPreferences.setUserLang(getApplicationContext(), lang+"");
                                                 Intent intent = new Intent(SignUp.this, MainActivity.class);
                                                 startActivity(intent);
                                                 finish();

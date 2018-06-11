@@ -142,12 +142,13 @@ public class FragmentMess extends Fragment implements Filters.OnFragmentInteract
                                 JSONObject response = new JSONObject(res.toString());
                                 Log.d("mubi",response.toString());
                                 boolean error = response.getBoolean("Error");
-                                JSONArray array=response.getJSONArray("Schedule");
 
-                                Log.d("mubi",error+"aa");
                                 if(!error)
                                 {
 
+                                    JSONArray array=response.getJSONArray("Schedule");
+
+                                    Log.d("mubi",error+"aa");
                                     TableLayout stk = (TableLayout) v.findViewById(R.id.table_main);
                                     TableRow tbrow0 = new TableRow(getActivity());
                                     TextView tv0 = new TextView(getActivity());

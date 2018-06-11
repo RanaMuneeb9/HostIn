@@ -57,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/SecondryColor"
                 android:hint="Email"
+                android:inputType="textEmailAddress"
                 android:textColor="@android:color/darker_gray"
                 android:textColorHint="@color/SecondryColor"
                 android:textSize="17sp" />
@@ -75,11 +76,26 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/SecondryColor"
                 android:hint="Password"
+                android:inputType="textPassword"
                 android:textColor="@android:color/darker_gray"
                 android:textColorHint="@color/SecondryColor"
                 android:textSize="17sp" />
 
         </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:id="@+id/forgot_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/loginButton"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="Forgot Password ?"
+            android:textAlignment="textEnd"
+            android:textColor="#815097"
+            android:textSize="16sp" />
 
     </LinearLayout>
 

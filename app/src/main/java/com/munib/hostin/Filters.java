@@ -15,9 +15,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.jaygoo.widget.RangeSeekBar;
@@ -25,6 +28,7 @@ import com.munib.hostin.Adapters.MainAdapter;
 import com.munib.hostin.DataModel.HostelsData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -95,6 +99,33 @@ public class Filters extends Fragment {
 
         price_seekbar=(RangeSeekBar) v.findViewById(R.id.seekbar1);
         rating_seekbar=(RangeSeekBar) v.findViewById(R.id.rating_seekbar);
+
+        final Spinner seaters_spinner=(Spinner) v.findViewById(R.id.seaters_spinner);
+
+
+
+        List<String> seaters = new ArrayList<String>();
+        seaters.add("1");
+        seaters.add("2");
+        seaters.add("3");
+
+        ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, seaters);
+        dataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        seaters_spinner.setAdapter(dataAdapter1);
+
+
+        seaters_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                SavedSharedPreferences.setSeaters(getActivity(),Integer.parseInt(seaters_spinner.getSelectedItem().toString()));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         if(SavedSharedPreferences.getRating(getContext())==0)
         {

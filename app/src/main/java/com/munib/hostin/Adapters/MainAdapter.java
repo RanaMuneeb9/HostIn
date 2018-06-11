@@ -92,7 +92,7 @@ public class MainAdapter extends RecyclerView
 
 
         Log.d("mubi","here inside 2");
-//        holder.prices.setText(mDataset.get(position).getRoomTypes().get(0).getPrice()+"");
+        holder.prices.setText(mDataset.get(position).getRoomTypes().get(0).getPrice()+"");
         holder.hostel_name.setText(mDataset.get(position).getName());
         holder.ratingBar.setRating((int)mDataset.get(position).getAverageReview());
         holder.ratingBar.setEnable(false);
@@ -111,7 +111,7 @@ public class MainAdapter extends RecyclerView
                 Bundle a=new Bundle();
                 a.putSerializable("hostel_object",current_item);
                 fragment.setArguments(a);
-                fm.beginTransaction().addToBackStack("frag").replace(R.id.fragment, fragment).commit();
+                fm.beginTransaction().addToBackStack("hostel_profile").replace(R.id.fragment, fragment).commit();
             }
         });
 

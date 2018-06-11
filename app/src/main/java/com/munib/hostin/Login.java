@@ -49,7 +49,6 @@ public class Login extends AppCompatActivity {
 
         if(SavedSharedPreferences.getUserName(getApplicationContext()).equals("null"))
         {
-        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.login);
 
 
@@ -117,9 +116,11 @@ public class Login extends AppCompatActivity {
                                                 Log.d("mubi", "inside 1.11");
                                                 String lat = obj.getDouble("user_lat") + "";
                                                 SavedSharedPreferences.setUserLat(getApplicationContext(), lat);
-                                                Log.d("mubi", "inside 1.12");
+                                                Log.d("mubi-lat0", lat+"");
                                                 String lang = obj.getDouble("user_lang") + "";
+                                                Log.d("mubi-lang0", lang+"");
                                                 SavedSharedPreferences.setUserLang(getApplicationContext(), lang);
+                                                Log.d("mubi", "inside 1.12");
                                                 String gender = obj.getString("user_gender");
                                                 SavedSharedPreferences.setUserGender(getApplicationContext(), gender);
                                                 Log.d("mubi", error + "inside 2");
@@ -195,6 +196,16 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+            final TextView forgot = (TextView) findViewById(R.id.forgot_text);
+            forgot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent =new Intent(Login.this, ForgotPassword.class);
+                    startActivity(intent);
+                }
+            });
+
 
         }else{
 

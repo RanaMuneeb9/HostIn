@@ -152,7 +152,6 @@
                                                     android:layout_alignParentRight="true"
                                                     android:layout_alignParentStart="true"
                                                     android:layout_alignParentTop="true"
-                                                    android:background="@drawable/pic1"
                                                     android:scaleType="centerCrop" />
 
                                                 <TextView

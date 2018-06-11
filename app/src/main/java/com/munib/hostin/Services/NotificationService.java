@@ -72,8 +72,16 @@ public class NotificationService extends Service {
                     NotificationCompat.Builder builder =
                             new NotificationCompat.Builder(NotificationService.this)
                                     .setSmallIcon(R.drawable.com_facebook_button_like_icon_selected)
-                                    .setContentTitle("Notifications Example")
+                                    .setContentTitle("Host Inn")
                                     .setContentText(obj.getString("msg"));
+
+                    if(obj.getString("msg").equals("You Booking Has not Accepted !"))
+                    {
+                        SavedSharedPreferences.setBookingRequest(getApplicationContext(),0);
+                    }else if(obj.getString("msg").equals("user Removed From Current Hostel !"))
+                    {
+                        SavedSharedPreferences.setBookingRequest(getApplicationContext(),0);
+                    }
 
                     Intent notificationIntent = new Intent(NotificationService.this, MainActivity.class);
                     PendingIntent contentIntent = PendingIntent.getActivity(NotificationService.this, 0, notificationIntent,

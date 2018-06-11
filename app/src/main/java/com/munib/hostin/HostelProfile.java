@@ -146,6 +146,7 @@ public class HostelProfile extends Fragment implements Filters.OnFragmentInterac
         hostel_data = (HostelsData) getArguments().getSerializable("hostel_object");
 
 
+
         save_btn=(Button) v.findViewById(R.id.save_btn);
         for (SavedHostelsData data:Main_fragment.saved_hostels)
         {
@@ -316,21 +317,25 @@ public class HostelProfile extends Fragment implements Filters.OnFragmentInterac
         StringBuilder builder = new StringBuilder();
         try {
             List<Address> address = geoCoder.getFromLocation(hostel_data.getLatitude(), hostel_data.getLongitude(), 1);
-            int maxLines = address.get(0).getMaxAddressLineIndex();
-            for (int i=0; i<maxLines; i++) {
-                String addressStr = address.get(0).getAddressLine(i);
-                builder.append(addressStr);
-                builder.append(" ");
-            }
 
-            String fnialAddress = builder.toString(); //This is the complete address.
+            Log.d("mubi-address",address.get(0).getAddressLine(0));
+//            for (int i=0; i<maxLines; i++) {
+//                String addressStr = address.get(0).getAddressLine(i);
+//                builder.append(addressStr);
+//                builder.append(" ");
+//
+//            }
+
+            String fnialAddress = address.get(0).getAddressLine(0); //This is the complete address.
 
 
             location.setText(fnialAddress); //This will display the final address.
 
         } catch (IOException e) {
+            e.printStackTrace();
             // Handle IOException
         } catch (NullPointerException e) {
+            e.printStackTrace();
             // Handle NullPointerException
         }
 
@@ -423,9 +428,11 @@ public class HostelProfile extends Fragment implements Filters.OnFragmentInterac
 
         book_btn=(Button)v.findViewById(R.id.book_btn);
 
-        if(SavedSharedPreferences.getCurrentHostelId(getActivity())!=0)
+        Log.d("mubi-book-req",SavedSharedPreferences.getBookingRequest(getContext())+"");
+        if(SavedSharedPreferences.getBookingRequest(getContext())==1)
         {
             book_btn.setEnabled(false);
+            book_btn.setText("You are already living in a hostel!");
         }
         book_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -436,8 +443,12 @@ public class HostelProfile extends Fragment implements Filters.OnFragmentInterac
                 bndle.putSerializable("hostel_object",hostel_data);
                 a.putExtra("bndle",bndle);
                 startActivity(a);
+                getFragmentManager().popBackStack();
             }
         });
+
+
+
 
 
 
@@ -526,6 +537,86 @@ public class HostelProfile extends Fragment implements Filters.OnFragmentInterac
                     haveConnectedMobile = true;
         }
         return haveConnectedWifi || haveConnectedMobile;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        final ProgressDialog pDialog = new ProgressDialog(getActivity());
+        pDialog.setMessage("Loading...");
+        pDialog.setCancelable(false);
+
+        pDialog.show();
+        String url = MainActivity.API+"room_current_student";
+
+        StringRequest strRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String res) {
+                        try {
+
+                            boolean space=false;
+                            JSONObject response = new JSONObject(res.toString());
+                            Log.d("mubi",response.toString());
+                            boolean error = response.getBoolean("Error");
+
+                            Log.d("mubi",error+"aa");
+                            if(!error)
+                            {
+                                JSONArray array=response.getJSONArray("roomcurrent");
+
+                                for(int i=0;i<array.length();i++)
+                                {
+                                    JSONObject obj=array.getJSONObject(i);
+                                    if(obj.getInt("space")>0)
+                                    {
+                                        space=true;
+                                    }
+
+
+                                }
+
+                                if(!space)
+                                {
+                                    book_btn.setText("No Rooms Available!");
+                                    book_btn.setEnabled(true);
+                                }
+
+
+                                pDialog.hide();
+
+                            }else{
+                                pDialog.hide();
+                            }
+
+                        } catch (Exception ex) {
+
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("mubi", "Error: " + error.getMessage());
+                // hide the progress dialog
+                pDialog.hide();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("hostel_email", hostel_data.getEmail()+"");
+                params.put("hostel_email", hostel_data.getEmail()+"");
+
+                return params;
+            }
+        };
+
+// Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strRequest, "room_current");
+
+
     }
 }
 

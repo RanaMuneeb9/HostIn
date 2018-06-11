@@ -32,6 +32,20 @@ public class SavedSharedPreferences
         editor.putInt("rating", rating);
         editor.commit();
     }
+    public static void setHostelType(Context ctx, String type)
+    {
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putString("hostel_type", type);
+        editor.commit();
+    }
+
+    public static void setSeaters(Context ctx, int type)
+    {
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putInt("seaters", type);
+        editor.commit();
+    }
+
     public static void setMinPrice(Context ctx, String min)
     {
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
@@ -101,6 +115,25 @@ public class SavedSharedPreferences
         editor.putString("user_mobile",phone);
         editor.commit();
     }
+    public static void setBookingRequest(Context ctx,int book)
+    {
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putInt("booking_request",book);
+        editor.commit();
+    }
+    public static int getBookingRequest(Context ctx)
+    {
+        return getSharedPreferences(ctx).getInt("booking_request",0);
+    }
+    public static String getHostelType(Context ctx)
+    {
+        return getSharedPreferences(ctx).getString("hostel_type","");
+    }
+    public static int getSeaters(Context ctx)
+    {
+        return getSharedPreferences(ctx).getInt("seaters",0);
+    }
+
     public static String getMobileNo(Context ctx)
     {
         return getSharedPreferences(ctx).getString("user_mobile","");
@@ -143,7 +176,7 @@ public class SavedSharedPreferences
     }
     public static String getUserLang(Context ctx)
     {
-        return getSharedPreferences(ctx).getString("user_long", "0.0");
+        return getSharedPreferences(ctx).getString("user_lang", "0.0");
     }
     public static String getUserGender(Context ctx)
     {

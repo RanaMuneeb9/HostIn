@@ -1,5 +1,7 @@
 package com.munib.hostin;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
@@ -8,9 +10,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,9 +22,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.darsh.multipleimageselect.activities.AlbumSelectActivity;
 import com.darsh.multipleimageselect.helpers.Constants;
 import com.darsh.multipleimageselect.models.Image;
@@ -29,6 +37,7 @@ import com.koushikdutta.async.future.Future;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.Response;
+import com.munib.hostin.volley.AppController;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.HttpResponse;
@@ -36,6 +45,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,8 +53,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -140,7 +152,7 @@ public class user_profile extends Fragment {
         name.setText(SavedSharedPreferences.getUserName(getActivity()));
 
         radius_seekbar=(RangeSeekBar) v.findViewById(R.id.radius_seekbar);
-//        radius_seekbar.setValue(SavedSharedPreferences.getCustomRadius(getActivity()));
+        radius_seekbar.setValue(SavedSharedPreferences.getCustomRadius(getActivity()));
         radius_seekbar.setOnRangeChangedListener(new RangeSeekBar.OnRangeChangedListener() {
             @Override
             public void onRangeChanged(RangeSeekBar view, float min, float max, boolean isFromUser) {
@@ -159,6 +171,112 @@ public class user_profile extends Fragment {
             }
         });
 
+        LinearLayout change_password=(LinearLayout) v.findViewById(R.id.change_password);
+        change_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                LayoutInflater factory = LayoutInflater.from(getActivity());
+                final View deleteDialogView = factory.inflate(R.layout.fragment_change_pass_user, null);
+                final AlertDialog deleteDialog = new AlertDialog.Builder(getActivity()).create();
+                deleteDialog.setView(deleteDialogView);
+                deleteDialogView.findViewById(R.id.submit).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //your business logic
+
+                        if(TextUtils.isEmpty( ((TextInputLayout) deleteDialogView.findViewById(R.id.input_layout_pass)).getEditText().getText().toString())) {
+
+                            ((TextInputLayout) deleteDialogView.findViewById(R.id.input_layout_pass)).setError("Input required");
+                            ((TextInputLayout) deleteDialogView.findViewById(R.id.input_layout_pass)).setErrorEnabled(true);
+
+                        }else if(TextUtils.isEmpty( ((TextInputLayout) deleteDialogView.findViewById(R.id.input_layout_repass)).getEditText().getText().toString())) {
+
+                            ((TextInputLayout) deleteDialogView.findViewById(R.id.input_layout_repass)).setError("Input required");
+                            ((TextInputLayout) deleteDialogView.findViewById(R.id.input_layout_repass)).setErrorEnabled(true);
+
+                        }else if(!((TextInputLayout) deleteDialogView.findViewById(R.id.input_layout_repass)).getEditText().getText().toString().equals(((TextInputLayout) deleteDialogView.findViewById(R.id.input_layout_repass)).getEditText().getText().toString()))
+                        {
+                            ((TextInputLayout) deleteDialogView.findViewById(R.id.input_layout_repass)).setError("Password doesn't match!");
+                            ((TextInputLayout) deleteDialogView.findViewById(R.id.input_layout_repass)).setErrorEnabled(true);
+
+                            ((TextInputLayout) deleteDialogView.findViewById(R.id.input_layout_pass)).setError("Password doesn't match!");
+                            ((TextInputLayout) deleteDialogView.findViewById(R.id.input_layout_pass)).setErrorEnabled(true);
+                        }else{
+
+
+                                String url = MainActivity.API + "userChangePassword";
+
+                                final ProgressDialog pDialog = new ProgressDialog(getActivity());
+                                pDialog.setMessage("Loading...");
+                                pDialog.setCancelable(false);
+                                pDialog.show();
+
+                                StringRequest strRequest = new StringRequest(Request.Method.POST, url,
+                                        new com.android.volley.Response.Listener<String>() {
+                                            @Override
+                                            public void onResponse(String res) {
+                                                try {
+
+                                                    JSONObject response = new JSONObject(res.toString());
+                                                    Log.d("mubi", response.toString());
+                                                    boolean error = response.getBoolean("Error");
+
+                                                    Log.d("mubi", error + "aa");
+                                                    if (!error) {
+                                                        pDialog.hide();
+
+                                                        Toast.makeText(getActivity(), "Password Changed Successfully!", Toast.LENGTH_SHORT).show();
+
+                                                        deleteDialog.dismiss();
+                                                    } else {
+                                                        Toast.makeText(getActivity(), "Error!", Toast.LENGTH_SHORT).show();
+                                                        pDialog.hide();
+                                                    }
+
+                                                } catch (Exception ex) {
+
+                                                }
+                                            }
+                                        }, new com.android.volley.Response.ErrorListener() {
+
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Log.d("mubi", "Error: " + error.getMessage());
+                                        // hide the progress dialog
+                                        pDialog.hide();
+                                    }
+                                }) {
+                                    @Override
+                                    protected Map<String, String> getParams() {
+                                        Map<String, String> params = new HashMap<String, String>();
+                                        params.put("user_id", SavedSharedPreferences.getUserId(getActivity())+"");
+                                        params.put("password",((TextInputLayout)deleteDialogView.findViewById(R.id.input_layout_pass)).getEditText().getText().toString());
+
+                                        return params;
+                                    }
+                                };
+
+// Adding request to request queue
+                                AppController.getInstance().addToRequestQueue(strRequest, "login");
+
+
+
+
+                        }
+                    }
+                });
+                deleteDialogView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deleteDialog.dismiss();
+                    }
+                });
+
+                deleteDialog.show();
+
+            }
+        });
         if(!SavedSharedPreferences.getUserLat(getActivity()).equals("0.0")) {
             Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
             StringBuilder builder = new StringBuilder();
@@ -245,7 +363,7 @@ public class user_profile extends Fragment {
     }
 
     /**
-     * This interface must be implemented by activities that contain this
+     * This interface must be implemented by activities that contain getActivity()
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.

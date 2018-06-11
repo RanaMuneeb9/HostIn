@@ -14,7 +14,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp">
 
@@ -28,6 +28,12 @@
             android:paddingBottom="40dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp">
+
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -98,173 +104,32 @@
                 rsb:rsb_progressHintMode="alwaysShow"
                 rsb:rsb_seekBarMode="range" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:visibility="gone">
+                android:gravity="bottom"
+                android:paddingTop="10dp">
 
                 <TextView
-                    android:id="@+id/textView35"
+                    android:id="@+id/textView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.73"
-                    android:paddingTop="5dp"
-                    android:text="Hostel Type"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="5dp"
+                    android:text="Seaters"
                     android:textColor="@android:color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
-            <LinearLayout
+            <Spinner
+                android:id="@+id/seaters_spinner"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                android:weightSum="1">
-
-                <TextView
-                    android:id="@+id/textView34"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Boys"
-                    android:textSize="18sp" />
-
-                <CheckBox
-                    android:id="@+id/check_boys"
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:checked="false"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="2dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                android:weightSum="1">
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Girls"
-                    android:textSize="18sp"
-                    android:visibility="gone" />
-
-                <CheckBox
-                    android:id="@+id/check_girls"
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:checked="false"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="2dp"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/textView35"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.73"
-                    android:paddingTop="5dp"
-                    android:text="Hostel Seaters"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                android:weightSum="1">
-
-                <TextView
-                    android:id="@+id/textView34"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="One Seater Room"
-                    android:textSize="18sp"
-                    android:visibility="gone" />
-
-                <CheckBox
-                    android:id="@+id/one_seater"
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:checked="false"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="2dp"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                android:weightSum="1">
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Two Seater Rooms"
-                    android:textSize="18sp"
-                    android:visibility="gone" />
-
-                <CheckBox
-                    android:id="@+id/two_seater"
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:checked="false"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="2dp"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                android:weightSum="1">
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Three Seater Rooms"
-                    android:textSize="18sp"
-                    android:visibility="gone" />
-
-                <CheckBox
-                    android:id="@+id/three_seater"
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:checked="false"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="2dp"
-                    android:visibility="gone" />
-
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp" />
 
 
         </LinearLayout>

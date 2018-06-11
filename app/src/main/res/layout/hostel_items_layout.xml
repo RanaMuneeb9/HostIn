@@ -72,13 +72,13 @@
                         android:orientation="horizontal"
                         android:paddingLeft="10dp">
 
-                        <ImageView
+                        <TextView
                             android:id="@+id/imageView"
-                            android:layout_width="15dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="15dp"
                             android:layout_gravity="center"
-                            android:background="@drawable/ic_attach_money_grey_700_24dp"
-                            android:backgroundTint="@color/SecondryColor" />
+                            android:text="Rs. "
+                            android:textColor="@color/SecondryColor" />
 
                         <TextView
                             android:id="@+id/prices"

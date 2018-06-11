@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -65,6 +66,8 @@ import io.ghyeok.stickyswitch.widget.StickySwitch;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.LOCATION_SERVICE;
+import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.munib.hostin.volley.AppController.TAG;
 
 
@@ -153,70 +156,10 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
         filter_price_view=(TextView) v.findViewById(R.id.filter_price_view);
         filter_layout=(LinearLayout) v.findViewById(R.id.filters_layout);
 
-
         final AutocompleteFilter autocompleteFilter = new AutocompleteFilter.Builder()
                 .setTypeFilter(Place.TYPE_ADMINISTRATIVE_AREA_LEVEL_3)
                 .setCountry("PAK")
                 .build();
-
-
-        String url = MainActivity.API+"getTenants";
-
-        StringRequest strRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String res) {
-                        try {
-
-                            JSONObject response = new JSONObject(res.toString());
-                            Log.d("mubi",response.toString());
-                            boolean error = response.getBoolean("Error");
-                            String msg=response.getString("Message");
-
-                            Log.d("mubi-tenants",error+"aa");
-                            if(!error)
-                            {
-
-                                Log.d("mubi","inside 00");
-                                JSONArray array=response.getJSONArray("Tenants");
-                                for(int i=0;i<array.length();i++)
-                                {
-                                    JSONObject object=array.getJSONObject(i);
-
-                                    int count=object.getInt("count");
-                                    int hostel_id=object.getInt("hostel_id");
-
-                                    tennants.add(new TenantsData(count,hostel_id));
-                                }
-
-
-                            }else{
-                                Toast.makeText(getActivity(), msg,Toast.LENGTH_SHORT).show();
-
-                            }
-
-                        } catch (Exception ex) {
-
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("mubi", "Error: " + error.getMessage());
-                // hide the progress dialog
-                pDialog.hide();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                return params;
-            }
-        };
-
-// Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strRequest, "login");
 
         search_edittext=(EditText) v.findViewById(R.id.search_edittext);
         search_edittext.setOnClickListener(new View.OnClickListener() {
@@ -297,110 +240,226 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
 
                     floatingActionButton.setImageResource(R.drawable.ic_check_circle_white_24dp);
                     filter_menu=true;
-                }else{
+                }else {
 
-                    ArrayList<HostelsData> arr=new ArrayList<>();
-                    if(Filters.rating_min==0 && Filters._rating_max==5)
-                    {
-                        recyclerView.setAdapter(new MainAdapter(getActivity(),hostels_arrayList));
-                        SavedSharedPreferences.setRating(getActivity(),0);
+
+
+                    if (SavedSharedPreferences.getSeaters(getActivity()) != 0) {
+
+                        ArrayList<HostelsData> arr1 = new ArrayList<>();
+
+                        ArrayList<HostelsData> arr = new ArrayList<>();
+                        ArrayList<HostelsData> arr2 = new ArrayList<>();
+
+                        for (int i = 0; i < hostels_arrayList.size(); i++) {
+                            for (int j = 0; j < hostels_arrayList.get(i).getRoomTypes().size(); j++) {
+                                if ((int) hostels_arrayList.get(i).getRoomTypes().get(j).getSeaters() == SavedSharedPreferences.getSeaters(getActivity())) {
+                                    Log.d("munib-rating", "added1" + hostels_arrayList.get(i).getAverageReview());
+
+                                    arr1.add(hostels_arrayList.get(i));
+                                }
+                            }
+                        }
+
+
+                        if (Filters.rating_min == 0 && Filters._rating_max == 5) {
+                            recyclerView.setAdapter(new MainAdapter(getActivity(), arr1));
+                            SavedSharedPreferences.setRating(getActivity(), 0);
+                            filter_layout.setVisibility(View.GONE);
+                        } else {
+                            Log.d("munib-rating", "inside1 :" + Filters.rating_min + " : " + Filters._rating_max);
+
+                            for (int i = 0; i < arr1.size(); i++) {
+                                if ((int) arr1.get(i).getAverageReview() >= Filters.rating_min) {
+                                    Log.d("munib-rating", "added1" + arr1.get(i).getAverageReview());
+
+                                    arr.add(arr1.get(i));
+                                }
+                            }
+
+                            Log.d("munib-rating", "after");
+
+                            SavedSharedPreferences.setRating(getActivity(), Filters.rating_min);
+                            filter_rating_view.setVisibility(View.VISIBLE);
+                            filter_layout.setVisibility(View.VISIBLE);
+                            Filters.rating_filter = true;
+
+
+
+                            if (Filters.price_min == 6000 && Filters.price_max == 15000) {
+                                Log.d("munib-rating", "setting adapter" + arr.size());
+                                filter_price_view.setVisibility(View.GONE);
+                                recyclerView.setAdapter(new MainAdapter(getActivity(), arr));
+                                SavedSharedPreferences.setMinPrice(getActivity(), 6000 + "");
+                                SavedSharedPreferences.setMaxPrice(getActivity(), 15000 + "");
+                            } else {
+
+                                Log.d("munib-rating", "inside price");
+                                Filters.price_filter = true;
+                                for (int i = 0; i < arr.size(); i++) {
+                                    for (int j = 0; j < arr.get(i).getRoomTypes().size(); j++) {
+
+                                        int price;
+                                        if ((int) arr.get(i).getRoomTypes().get(j).getPrice() >= Filters.price_min && (int) arr.get(i).getRoomTypes().get(j).getPrice() <= Filters.price_max) {
+                                            arr2.add(arr.get(i));
+                                            break;
+                                        }
+
+                                    }
+                                }
+                                SavedSharedPreferences.setMinPrice(getActivity(), Filters.price_min + "");
+                                SavedSharedPreferences.setMaxPrice(getActivity(), Filters.price_max + "");
+                                filter_price_view.setVisibility(View.VISIBLE);
+                                recyclerView.setAdapter(new MainAdapter(getActivity(), arr2));
+                            }
+                        }
+
+
+                        Log.d("munib-state", Filters.price_filter + " : " + Filters.rating_filter);
+
+                        if (!Filters.price_filter) {
+
+                            if (Filters.price_min == 6000 && Filters.price_max == 15000) {
+                                filter_price_view.setVisibility(View.GONE);
+                                if (!Filters.rating_filter) {
+                                    filter_layout.setVisibility(View.GONE);
+                                    recyclerView.setAdapter(new MainAdapter(getActivity(), arr1));
+                                }
+
+                                SavedSharedPreferences.setMinPrice(getActivity(), 6000 + "");
+                                SavedSharedPreferences.setMaxPrice(getActivity(), 15000 + "");
+
+                            } else {
+                                Log.d("munib-price", "start");
+                                Filters.price_filter = true;
+                                arr.clear();
+                                for (int i = 0; i < arr1.size(); i++) {
+                                    for (int j = 0; j < arr1.get(i).getRoomTypes().size(); j++) {
+
+                                        int price;
+                                        if ((int) arr1.get(i).getRoomTypes().get(j).getPrice() >= Filters.price_min && (int) arr1.get(i).getRoomTypes().get(j).getPrice() <= Filters.price_max) {
+
+                                            Log.d("munib-price", "added" + arr1.get(i).getRoomTypes().get(j).getPrice());
+                                            arr.add(arr1.get(i));
+                                            break;
+                                        }
+
+                                    }
+                                }
+                                SavedSharedPreferences.setMinPrice(getActivity(), Filters.price_min + "");
+                                SavedSharedPreferences.setMaxPrice(getActivity(), Filters.price_max + "");
+                                filter_price_view.setVisibility(View.VISIBLE);
+                                filter_layout.setVisibility(View.VISIBLE);
+                                recyclerView.setAdapter(new MainAdapter(getActivity(), arr));
+
+                            }
+                        }
+
+                        floatingActionButton.setImageResource(R.drawable.filter_icon);
+                        filter_menu = false;
+                        fm.popBackStack();
+
+                    } else {
+
+                        ArrayList<HostelsData> arr1 = new ArrayList<>();
+
+                        ArrayList<HostelsData> arr = new ArrayList<>();
+
+                        if (Filters.rating_min == 0 && Filters._rating_max == 5) {
+                        recyclerView.setAdapter(new MainAdapter(getActivity(), hostels_arrayList));
+                        SavedSharedPreferences.setRating(getActivity(), 0);
                         filter_layout.setVisibility(View.GONE);
-                    }else{
-                        Log.d("munib-rating","inside1 :"+Filters.rating_min+ " : "+Filters._rating_max);
+                    } else {
+                        Log.d("munib-rating", "inside1 :" + Filters.rating_min + " : " + Filters._rating_max);
 
-                        for(int i=0;i<hostels_arrayList.size();i++)
-                        {
-                            if((int)hostels_arrayList.get(i).getAverageReview()>=Filters.rating_min )
-                            {
-                                Log.d("munib-rating","added1"+hostels_arrayList.get(i).getAverageReview());
+                        for (int i = 0; i < hostels_arrayList.size(); i++) {
+                            if ((int) hostels_arrayList.get(i).getAverageReview() >= Filters.rating_min) {
+                                Log.d("munib-rating", "added1" + hostels_arrayList.get(i).getAverageReview());
 
                                 arr.add(hostels_arrayList.get(i));
                             }
                         }
 
-                        Log.d("munib-rating","after");
+                        Log.d("munib-rating", "after");
 
-                        SavedSharedPreferences.setRating(getActivity(),Filters.rating_min);
+                        SavedSharedPreferences.setRating(getActivity(), Filters.rating_min);
                         filter_rating_view.setVisibility(View.VISIBLE);
                         filter_layout.setVisibility(View.VISIBLE);
-                        Filters.rating_filter=true;
+                        Filters.rating_filter = true;
 
-                        ArrayList<HostelsData> arr1=new ArrayList<>();
 
-                        if(Filters.price_min==6000 && Filters.price_max==15000)
-                        {
-                            Log.d("munib-rating","setting adapter"+arr.size());
+                        if (Filters.price_min == 6000 && Filters.price_max == 15000) {
+                            Log.d("munib-rating", "setting adapter" + arr.size());
                             filter_price_view.setVisibility(View.GONE);
-                            recyclerView.setAdapter(new MainAdapter(getActivity(),arr));
-                            SavedSharedPreferences.setMinPrice(getActivity(),6000+"");
-                            SavedSharedPreferences.setMaxPrice(getActivity(),15000+"");
-                        }else{
+                            recyclerView.setAdapter(new MainAdapter(getActivity(), arr));
+                            SavedSharedPreferences.setMinPrice(getActivity(), 6000 + "");
+                            SavedSharedPreferences.setMaxPrice(getActivity(), 15000 + "");
+                        } else {
 
-                            Log.d("munib-rating","inside price");
-                            Filters.price_filter=true;
-                            for(int i=0;i<arr.size();i++)
-                            {
-                                for(int j=0;j<arr.get(i).getRoomTypes().size();j++) {
+                            Log.d("munib-rating", "inside price");
+                            Filters.price_filter = true;
+                            for (int i = 0; i < arr.size(); i++) {
+                                for (int j = 0; j < arr.get(i).getRoomTypes().size(); j++) {
 
                                     int price;
-                                    if ((int) arr.get(i).getRoomTypes().get(j).getPrice()>= Filters.price_min && (int) arr.get(i).getRoomTypes().get(j).getPrice()<= Filters.price_max ) {
+                                    if ((int) arr.get(i).getRoomTypes().get(j).getPrice() >= Filters.price_min && (int) arr.get(i).getRoomTypes().get(j).getPrice() <= Filters.price_max) {
                                         arr1.add(arr.get(i));
                                         break;
                                     }
 
                                 }
                             }
-                            SavedSharedPreferences.setMinPrice(getActivity(),Filters.price_min+"");
-                            SavedSharedPreferences.setMaxPrice(getActivity(),Filters.price_max+"");
+                            SavedSharedPreferences.setMinPrice(getActivity(), Filters.price_min + "");
+                            SavedSharedPreferences.setMaxPrice(getActivity(), Filters.price_max + "");
                             filter_price_view.setVisibility(View.VISIBLE);
-                            recyclerView.setAdapter(new MainAdapter(getActivity(),arr1));
+                            recyclerView.setAdapter(new MainAdapter(getActivity(), arr1));
                         }
                     }
 
 
-                    Log.d("munib-state",Filters.price_filter+ " : "+Filters.rating_filter);
+                    Log.d("munib-state", Filters.price_filter + " : " + Filters.rating_filter);
 
-                    if(!Filters.price_filter) {
+                    if (!Filters.price_filter) {
 
                         if (Filters.price_min == 6000 && Filters.price_max == 15000) {
                             filter_price_view.setVisibility(View.GONE);
-                            if(!Filters.rating_filter) {
+                            if (!Filters.rating_filter) {
                                 filter_layout.setVisibility(View.GONE);
-                                recyclerView.setAdapter(new MainAdapter(getActivity(),hostels_arrayList));
+                                recyclerView.setAdapter(new MainAdapter(getActivity(), hostels_arrayList));
                             }
 
-                            SavedSharedPreferences.setMinPrice(getActivity(),6000+"");
-                            SavedSharedPreferences.setMaxPrice(getActivity(),15000+"");
+                            SavedSharedPreferences.setMinPrice(getActivity(), 6000 + "");
+                            SavedSharedPreferences.setMaxPrice(getActivity(), 15000 + "");
 
                         } else {
-                            Log.d("munib-price","start");
-                            Filters.price_filter=true;
+                            Log.d("munib-price", "start");
+                            Filters.price_filter = true;
                             arr.clear();
-                            for(int i=0;i<hostels_arrayList.size();i++)
-                            {
-                                for(int j=0;j<hostels_arrayList.get(i).getRoomTypes().size();j++) {
+                            for (int i = 0; i < hostels_arrayList.size(); i++) {
+                                for (int j = 0; j < hostels_arrayList.get(i).getRoomTypes().size(); j++) {
 
                                     int price;
-                                    if ((int) hostels_arrayList.get(i).getRoomTypes().get(j).getPrice()>= Filters.price_min && (int) hostels_arrayList.get(i).getRoomTypes().get(j).getPrice()<= Filters.price_max ) {
+                                    if ((int) hostels_arrayList.get(i).getRoomTypes().get(j).getPrice() >= Filters.price_min && (int) hostels_arrayList.get(i).getRoomTypes().get(j).getPrice() <= Filters.price_max) {
 
-                                        Log.d("munib-price","added"+hostels_arrayList.get(i).getRoomTypes().get(j).getPrice());
+                                        Log.d("munib-price", "added" + hostels_arrayList.get(i).getRoomTypes().get(j).getPrice());
                                         arr.add(hostels_arrayList.get(i));
                                         break;
                                     }
 
                                 }
                             }
-                            SavedSharedPreferences.setMinPrice(getActivity(),Filters.price_min+"");
-                            SavedSharedPreferences.setMaxPrice(getActivity(),Filters.price_max+"");
+                            SavedSharedPreferences.setMinPrice(getActivity(), Filters.price_min + "");
+                            SavedSharedPreferences.setMaxPrice(getActivity(), Filters.price_max + "");
                             filter_price_view.setVisibility(View.VISIBLE);
                             filter_layout.setVisibility(View.VISIBLE);
-                            recyclerView.setAdapter(new MainAdapter(getActivity(),arr));
+                            recyclerView.setAdapter(new MainAdapter(getActivity(), arr));
 
                         }
                     }
                     floatingActionButton.setImageResource(R.drawable.filter_icon);
-                    filter_menu=false;
+                    filter_menu = false;
                     fm.popBackStack();
+                }
 
                 }
 
@@ -423,7 +482,7 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
         });
 
 
-        getHostels();
+        getHostels(SavedSharedPreferences.getUserLat(getActivity()),SavedSharedPreferences.getUserLang(getActivity()));
 
         getSavedHostels();
 
@@ -519,6 +578,7 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
                                         if(hostel_id1==0)
                                         {
                                             SavedSharedPreferences.setLeaveRequest(getActivity(),0);
+
                                         }
                                     }
                                     Log.d("saved_hostels","done");
@@ -628,7 +688,7 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
         }
     }
 
-    void getHostels()
+    void getHostels(final String lat,final String lang)
     {
         if(haveNetworkConnection()) {
             String url = MainActivity.API+"get_hostels";
@@ -638,7 +698,8 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
             pDialog.setCancelable(false);
             pDialog.show();
 
-            StringRequest strRequest = new StringRequest(Request.Method.GET, url,
+            hostels_arrayList.clear();
+            StringRequest strRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String res) {
@@ -648,7 +709,7 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
                                 Log.d("mubi-res",response.toString());
                                 boolean error = response.getBoolean("Error");
 
-                                Log.d("mubi-res",error+"aa");
+                                Log.d("mubi-message",response.getString("Error"));
                                 if(!error)
                                 {
                                     JSONArray row_str=response.getJSONArray("Message");
@@ -802,7 +863,17 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
                     // hide the progress dialog
                     pDialog.hide();
                 }
-            });
+            }){
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("latitude", lat+"");
+                    params.put("longitude", lang+"");
+                    params.put("radius", SavedSharedPreferences.getCustomRadius(getActivity())+"");
+
+                    return params;
+                }
+            };
 
 // Adding request to request queue
             AppController.getInstance().addToRequestQueue(strRequest, "get_hostels");
@@ -837,6 +908,8 @@ public class Main_fragment extends Fragment implements Filters.OnFragmentInterac
                 Log.i("mubi-place", "Place: " + place.getName());
 
                 search_edittext.setText(place.getName());
+
+                getHostels(place.getLatLng().latitude+"",place.getLatLng().longitude+"");
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(getActivity(), data);
                 // TODO: Handle the error.

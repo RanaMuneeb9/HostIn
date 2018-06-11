@@ -1,8 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/change_pass_user_frag"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/colorBackground"
     android:minHeight="250dp"
     android:minWidth="340dp"
@@ -18,22 +17,11 @@
         android:focusableInTouchMode="true"
         android:gravity="center">
 
-        <Button
-            android:id="@+id/drawer_btn"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/menubutton"
-            android:padding="10dp" />
-
         <TextView
             android:id="@+id/user_profile_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Settings"
+            android:text="Change Password"
             android:textAlignment="center"
             android:textColor="#815097"
             android:textSize="24sp" />
@@ -43,74 +31,80 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
         android:orientation="vertical">
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/current_pass"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_pass"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:hint="Current Password"
-            android:paddingBottom="10dp" />
+            android:layout_height="match_parent"
+            android:textColorHint="@android:color/black">
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/new_pass"
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:hint="New Password"
-            android:paddingBottom="10dp" />
+            <EditText
+                android:id="@+id/pass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/SecondryColor"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/SecondryColor"
+                android:textSize="17sp" />
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/cnfrm_pass"
-            android:layout_marginTop="10dp"
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_repass"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:hint="Confirm Password"
-            android:paddingBottom="10dp" />
+            android:layout_height="match_parent"
+            android:textColorHint="@android:color/black">
+
+            <EditText
+                android:id="@+id/repass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/SecondryColor"
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/SecondryColor"
+                android:textSize="17sp" />
+
+        </android.support.design.widget.TextInputLayout>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:paddingBottom="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:gravity="end"
         android:orientation="horizontal"
-        android:gravity="end">
+        android:paddingBottom="10dp">
 
         <Button
             android:id="@+id/submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
+            android:text="Submit"
             android:textColor="@color/colorPrimary"
-            android:textStyle="bold"
             android:textSize="16sp"
-            android:text="Submit"/>
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
+            android:text="Cancel"
             android:textColor="@color/colorPrimary"
-            android:textStyle="bold"
             android:textSize="16sp"
-            android:text="Cancel"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
 

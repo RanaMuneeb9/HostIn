@@ -44,6 +44,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.munib.hostin.DataModel.HostelsData;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,9 +58,10 @@ public class MapViewFragment extends SupportMapFragment
     boolean circle_added=false;
     GoogleMap mGoogleMap;
     SupportMapFragment mapFrag;
+    int count=0;
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
-    Location mLastLocation;
+    public static Location mLastLocation;
     Marker mCurrLocationMarker;
 
     private HashMap<Marker, HostelsData> mMarkersHashMap;
@@ -195,8 +197,10 @@ public class MapViewFragment extends SupportMapFragment
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
         //move map camera
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
-
+        if(count==0) {
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        count++;
+        }
 
         if(!circle_added) {
 
@@ -312,6 +316,10 @@ public class MapViewFragment extends SupportMapFragment
 
 
             markerLabel.setText(myMarker.getName());
+
+            if(myMarker.getImages().size()>0)
+                Picasso.get().load("http://13.127.35.98/Api/images/"+myMarker.getImages().get(0)).placeholder(R.drawable.ic_location_city_grey_700_24dp).into(markerIcon);
+
 
 
             return v;

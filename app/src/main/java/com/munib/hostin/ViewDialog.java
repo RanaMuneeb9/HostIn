@@ -2,6 +2,7 @@ package com.munib.hostin;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -24,8 +25,8 @@ public class ViewDialog {
             @Override
             public void onClick(View v) {
 
-                activity.finish();
                 dialog.dismiss();
+                activity.finish();
             }
         });
 

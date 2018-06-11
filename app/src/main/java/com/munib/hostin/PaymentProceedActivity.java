@@ -162,7 +162,6 @@ public class PaymentProceedActivity extends AppCompatActivity {
 
                                             ViewDialog alert = new ViewDialog();
                                             alert.showDialog(PaymentProceedActivity.this);
-
                                             Toast.makeText(getApplicationContext(), response.getString("Message"), Toast.LENGTH_LONG).show();
 
                                             Log.d("mubi", error + "bb");

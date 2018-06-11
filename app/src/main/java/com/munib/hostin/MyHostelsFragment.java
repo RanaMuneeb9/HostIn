@@ -25,6 +25,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -44,6 +45,7 @@ import com.munib.hostin.DataModel.HostelsData;
 import com.munib.hostin.DataModel.PaymentsData;
 import com.munib.hostin.DataModel.SavedHostelsData;
 import com.munib.hostin.volley.AppController;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -122,6 +124,7 @@ public class MyHostelsFragment extends Fragment {
         TextView name=(TextView) v.findViewById(R.id.hostel_name);
         Button mess=(Button) v.findViewById(R.id.mess_schedule);
         Button rate=(Button) v.findViewById(R.id.rate);
+        ImageView imageView=(ImageView) v.findViewById(R.id.img);
         final Button leave=(Button) v.findViewById(R.id.leave_hostel);
         final NestedScrollView scrollView=(NestedScrollView) v.findViewById(R.id.scroll);
 
@@ -139,6 +142,10 @@ public class MyHostelsFragment extends Fragment {
 
 
             name.setText(current_hostel.getName());
+            if(current_hostel.getImages().size()>0)
+                Picasso.get().load("http://13.127.35.98/Api/images/"+current_hostel.getImages().get(0)).placeholder(R.drawable.ic_location_city_grey_700_24dp).into(imageView);
+
+
             mess.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -368,6 +375,7 @@ public class MyHostelsFragment extends Fragment {
 
                                             leave.setEnabled(false);
                                             leave.setTextColor(android.R.color.secondary_text_dark);
+
                                         } else {
                                             Toast.makeText(getActivity(), "Error!", Toast.LENGTH_SHORT).show();
                                             pDialog.hide();

@@ -77,14 +77,9 @@ public class BookingActivity extends AppCompatActivity {
         StringBuilder builder = new StringBuilder();
         try {
             List<Address> address = geoCoder.getFromLocation(hostelsData.getLatitude(), hostelsData.getLongitude(), 1);
-            int maxLines = address.get(0).getMaxAddressLineIndex();
-            for (int i=0; i<maxLines; i++) {
-                String addressStr = address.get(0).getAddressLine(i);
-                builder.append(addressStr);
-                builder.append(" ");
-            }
 
-            String fnialAddress = builder.toString(); //This is the complete address.
+
+            String fnialAddress = address.get(0).getAddressLine(0); //This is the complete address.
 
 
             place.setText(fnialAddress); //This will display the final address.
@@ -226,8 +221,9 @@ public class BookingActivity extends AppCompatActivity {
                                             Log.d("mubi", error + "aa");
 
                                             Toast.makeText(getApplicationContext(), "Booking has been made ! You will soon get confirmation Message !", Toast.LENGTH_LONG).show();
-//                                            SavedSharedPreferences.setCurrentHostelId(getApplicationContext(), hostels_id);
-                                            Log.d("mubi", error + "bb");
+                                            SavedSharedPreferences.setBookingRequest(getApplicationContext(),1);
+
+                                            Log.d("mubi-book",SavedSharedPreferences.getBookingRequest(getApplicationContext())+"");
                                        pDialog.hide();
                                        finish();
                                         } else {
@@ -256,6 +252,7 @@ public class BookingActivity extends AppCompatActivity {
                             params.put("hostel_id", hostelsData.getId() + "");
                             params.put("user_id", SavedSharedPreferences.getUserId(getApplicationContext()) + "");
                             params.put("payment_status", "unpaid");
+                            params.put("booking_status", "done");
                             Calendar c = Calendar.getInstance();
                             params.put("payment_name", "Payment for "+c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH ) );
                             params.put("payment_details", "First Payment of users while booking form the app");

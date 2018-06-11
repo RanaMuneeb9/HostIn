@@ -148,36 +148,40 @@ public class MainActivity extends AppCompatActivity
 
             FragmentManager fm = getSupportFragmentManager();
             MyHostelsFragment fragment = new MyHostelsFragment();
-            fm.beginTransaction().replace(R.id.fragment,fragment).addToBackStack(null).commit();
+            fm.beginTransaction().replace(R.id.fragment,fragment).addToBackStack("a").commit();
 
         } else if (id == R.id.payments) {
 
             FragmentManager fm = getSupportFragmentManager();
             Payments_fragment fragment = new Payments_fragment();
-            fm.beginTransaction().replace(R.id.fragment,fragment).addToBackStack(null).commit();
+            fm.beginTransaction().replace(R.id.fragment,fragment).addToBackStack("b").commit();
 
         } else if (id == R.id.saved) {
 
             FragmentManager fm = getSupportFragmentManager();
             Saved_hostels fragment = new Saved_hostels();
-            fm.beginTransaction().replace(R.id.fragment,fragment).addToBackStack(null).commit();
+            fm.beginTransaction().replace(R.id.fragment,fragment).addToBackStack("c").commit();
 
 
         } else if (id == R.id.my_profile) {
 
             FragmentManager fm = getSupportFragmentManager();
             user_profile uprofile = new user_profile();
-            fm.beginTransaction().replace(R.id.fragment,uprofile).addToBackStack(null).commit();
+            fm.beginTransaction().replace(R.id.fragment,uprofile).addToBackStack("d").commit();
 
         } else if (id == R.id.notif) {
             FragmentManager fm = getSupportFragmentManager();
             Notifications_fragment fragment = new Notifications_fragment();
-            fm.beginTransaction().replace(R.id.fragment,fragment).addToBackStack(null).commit();
+            fm.beginTransaction().replace(R.id.fragment,fragment).addToBackStack("e").commit();
 
 
         }else if (id == R.id.nav_log_out) {
 
             SavedSharedPreferences.clear(getApplication());
+
+            Intent a=new Intent(MainActivity.this,Login.class);
+            startActivity(a);
+
             MainActivity.this.finish();
 
         }
@@ -196,5 +200,14 @@ public class MainActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
 
+        Intent i= new Intent(MainActivity.this, NotificationService.class);
+        startService(i);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Intent i= new Intent(MainActivity.this, NotificationService.class);
+        startService(i);
     }
 }
